@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from flask import Flask
 
 class Tutor():
@@ -7,3 +8,5 @@ class Tutor():
         self.tutor_email = tutor_email
         self.rating = rating
         self.no_reviews = no_reviews
+=======
+>>>>>>> main
