@@ -10,11 +10,8 @@ class Student():
         self.no_solved = no_solved
         self.rank = rank
 
-    def info(self, student_id, student_name, student_email, no_attempts, no_solved, rank):
+    def __repr__(self):
         print("---------------------------------------------------------")
         print(f"ID: {self.student_id} Name: {self.student_name}")
         print(f"Email: {self.student_email} Attempts: {self.no_attempts} Solved: {self.no_solved} Rank: self{self.rank}")
-        print("---------------------------------------------------------")
-
-    def __repr__(self):
-        return self.info
+        return "---------------------------------------------------------"
