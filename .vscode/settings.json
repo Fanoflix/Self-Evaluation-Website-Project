@@ -6,6 +6,8 @@
         "pylint-flask", 
         "pylint-flask-sqlalchemy"
     ],
+    "python.linting.pylamaEnabled": false,
+    "python.linting.flake8Enabled": false,
     "python.linting.mypyEnabled": false,
     "python.linting.prospectorEnabled": false
 }
