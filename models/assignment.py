@@ -11,4 +11,3 @@ class Assignment():
     
     def __repr__(self)
     return f"Assignment id: {self.assignment_id} belongs to course {self.course_id}" 
-
