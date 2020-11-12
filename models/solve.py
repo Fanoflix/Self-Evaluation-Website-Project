@@ -9,4 +9,6 @@ class Solve():
         self.assignment_id = assignment_id
     
     def __repr__(self):
-        return f"Student {self.student_id} solves the assignment {self.assignment_id}"
+        print("---------------------------------------------------------")
+        print(f"Student {self.student_id} Assignment {self.assignment_id}")
+        return "---------------------------------------------------------"
