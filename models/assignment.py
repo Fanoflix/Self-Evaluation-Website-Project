@@ -13,6 +13,6 @@ class Assignment():
         print("---------------------------------------------------------")
         print(f"Assignment ID: {self.assignment_id} Course: {self.course_id}")
         print(f"Tutor ID: {self.tutor_id} Difficulty Level: {self.difficulty}")
-        print(f"Stars: {self.stars}")
+        print(f"Stars: {self.stars} ")
         return "---------------------------------------------------------"
 
