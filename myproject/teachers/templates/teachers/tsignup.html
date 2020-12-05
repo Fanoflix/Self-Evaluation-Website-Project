@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+    <h1>Want to help the students all around the world and also earn money?</h1>
+    <p>RatorX provide you the platform to upload unlimited assignments and start your own bussiness</p>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }} {{ form.name() }} <br>
+        {{ form.email.label }} {{ form.email() }} <br>
+        {{ form.password1.label }} {{ form.password1() }} <br>
+        {{ form.password2.label }} {{ form.password2() }} <br>
+        <h5><a href="{{ url_for('students.signup') }}">Sign Up as Student</a></h5>
+        {{ form.submit() }}
+    </form>
+  </div>
+{% endblock %}

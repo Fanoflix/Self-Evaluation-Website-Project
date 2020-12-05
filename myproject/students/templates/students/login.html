@@ -2,7 +2,7 @@
 {% block content %}
 <div class="jumbotron">
     <p> 
-        <h1>Teachers's Login:</h1> <br>
+        <h1>Student's Login:</h1> <br>
         {% if loginFailed %}
             <h6>Invalid email or password</h6>
         {% endif %}
@@ -11,8 +11,8 @@
         {{ form.hidden_tag() }}
         {{ form.email.label }} {{ form.email() }} <br>
         {{ form.password.label }} {{ form.password() }} <br>
-        <h5><a href="{{ url_for('students.login') }}">Login as Student</a></h5>
-        {{ form.submit() }}
+        <h5><a href="{{ url_for('teachers.login') }}">Login as Teacher</a></h5>
+        {{ form.submit() }} 
     </form>
   </div>
 {% endblock %}
