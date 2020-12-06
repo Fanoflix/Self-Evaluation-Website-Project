@@ -66,12 +66,34 @@
               }
             }
         </script>
+        <div class="mainDivPP">
+            <div class="side">
+                <div class="up">
+                        <div class="pp">
+                            MT
+                        </div>
+                        <h5 id="uname">Mahad Khalid Tarar</h5>
+                </div>
+                <ul>
+                        <li><a href="{{ url_for('students.profile') }}">Profile</a></li>
+                        <li><a href="{{ url_for('students.photo') }}">Photo</a></li>
+                        <li><a href="{{ url_for('students.account') }}">Account</a></li>
+                        <li><a href="{{ url_for('students.payment_method') }}">Payment Method</a></li>
+                        <li><a href="{{ url_for('students.privacy') }}">Privacy</a></li>
+                        <li><a href="{{ url_for('students.deactivate_account') }}">Deactivate Account</a></li>
+                </ul>
 
-        <!-- nav barr ends -->
-        {% block content %}
+                
+            </div>
+            
+            <div class="content">
+                {% block content %}
 
-        {% endblock %}
-
+                {% endblock %}
+                
+            </div>
+            
+        </div> 
     </div>  
 </body>
 </html>

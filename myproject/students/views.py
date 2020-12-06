@@ -54,3 +54,33 @@ def login():
 def signout():
     g.studentLoggedIn = False
     return redirect( url_for('index') )
+
+@students_blueprint.route('/profile' )
+def profile():
+    studentLoggedIn = g.studentLoggedIn
+    return render_template('profile.html' , studentLoggedIn = studentLoggedIn)   
+
+@students_blueprint.route('/photo' )
+def photo():
+    studentLoggedIn = g.studentLoggedIn
+    return render_template('photo.html' , studentLoggedIn = studentLoggedIn)
+
+@students_blueprint.route('/account' )
+def account():
+    studentLoggedIn = g.studentLoggedIn
+    return render_template('account.html' , studentLoggedIn = studentLoggedIn)  
+
+@students_blueprint.route('/payment_method' )
+def payment_method():
+    studentLoggedIn = g.studentLoggedIn
+    return render_template('payment_method.html' , studentLoggedIn = studentLoggedIn)
+
+@students_blueprint.route('/privacy' )
+def privacy():
+    studentLoggedIn = g.studentLoggedIn
+    return render_template('privacy.html' , studentLoggedIn = studentLoggedIn)  
+
+@students_blueprint.route('/deactivate_account' )
+def deactivate_account():
+    studentLoggedIn = g.studentLoggedIn
+    return render_template('deactivate_account.html' , studentLoggedIn = studentLoggedIn)    
