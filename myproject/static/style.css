@@ -298,14 +298,14 @@ html{
     padding: 1px 15px;
 }
 
-.side a:hover{
-    text-decoration: none;
-    color:white;
-}
-
 .side li:hover{
     background-color: #888888;
     text-decoration: none;
+}
+
+.side a:hover{
+    text-decoration: none;
+    color:white;
 }
 
 

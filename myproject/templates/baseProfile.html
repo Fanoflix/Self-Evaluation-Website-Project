@@ -72,17 +72,29 @@
                         <div class="pp">
                             MT
                         </div>
-                        <h5 id="uname">Mahad Khalid Tarar</h5>
+                        <h5 id="uname">{{username}}</h5>
                 </div>
-                <ul>
-                        <li><a href="{{ url_for('students.profile') }}">Profile</a></li>
-                        <li><a href="{{ url_for('students.photo') }}">Photo</a></li>
-                        <li><a href="{{ url_for('students.account') }}">Account</a></li>
-                        <li><a href="{{ url_for('students.payment_method') }}">Payment Method</a></li>
-                        <li><a href="{{ url_for('students.privacy') }}">Privacy</a></li>
-                        <li><a href="{{ url_for('students.deactivate_account') }}">Deactivate Account</a></li>
+                <ul id="sideul">
+                        <li> <a href="{{ url_for('students.profile') }}">Profile</a></li>
+                        <li> <a href="{{ url_for('students.photo') }}">Photo</a></li>
+                        <li> <a href="{{ url_for('students.account') }}">Account</a></li>
+                        <li> <a href="{{ url_for('students.payment_method') }}">Payment Method</a></li>
+                        <li> <a href="{{ url_for('students.privacy') }}">Privacy</a></li>
+                        <li> <a href="{{ url_for('students.deactivate_account') }}">Deactivate Account</a></li>
                 </ul>
 
+                <!-- <script>
+                    // Add active class to the current button (highlight it)
+                    var header = document.getElementById("sideul");
+                    var selected = header.getElementsByClassName("sideli");
+                    for (var i = 0; i < selected.length; i++) {
+                      selected[i].addEventListener("click", function() {
+                        var current = document.getElementsByClassName("active");
+                        current[0].className = current[0].className.replace(" active", "");
+                        this.className += " active";
+                      });
+                    }
+                    </script> -->
                 
             </div>
             

@@ -41,6 +41,7 @@ def login():
 
             if CheckStudent.student_email == email and CheckStudent.student_password == password:
                 g.studentLoggedIn = True
+                g.whichStudent = email
                 return redirect( url_for('index') )
             else:
                 return render_template('login.html' , form=form , loginFailed = True)
@@ -58,29 +59,35 @@ def signout():
 @students_blueprint.route('/profile' )
 def profile():
     studentLoggedIn = g.studentLoggedIn
-    return render_template('profile.html' , studentLoggedIn = studentLoggedIn)   
+    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    return render_template('profile.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)   
 
 @students_blueprint.route('/photo' )
 def photo():
     studentLoggedIn = g.studentLoggedIn
-    return render_template('photo.html' , studentLoggedIn = studentLoggedIn)
+    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    return render_template('photo.html' , studentLoggedIn = studentLoggedIn , username = user.student_name) 
 
 @students_blueprint.route('/account' )
 def account():
     studentLoggedIn = g.studentLoggedIn
-    return render_template('account.html' , studentLoggedIn = studentLoggedIn)  
+    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    return render_template('account.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)  
 
 @students_blueprint.route('/payment_method' )
 def payment_method():
     studentLoggedIn = g.studentLoggedIn
-    return render_template('payment_method.html' , studentLoggedIn = studentLoggedIn)
+    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    return render_template('payment_method.html' , studentLoggedIn = studentLoggedIn , username = user.student_name) 
 
 @students_blueprint.route('/privacy' )
 def privacy():
     studentLoggedIn = g.studentLoggedIn
-    return render_template('privacy.html' , studentLoggedIn = studentLoggedIn)  
+    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    return render_template('privacy.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)   
 
 @students_blueprint.route('/deactivate_account' )
 def deactivate_account():
     studentLoggedIn = g.studentLoggedIn
-    return render_template('deactivate_account.html' , studentLoggedIn = studentLoggedIn)    
+    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    return render_template('deactivate_account.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)     
