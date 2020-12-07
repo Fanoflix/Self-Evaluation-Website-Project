@@ -19,12 +19,10 @@ Migrate(app,db)
 # NOTE! These imports need to come after you've defined db, otherwise you will
 # get errors in your models.py files.
 ## Grab the blueprints from the other views.py files for each "app"
-from myproject.puppies.views import puppies_blueprint
-from myproject.owners.views import owners_blueprint
+
 from myproject.students.views import students_blueprint
 from myproject.teachers.views import teachers_blueprint
 
-app.register_blueprint(owners_blueprint,url_prefix="/owners")
-app.register_blueprint(puppies_blueprint,url_prefix='/puppies')
+
 app.register_blueprint(students_blueprint,url_prefix='/students')
 app.register_blueprint(teachers_blueprint,url_prefix='/teachers')

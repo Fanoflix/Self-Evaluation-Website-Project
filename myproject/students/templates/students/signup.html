@@ -5,7 +5,8 @@
     <p>Join RatorX now and get access to thousands of assignments for your practice. </p>
     <form method="POST">
         {{ form.hidden_tag() }}
-        {{ form.name.label }} {{ form.name() }} <br>
+        {{ form.fname.label }} {{ form.fname() }} <br>
+        {{ form.lname.label }} {{ form.lname() }} <br>
         {{ form.email.label }} {{ form.email() }} <br>
         {{ form.password1.label }} {{ form.password1() }} <br>
         {{ form.password2.label }} {{ form.password2() }} <br>

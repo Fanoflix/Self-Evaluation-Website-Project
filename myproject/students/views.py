@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student
-from myproject.students.forms import SignUp,LogIn,ShiftControl
+from myproject.students.forms import SignUp,LogIn
 
 students_blueprint = Blueprint('students', __name__ , template_folder='templates/students')
 
@@ -10,13 +10,14 @@ def signup():
     form = SignUp()
 
     if form.validate_on_submit():
-        name = form.name.data
+        fname = form.fname.data
+        lname = form.lname.data
         email = form.email.data
         password1 = form.password1.data
         password2 = form.password2.data
 
         if password1 != '' and password1 == password2:
-            new_student = Student(name,email,password1)
+            new_student = Student(fname,lname,email,password1,0,0,0)
             db.session.add(new_student)
             db.session.commit()
 
@@ -60,7 +61,18 @@ def signout():
 def profile():
     studentLoggedIn = g.studentLoggedIn
     user = Student.query.filter_by(student_email = g.whichStudent).first()
+
     return render_template('profile.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)   
+
+
+
+
+
+
+
+
+
+
 
 @students_blueprint.route('/photo' )
 def photo():
