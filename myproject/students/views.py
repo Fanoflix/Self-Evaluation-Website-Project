@@ -62,7 +62,7 @@ def profile():
     studentLoggedIn = g.studentLoggedIn
     user = Student.query.filter_by(student_email = g.whichStudent).first()
 
-    return render_template('profile.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)   
+    return render_template('profile.html' , studentLoggedIn = studentLoggedIn , fname = user.student_fname, lname = user.student_lname)   
 
 
 

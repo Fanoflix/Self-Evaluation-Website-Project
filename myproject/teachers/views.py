@@ -10,13 +10,14 @@ def signup():
     form = SignUp()
 
     if form.validate_on_submit():
-        name = form.name.data
+        fname = form.fname.data
+        lname = form.lname.data
         email = form.email.data
         password1 = form.password1.data
         password2 = form.password2.data
 
         if password1 != '' and password1 == password2:
-            new_teacher = Teacher(name,email,password1,0,0)
+            new_teacher = Teacher(fname,lname,email,password1,0,0)
             db.session.add(new_teacher)
             db.session.commit()
 

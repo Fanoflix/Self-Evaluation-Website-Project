@@ -4,21 +4,23 @@ class Teacher(db.Model):
     __tablename__ = 'teachers'
 
     id = db.Column(db.Integer,primary_key= True)
-    teacher_name = db.Column(db.Text)
+    teacher_fname = db.Column(db.Text)
+    teacher_lname = db.Column(db.Text)
     teacher_email = db.Column(db.Text)
     teacher_password = db.Column(db.Text)
     teacher_rating = db.Column(db.Float)
     teacher_no_Of_reviews = db.Column(db.Integer)
 
-    def __init__(self, teacher_name, teacher_email, teacher_password, teacher_rating, teacher_no_Of_reviews):
-        self.teacher_name = teacher_name
+    def __init__(self, teacher_fname, teacher_lname, teacher_email, teacher_password, teacher_rating, teacher_no_Of_reviews):
+        self.teacher_fname = teacher_fname
+        self.teacher_lname = teacher_lname
         self.teacher_email = teacher_email
         self.teacher_password = teacher_password
         self.teacher_rating = teacher_rating
         self.teacher_no_Of_reviews = teacher_no_Of_reviews
 
     def __repr__(self):
-        return f"Teacher Id: {self.teacher_id} Name: {self.teacher_name}"
+        return f"Teacher Id: {self.teacher_id} First Name: {self.teacher_fname} Last Name: {self.teacher_lname}"
 
 class Student(db.Model):
     __tablename__ = 'students'
@@ -42,7 +44,7 @@ class Student(db.Model):
         self.student_rank = student_rank
     
     def __repr__(self):
-       return f"Student Id: {self.student_id} Name: {self.student_name}"
+       return f"Student Id: {self.student_id} First Name: {self.student_fname} Last Name: {self.student_lname}"
         
 
 

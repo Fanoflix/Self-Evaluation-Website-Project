@@ -1,8 +1,8 @@
 """created student and teacher tables
 
-Revision ID: 192da9a36a4d
+Revision ID: 87d614dbf1d3
 Revises: 
-Create Date: 2020-12-07 20:49:21.261252
+Create Date: 2020-12-07 20:54:44.589555
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '192da9a36a4d'
+revision = '87d614dbf1d3'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -31,7 +31,8 @@ def upgrade():
     )
     op.create_table('teachers',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('teacher_name', sa.Text(), nullable=True),
+    sa.Column('teacher_fname', sa.Text(), nullable=True),
+    sa.Column('teacher_lname', sa.Text(), nullable=True),
     sa.Column('teacher_email', sa.Text(), nullable=True),
     sa.Column('teacher_password', sa.Text(), nullable=True),
     sa.Column('teacher_rating', sa.Float(), nullable=True),

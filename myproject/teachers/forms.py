@@ -3,7 +3,8 @@ from wtforms import StringField, SubmitField, PasswordField, Form, validators
 
 class SignUp(FlaskForm):
 
-    name = StringField('Username:', [ validators.Required() ]) 
+    fname = StringField('First Name:', [ validators.Required() ]) 
+    lname = StringField('Last Name:', [ validators.Required() ]) 
     email = StringField('Email:', [ validators.Required() ]) 
     password1 = PasswordField('Password:',[ validators.Required() ])
     password2 = PasswordField('Retype Password:',[ validators.Required() ])
