@@ -1,7 +1,8 @@
 from myproject import db
-from myproject.models import Puppy,Owner,Student
+from myproject.models import Student
 
 # db.create_all()
 
-Student.query.filter_by(student_email = "check1@gmail.com").delete()
-db.session.commit()
+searched = Student.query.filter_by(student_email = 'check1@gmail.com').first()
+searched.student_rank = 151
+print(searched.student_rank)

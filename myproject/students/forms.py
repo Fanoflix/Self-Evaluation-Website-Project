@@ -16,4 +16,8 @@ class LogIn(FlaskForm):
     password = PasswordField('Password', [ validators.Required() ])
     submit = SubmitField('Log In')
 
-
+class ProfileTab(FlaskForm):
+    fname = StringField('',[ validators.Required() ])
+    lname = StringField('',[ validators.Required() ])
+    description = StringField('')
+    submit = SubmitField('SAVE')

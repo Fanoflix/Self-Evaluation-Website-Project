@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student
-from myproject.students.forms import SignUp,LogIn
+from myproject.students.forms import SignUp,LogIn,ProfileTab
 
 students_blueprint = Blueprint('students', __name__ , template_folder='templates/students')
 
@@ -42,7 +42,7 @@ def login():
 
             if CheckStudent.student_email == email and CheckStudent.student_password == password:
                 g.studentLoggedIn = True
-                g.whichStudent = email
+                g.whichStudent = CheckStudent
                 return redirect( url_for('index') )
             else:
                 return render_template('login.html' , form=form , loginFailed = True)
@@ -57,49 +57,47 @@ def signout():
     g.studentLoggedIn = False
     return redirect( url_for('index') )
 
-@students_blueprint.route('/profile' )
+@students_blueprint.route('/profile',  methods =['GET' , 'POST'])
 def profile():
-    studentLoggedIn = g.studentLoggedIn
-    user = Student.query.filter_by(student_email = g.whichStudent).first()
+    form = ProfileTab()
 
-    return render_template('profile.html' , studentLoggedIn = studentLoggedIn , fname = user.student_fname, lname = user.student_lname)   
+    if form.validate_on_submit():
+       user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
+       user.student_fname = form.fname.data
+       user.student_lname = form.lname.data
+       db.session.add(user)
+       db.session.commit()
+       g.whichStudent = user
+       form.fname.data = ""
+       form.lname.data = ""
+       form.description.data = ""
 
-
-
-
-
-
-
-
-
+    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname )   
 
 
 @students_blueprint.route('/photo' )
 def photo():
-    studentLoggedIn = g.studentLoggedIn
-    user = Student.query.filter_by(student_email = g.whichStudent).first()
-    return render_template('photo.html' , studentLoggedIn = studentLoggedIn , username = user.student_name) 
+
+    return render_template('photo.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname) 
 
 @students_blueprint.route('/account' )
 def account():
-    studentLoggedIn = g.studentLoggedIn
-    user = Student.query.filter_by(student_email = g.whichStudent).first()
-    return render_template('account.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)  
+
+    return render_template('account.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname)  
 
 @students_blueprint.route('/payment_method' )
 def payment_method():
-    studentLoggedIn = g.studentLoggedIn
-    user = Student.query.filter_by(student_email = g.whichStudent).first()
-    return render_template('payment_method.html' , studentLoggedIn = studentLoggedIn , username = user.student_name) 
+
+    return render_template('payment_method.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname) 
 
 @students_blueprint.route('/privacy' )
 def privacy():
-    studentLoggedIn = g.studentLoggedIn
-    user = Student.query.filter_by(student_email = g.whichStudent).first()
-    return render_template('privacy.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)   
+
+
+    return render_template('privacy.html' , studentLoggedIn = g.studentLoggedIn ,  fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname)   
 
 @students_blueprint.route('/deactivate_account' )
 def deactivate_account():
-    studentLoggedIn = g.studentLoggedIn
-    user = Student.query.filter_by(student_email = g.whichStudent).first()
-    return render_template('deactivate_account.html' , studentLoggedIn = studentLoggedIn , username = user.student_name)     
+
+
+    return render_template('deactivate_account.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname)     

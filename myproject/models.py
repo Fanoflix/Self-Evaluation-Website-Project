@@ -20,7 +20,7 @@ class Teacher(db.Model):
         self.teacher_no_Of_reviews = teacher_no_Of_reviews
 
     def __repr__(self):
-        return f"Teacher Id: {self.teacher_id} First Name: {self.teacher_fname} Last Name: {self.teacher_lname}"
+        return f"Teacher Id: {self.id} First Name: {self.teacher_fname} Last Name: {self.teacher_lname}"
 
 class Student(db.Model):
     __tablename__ = 'students'
@@ -44,7 +44,7 @@ class Student(db.Model):
         self.student_rank = student_rank
     
     def __repr__(self):
-       return f"Student Id: {self.student_id} First Name: {self.student_fname} Last Name: {self.student_lname}"
+       return f"Student Id: {self.id} First Name: {self.student_fname} Last Name: {self.student_lname}"
         
 
 
