@@ -1,8 +1,8 @@
-"""created student and teacher tables
+"""new models.py from ammar on 9/12/20
 
-Revision ID: 87d614dbf1d3
+Revision ID: c081ccec58b8
 Revises: 
-Create Date: 2020-12-07 20:54:44.589555
+Create Date: 2020-12-09 00:40:26.616805
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '87d614dbf1d3'
+revision = 'c081ccec58b8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('student_fname', sa.Text(), nullable=True),
     sa.Column('student_lname', sa.Text(), nullable=True),
     sa.Column('student_email', sa.Text(), nullable=True),
-    sa.Column('student_password', sa.Text(), nullable=True),
+    sa.Column('student_password_hash', sa.Text(), nullable=True),
     sa.Column('student_attempted', sa.Integer(), nullable=True),
     sa.Column('student_solved', sa.Integer(), nullable=True),
     sa.Column('student_rank', sa.Integer(), nullable=True),
@@ -34,7 +34,7 @@ def upgrade():
     sa.Column('teacher_fname', sa.Text(), nullable=True),
     sa.Column('teacher_lname', sa.Text(), nullable=True),
     sa.Column('teacher_email', sa.Text(), nullable=True),
-    sa.Column('teacher_password', sa.Text(), nullable=True),
+    sa.Column('teacher_password_hash', sa.Text(), nullable=True),
     sa.Column('teacher_rating', sa.Float(), nullable=True),
     sa.Column('teacher_no_Of_reviews', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')

@@ -10,6 +10,9 @@
 
         <div class="lsshowcase-form lscard sshowcase-form">
             <h1>Teachers's Signup</h1>
+            {% if signupFailed %}
+                <h6>This email is already registered.</h6>
+            {% endif %}
             <form method="POST">
                 {{ form.hidden_tag() }}
                 <div class="lsform-control">
