@@ -4,13 +4,13 @@
 <section class="lsshowcase">
     <div class="lscontainer grid">
         <div class="lsshowcase-text">
-            <h1>Easy Grading</h1>
-            <p>RatorX provides you a platform to start your own bussiness. We bring all your students at one place, so that you can test them all at one place. <br> Login and upload the assignments at your own convenience.</p>
+            <h1>Easy Practice</h1>
+            <p>RatorX provides you a platform to test your concepts.We bring all the assignments you need at one place, so that you won't need at look elsewhere. <br> Login and solve these assignments at your own convenience.</p>
             <!-- <a href="features.html" class="lsbtn">Read More</a> -->
         </div>
 
         <div class="lsshowcase-form lscard">
-            <h1>Teacher's Login</h1>
+            <h1>Student's Login</h1>
             {% if loginFailed %}
                 <h6>Invalid email or password</h6>
             {% endif %}
@@ -23,12 +23,14 @@
                     {{ form.password(class="lsform-field",  placeholder = "Password") }} 
                 </div>
                 <div >
-                    <a href="{{ url_for('students.login') }}">Login as Student</a>
+                    <a href="{{ url_for('teachers.login') }}">Login as Teacher</a>
                 </div>
                 {{ form.submit(class="lsbtn") }} 
             </form>
         </div>
     </div>
 </section>
+
+    
 
 {% endblock %}
