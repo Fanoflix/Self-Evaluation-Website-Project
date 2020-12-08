@@ -1,4 +1,4 @@
 /.vscode
 /migrations
 data.sqlite
-/__pycache__
+__pycache__/
