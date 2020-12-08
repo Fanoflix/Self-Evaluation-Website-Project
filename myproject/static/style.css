@@ -529,7 +529,7 @@ html{
         max-width: 90%;
         min-width: 90%;
         margin-left: 5%;
-        transition: 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
     }
 }
 
@@ -543,7 +543,7 @@ html{
         'contentx contentx contentx contentx contentx';
 
         border: none;
-        transition: 0.5s ease-in-out;
+        transition: all 0.5s ease-in-out;
     }
 
     .side{

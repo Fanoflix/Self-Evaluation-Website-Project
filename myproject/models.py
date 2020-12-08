@@ -1,5 +1,5 @@
 from myproject import db
-
+from werkzeug.security import generate_password_hash, check_password_hash
 class Teacher(db.Model):
     __tablename__ = 'teachers'
 
@@ -7,7 +7,7 @@ class Teacher(db.Model):
     teacher_fname = db.Column(db.Text)
     teacher_lname = db.Column(db.Text)
     teacher_email = db.Column(db.Text)
-    teacher_password = db.Column(db.Text)
+    teacher_password_hash = db.Column(db.Text)
     teacher_rating = db.Column(db.Float)
     teacher_no_Of_reviews = db.Column(db.Integer)
 
@@ -15,9 +15,12 @@ class Teacher(db.Model):
         self.teacher_fname = teacher_fname
         self.teacher_lname = teacher_lname
         self.teacher_email = teacher_email
-        self.teacher_password = teacher_password
+        self.teacher_password_hash = generate_password_hash(teacher_password)
         self.teacher_rating = teacher_rating
         self.teacher_no_Of_reviews = teacher_no_Of_reviews
+
+    def check_password(self, mypassword):
+        return check_password_hash(self.teacher_password_hash, mypassword)
 
     def __repr__(self):
         return f"Teacher Id: {self.id} First Name: {self.teacher_fname} Last Name: {self.teacher_lname}"
@@ -29,7 +32,7 @@ class Student(db.Model):
     student_fname = db.Column(db.Text)
     student_lname = db.Column(db.Text)
     student_email = db.Column(db.Text)
-    student_password = db.Column(db.Text)
+    student_password_hash = db.Column(db.Text)
     student_attempted = db.Column(db.Integer)
     student_solved = db.Column(db.Integer)
     student_rank = db.Column(db.Integer)
@@ -38,13 +41,39 @@ class Student(db.Model):
         self.student_fname = student_fname
         self.student_lname = student_lname
         self.student_email = student_email
-        self.student_password = student_password
+        self.student_password_hash = generate_password_hash(student_password)
         self.student_attempted = student_attempted
         self.student_solved = student_solved
         self.student_rank = student_rank
     
+    def check_password(self, mypassword):
+        return check_password_hash(self.student_password_hash, mypassword)
+
     def __repr__(self):
        return f"Student Id: {self.id} First Name: {self.student_fname} Last Name: {self.student_lname}"
+    
+class Assignemnts(db.Model):
+    __tablename__ = 'assignments'
+
+    pass
+
+class Solutions(db.Model):
+    __tablename__ = 'solutions'
+
+    pass
+
+class Solved(db.Model):
+    __tablename__ = 'solved'
+
+    pass
+
+class Preferences(db.Model):
+    __tablename__ = 'preferences'
+
+    pass
+
+class Courses(db.Model):
+    __tablename__ = 'courses'
         
 
 

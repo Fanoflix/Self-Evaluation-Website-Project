@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student
+from myproject.models import Student, Teacher
 from myproject.students.forms import SignUp,LogIn,ProfileTab
 
 students_blueprint = Blueprint('students', __name__ , template_folder='templates/students')
@@ -8,6 +8,7 @@ students_blueprint = Blueprint('students', __name__ , template_folder='templates
 @students_blueprint.route('/signup',  methods=['GET', 'POST'])
 def signup():
     form = SignUp()
+    signupFailed = False
 
     if form.validate_on_submit():
         fname = form.fname.data
@@ -15,13 +16,18 @@ def signup():
         email = form.email.data
         password1 = form.password1.data
         password2 = form.password2.data
+        checkTeacherEmail = bool(Teacher.query.filter_by(teacher_email = email).first())
+        checkStudentEmail = bool(Student.query.filter_by(student_email=email).first())
+
+        # Check if Email is already registered
+        if checkTeacherEmail or checkStudentEmail:
+            return render_template('signup.html',form=form, signupFailed = True)
 
         if password1 != '' and password1 == password2:
-            new_student = Student(fname,lname,email,password1,0,0,0)
-            db.session.add(new_student)
-            db.session.commit()
-
-            return redirect(url_for('index'))
+                new_student = Student(fname, lname, email, password1,0,0,0)
+                db.session.add(new_student)
+                db.session.commit()
+                return redirect(url_for('index'))
     
     return render_template('signup.html',form=form )
 
@@ -40,7 +46,7 @@ def login():
         if checkEmail:
             CheckStudent = Student.query.filter_by(student_email = email).first()
 
-            if CheckStudent.student_email == email and CheckStudent.student_password == password:
+            if CheckStudent.student_email == email and CheckStudent.check_password(password):
                 g.studentLoggedIn = True
                 g.whichStudent = CheckStudent
                 return redirect( url_for('index') )
