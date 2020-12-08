@@ -1,18 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="jumbotron">
-    <p> 
-        <h1>Teachers's Login:</h1> <br>
-        {% if loginFailed %}
-            <h6>Invalid email or password</h6>
-        {% endif %}
-    </p>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        {{ form.email.label }} {{ form.email() }} <br>
-        {{ form.password.label }} {{ form.password() }} <br>
-        <h5><a href="{{ url_for('students.login') }}">Login as Student</a></h5>
-        {{ form.submit() }}
-    </form>
-  </div>
+
+<section class="lsshowcase">
+    <div class="lscontainer grid">
+        <div class="lsshowcase-text">
+            <h1>Easy Grading</h1>
+            <p>RatorX provides you a platform to start your own bussiness. We bring all your students at one place, so that you can test them all at one place. <br> Login and upload the assignments at your own convenience.</p>
+            <!-- <a href="features.html" class="lsbtn">Read More</a> -->
+        </div>
+
+        <div class="lsshowcase-form lscard">
+            <h1>Teacher's Login</h1>
+            {% if loginFailed %}
+                <h6>Invalid email or password</h6>
+            {% endif %}
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="lsform-control">
+                    {{ form.email(class="lsform-field" , placeholder = "Email") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.password(class="lsform-field",  placeholder = "Password") }} 
+                </div>
+                <div >
+                    <a href="{{ url_for('students.login') }}">Login as Student</a>
+                </div>
+                {{ form.submit(class="lsbtn") }} 
+            </form>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
