@@ -21,6 +21,9 @@ class Teacher(db.Model):
 
     def check_password(self, mypassword):
         return check_password_hash(self.teacher_password_hash, mypassword)
+    
+    def hash_password(self, mypassword):
+        self.teacher_password_hash = generate_password_hash(mypassword)
 
     def __repr__(self):
         return f"Teacher Id: {self.id} First Name: {self.teacher_fname} Last Name: {self.teacher_lname}"
@@ -48,6 +51,9 @@ class Student(db.Model):
     
     def check_password(self, mypassword):
         return check_password_hash(self.student_password_hash, mypassword)
+
+    def hash_password(self, mypassword):
+        self.student_password_hash = generate_password_hash(mypassword)
 
     def __repr__(self):
        return f"Student Id: {self.id} First Name: {self.student_fname} Last Name: {self.student_lname}"

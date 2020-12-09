@@ -18,13 +18,11 @@
                     {{ form.displayStats(checked = True , style = "margin-top:6px;") }}
                     <p style="margin-left: 10px; ">Display no of Attempted Assignments and Passed Assignments on your profile.</p>
                 </div>              
-            </div> 
+            </div>  
         </div>
     </div>
     <div class="content3">
-            <button type="submit" class="btn">
-                SAVE
-            </button>
+        {{ form.submit(class = "btn") }}
     </div>
     </form>
     {% endblock %}
