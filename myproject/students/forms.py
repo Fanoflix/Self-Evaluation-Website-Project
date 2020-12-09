@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, Form, validators
+from wtforms import StringField, SubmitField, PasswordField, Form, validators , TextAreaField
 
 class SignUp(FlaskForm):
 
@@ -17,7 +17,8 @@ class LogIn(FlaskForm):
     submit = SubmitField('Log In')
 
 class ProfileTab(FlaskForm):
-    fname = StringField('',[ validators.Required() ])
-    lname = StringField('',[ validators.Required() ])
-    description = StringField('')
+    uname = StringField()
+    fname = StringField()
+    lname = StringField()
+    bio = TextAreaField()
     submit = SubmitField('SAVE')

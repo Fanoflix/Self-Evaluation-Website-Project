@@ -55,6 +55,7 @@ def login():
 @students_blueprint.route('/' )
 def signout():
     g.studentLoggedIn = False
+    g.whichTeacher = False 
     return redirect( url_for('index') )
 
 @students_blueprint.route('/profile',  methods =['GET' , 'POST'])
@@ -62,15 +63,21 @@ def profile():
     form = ProfileTab()
 
     if form.validate_on_submit():
-       user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
-       user.student_fname = form.fname.data
-       user.student_lname = form.lname.data
-       db.session.add(user)
-       db.session.commit()
-       g.whichStudent = user
-       form.fname.data = ""
-       form.lname.data = ""
-       form.description.data = ""
+        user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
+        # if form.uname.data != "":
+        #     user.student_uname = form.uname.data
+        if form.fname.data != "":
+            user.student_fname = form.fname.data
+        if form.lname.data != "":
+            user.student_lname = form.lname.data
+        # if form.bio.data != "":
+        #     user.student_bio = form.bio.data    
+        db.session.add(user)
+        db.session.commit()
+        g.whichStudent = user
+        form.fname.data = ""
+        form.lname.data = ""
+        form.description.data = ""
 
     return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname )   
 
