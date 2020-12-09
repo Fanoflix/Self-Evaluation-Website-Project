@@ -571,13 +571,21 @@ a{
     bottom: -70px;
     left: 0;
     right: 0;
-    background-color: rgb(6, 6, 6);
-    /* background-color: chartreuse; */
+    /* background-color: rgb(6, 6, 6); */
+    /* background-color: rgb(255, 123, 0); */
+    background-color: rgb(104, 207, 0);
     transform: skewY(-2deg);
     -webkit-transform: skewY(-2deg);
     -moz-transform: skewY(-2deg);
     -ms-transform: skewY(-2deg);
 }
+
+.teach::before,
+.teach::after {
+    background-color: rgb(255, 123, 0);
+
+}
+
 
 .lscard{
     background-color: white;

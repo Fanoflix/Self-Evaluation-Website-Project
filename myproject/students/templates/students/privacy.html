@@ -4,9 +4,21 @@
         <h1 class="heading"> Privacy  </h1> 
         <p>Modify your privacy settings here.</p>
     </div>
+    <form method="POST">
     <div class="content2">
         <div class="inside">
-            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Expedita, ex. Mollitia impedit, ipsum tempora deserunt rem iure recusandae vel accusamus sit nihil illo quae libero dicta dolorem sunt. Corporis alias magnam deserunt fugiat officiis cumque esse laborum iste voluptatem. Veniam nesciunt commodi quasi pariatur quaerat consequatur iste libero neque autem!</p>
+            <div class="forms">
+                <p style="margin-top:30px; font-size: x-large;">Manage what others see on your profile</p>
+                {{ form.hidden_tag() }}
+                <div style="display: flex;">
+                    {{ form.displayRank(checked = True, style = "margin-top:6px;") }}
+                    <p style="margin-left: 10px;">Display rank on your profile.</p>
+                </div>
+                <div style="display: flex;">
+                    {{ form.displayStats(checked = True , style = "margin-top:6px;") }}
+                    <p style="margin-left: 10px; ">Display no of Attempted Assignments and Passed Assignments on your profile.</p>
+                </div>              
+            </div> 
         </div>
     </div>
     <div class="content3">
@@ -14,4 +26,5 @@
                 SAVE
             </button>
     </div>
+    </form>
     {% endblock %}

@@ -117,7 +117,7 @@ def account():
             lname = g.whichTeacher.teacher_lname, passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichTeacher.teacher_email ) 
             
         if form.password2.data == form.password3.data:
-            updated_teacher.teacher_password = form.password1.data
+            updated_teacher.hash_password(form.password2.data)
             db.session.add(updated_teacher)
             db.session.commit()
             g.whichTeacher = updated_teacher
