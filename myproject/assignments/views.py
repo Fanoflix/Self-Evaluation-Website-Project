@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student, Teacher
-# from myproject.students.forms import 
+from myproject.assignments.forms import SolveAssignment
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
 
@@ -29,6 +29,21 @@ def delete_assignment():
 
 @assignments_blueprint.route('/solve_assignment',  methods=['GET', 'POST'])
 def solve_assignment():
-    return render_template('solve_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
+
+    form = SolveAssignment()
+    questions = [ 'How do you do when you cant do?' ,
+                'What is your name?' , 
+                'Is Abdullah a bot? Wrong answers only' , 
+                'You done fucked up',
+                'How is testing going?']
+    if form.validate_on_submit():
+        print(form.choice.data)
+        
+    return render_template('solve_assignment.html' , form = form, teacherLoggedIn = g.teacherLoggedIn, questions = questions)
+
+    
+        
+    
+    
 
 

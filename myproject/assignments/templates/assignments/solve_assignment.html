@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+    
+   <div class="attempt_page_wrapper">
+
+        <div class="attempt_page_heading">
+            <h1>Assignment Name</h1>
+            <p>Total Points: 10</p>
+            <hr>
+        </div>
+
+        <div class="attempt_page_solving">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <!-- Outer Loop -->
+                
+                {% for question in questions %}
+                    <div class="form_fields">
+                        <div class="ap_question">
+                            <p style="margin-right: 10px;">{{loop.index}}.</p>
+                            <p style="min-width:30%; max-width:30%; width:30%">{{question}}</p>
+                            <p style="
+                                width: 90px ;margin-left: 150px; border: solid 1px black; border-radius:15px;
+                                display:flex; justify-content:center; position:sticky;
+                            "> 
+                                    1 Points
+                            </p>
+                        </div>
+
+                        <div class="ap_options"></p>
+                            {{ form.choice(class = 'radio_button') }} 
+                        </div>
+    
+                        {{ form.submit(class = 'ap_submit') }}
+                    </div> 
+                    
+                {% endfor %}
+                
+                
+                
+            </form>
+        </div>
+
+   </div>
+    
+{% endblock %}
