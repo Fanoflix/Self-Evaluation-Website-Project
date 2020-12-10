@@ -26,17 +26,16 @@
                                     1 Points
                             </p>
                         </div>
-
                         <div class="ap_options"></p>
-                            {{ form.choice(class = 'radio_button') }} 
+                            {{ form|attr(field_list[loop.index0])(class = 'radio_button') }} 
                         </div>
     
-                        {{ form.submit(class = 'ap_submit') }}
+                        
                     </div> 
                     
                 {% endfor %}
                 
-                
+                {{ form.submit(class = 'ap_submit') }}
                 
             </form>
         </div>
