@@ -1,43 +1,51 @@
 TO DO
 
-- student teacher public profile (will be done after leaderboard and assignment modules has been
-  made)
-- student "public profile" bane gi with css, plus all the data to display on that page.
-- public profile must display (will do that later)
+# AMMMAR  
+- leaderboard (leave css shit) (priority)
+    - this shit need to be maintained ...yahan bhi acha khasa kaam ha.
+
+# AMMAR (do this after making leaderboard) (leave css shit)
+- student "public profile" bane gi, plus all the data to display on that page.
+- public profile must display 
+    - username
+    - name
     - his overall rank and course wise rank 
     - student no of attempted assignment 
     - student no of solved assignment
-- student privacy backend with db implementation. (will do that later)
-- student photo tab page with css need to be made. 
-- student payment mehtod wala tab banana ha (will do it later)
-- option to see student saved assignments on his profile (will do it later)
+- student privacy backend with db implementation.
+- student photo tab page with css need to be made. ///// leave
+- student payment method wala tab banana ha 
+- option to see student saved assignments on his profile ///// leave
 
-- teacher "public profile" bane gi with css, plus all the data to display on that page. 
+- teacher "public profile" bane gi, plus all the data to display on that page. 
 - need to add something in teacher privacy tab , dont wanna delete it.
-- teacher photo wala page with css, and implementation
+- teacher photo wala page with css, and implementation  /////
 - teacher payment details wala page (maybe ratorX charge these niggas a little bit optional shit)
     (will do it later)
 - teacher ratings shit need to be implemented , i.e student will give teachers ratings 
-    and reviews etc
-- option to do the above that after assignment submission maybe and also otherwise.
+    and reviews etc /// leave
+- option to do the above that after assignment submission maybe and also otherwise. ///// leave
 
+
+
+# ABDULLAH
 - In teacher assignment tab , option to :
-    - teacher active assignment must be displayed
-    - upload new assignment
-    - change existing assignment
-    - upload new assignment solution (must restrict teacher somehow to mandatory upload the solution after assignment
-        uploading or must not give student student grade till the solution is uploaded tough shit)
-    - change existing assignment solution only if questions are changed in that particular assignment
+    - teacher active assignment must be displayed (suppose some teacher has uploaded 5 assignment then active assignment = 5)
+    - upload new assignment with solution
     - delete assignments with solution
     - not only different difficulty assignment will have more points they must have higher passing marks shit 
         like expert 70% and beginner 50%
-    - ofcourse these assignment need to come to main page if there are less assignment there ..
-    - assignment block on page mush show teacher name  and teacher rating and assignment difficulty level
-    - some assignment may only be solved after buying
+    - some assignment may only be solved after buying 
+
+
+    - ofcourse these assignment need to come to main page if there are less assignment there .. ///// leave this
+    - assignment block on page must show teacher name  and teacher rating and assignment difficulty level /// leave this
+    
 
 - SEARCHING SHIT 
     - will try our best to make a small search engine so that people can browse assignment and teachers 
         major db and backend shit here ...fucked
+    
     
     - when a student click on assignment ...will be redirected to page that will have teacher + assignment description 
         and an option to solve the assignment which will further redirect him to assignment solving
@@ -45,15 +53,16 @@ TO DO
     - will compare student solution with actual solution , give him pass or fail grade , give him points.
     - must solve in a given time limit ... fucked
 
-- leaderboard
-    - this shit need to be maintained ...yahan bhi acha khasa kaam ha.
 
 
+# END MA DEKEIN GA
 - Preferences 
     - each student main page after login shall show him suggested assignment.. this is tough shit may look easy
     - need to make this shit somehow change as db changes ... fucked
 
-- OAUTH SHIT
+
+
+- OAUTH SHIT AND PAYMENT STRIPE SHIT
 
     ALL OF THESE PAGES NEED TO BE MADE WITH CSS ....AB JO PAGES BAN GAYE HAN UN ME KEERA NAHI NIKALNA WE DONT HAVE TIME 
     FOR THAT SHIT .. NEED TO SOMEHOW BRING GIT INTO OUR WORK FOR COLLAB IF NEEDED .. I THINK HOGI ..MAJOR NEEDS
