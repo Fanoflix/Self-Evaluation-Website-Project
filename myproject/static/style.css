@@ -230,6 +230,8 @@ a{
 .top-box:hover{
     background-color: rgb(246, 246, 246);
 }
+
+/* ----------------------------------PROFILE PAGE ------------------------------------------- */
 .mainDivPP{
     margin-top: 30px;
     margin-bottom: 15%;
@@ -439,6 +441,8 @@ a{
     transition: all 0.1s ease-in-out;
 }
 
+/*============================== LOGIN AND SIGNUP ==========================================*/
+
 .lsshowcase{
     height: 330px;
     background-color: rgb(6, 6, 6);
@@ -637,6 +641,78 @@ a{
     color: white;
     transition: all 0.2s ease-in-out; 
 }
+
+/* ===================================attempt_page============================================ */
+.attempt_page_wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 70%;
+    margin: 50px 15%;
+}
+
+.attempt_page_heading *{
+    margin-left: 40px;
+}
+.attempt_page_heading{
+    min-width: 100%;
+    /* background-color: violet; */
+}
+
+.attempt_page_solving{
+    min-width: 100%;
+    /* background-color: rgb(230, 219, 219); */
+}
+
+.attempt_page_solving .form_fields{
+    margin-left: 40px;
+    margin: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+.attempt_page_solving .form_fields .ap_question{
+    display: flex;
+}
+
+.attempt_page_solving .form_fields .ap_options{
+    display: flex;
+    margin-left: 20px;
+}
+
+.ap_options .radio_button{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin-right: 10px;
+}
+
+.ap_options p{
+    margin-top: -2px;
+}
+
+.ap_submit{
+    height: 35px;
+    width: 80px;
+    margin-left: 16px;
+    margin-bottom: 10px;
+    border: solid 1px rgb(0, 145, 189);
+    background-color: rgb(0, 145, 189);
+    border-radius: 4px;
+    color: white;
+    text-transform: uppercase;
+}
+
+.ap_submit:hover{
+    transform: scale(0.98);
+}
+
+.ap_submit:focus{
+    outline: none;
+}
+
+/* ===================================footer================================================== */
 footer{
     background: white;
     color: orangered;
