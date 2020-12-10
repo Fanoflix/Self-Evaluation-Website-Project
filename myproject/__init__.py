@@ -22,7 +22,9 @@ Migrate(app,db)
 
 from myproject.students.views import students_blueprint
 from myproject.teachers.views import teachers_blueprint
+from myproject.assignments.views import assignments_blueprint
 
 
 app.register_blueprint(students_blueprint,url_prefix='/students')
 app.register_blueprint(teachers_blueprint,url_prefix='/teachers')
+app.register_blueprint(assignments_blueprint,url_prefix='/assignments')
