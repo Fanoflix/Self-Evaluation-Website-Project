@@ -602,10 +602,6 @@ a{
     margin: 10px;
 }
 
-.assignments .assignments_heading{
-    width: 90%;
-    margin-left: 5%;
-}
 
 .info{
 
@@ -714,6 +710,103 @@ a{
 
 .ap_submit:focus{
     outline: none;
+}
+/* ====================================Assignment Section ==========================================*/
+
+.assignments .assignments_heading{
+    margin-top: 30px;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.assignment_wrapper{
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    width: 90%;
+    margin-left: 5%;
+    gap: 20px;
+}
+
+.assignment_box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(251, 251, 251);
+    box-shadow: 0 1px 3px rgba(104,104,104,0.8);
+    min-height: 200px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.assignment_box:hover{
+    text-decoration: none;
+}
+
+.assignment_box *{
+    margin-left: 5%;
+    text-decoration: none;
+    color: black;
+}
+
+/* .assignment_box *:hover{
+    text-decoration: none;
+} */
+
+
+
+.assignment_box .assignment_name{
+    margin-top: 20px;
+    font-weight: bolder;
+    font-size: 22px;
+    text-transform: capitalize;
+}
+
+.assignment_box .teacher_description{
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 350;
+}
+
+.assignment_box .rate_review{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 20px;
+}
+
+.assignment_box .rate_review .rating{
+    font-weight: 600;
+    color: rgb(218, 69, 0);
+    margin: 0;
+    padding:0;
+    margin-left: 2px;
+}
+
+.assignment_box .rate_review .reviews{
+    font-weight: 350;
+    font-size: 14px;
+    margin:0;
+    padding:0;
+    margin-left: 5px;
+    margin-top:1px;
+}
+
+.assignment_box .price{
+    margin:0;
+    margin-left: 5%;
+    margin-top: 5px;
+    font-weight: bolder;
+    font-size: 19px;
+}
+.assignment_box .status{
+    background-color: 	rgb(255, 231, 153);
+    color: 	rgb(123, 65, 7);
+    font-weight: 750;
+    font-size: 14px;
+    padding: 0 5px;
+    border-radius: 5px;
+    margin-top: 5px;
 }
 
 /* ===================================footer================================================== */
