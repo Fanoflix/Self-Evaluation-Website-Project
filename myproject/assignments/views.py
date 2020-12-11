@@ -20,9 +20,6 @@ def description():
 def add_assignment():
     return render_template('add_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
 
-@assignments_blueprint.route('/update_assignments',  methods=['GET', 'POST'])
-def update_assignment():
-    return render_template('update_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
 
 @assignments_blueprint.route('/delete_assignment',  methods=['GET', 'POST'])
 def delete_assignment():
@@ -34,7 +31,7 @@ def solve_assignment():
 
     # a sample 
     records = [ 
-                ['1','1','How do you do when you cant do???????????????????????????????????????????????????????????????????????????????????????????????????????????????????','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
+                ['1','1','How do you do when you cant do?','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
                 ['1','2','What is your name?','I', 'you' ,'no' , 'yes' ,'4'] ,
                 ['1','3','Is Abdullah a bot? Wrong answers only','yes', 'yes' ,'yes' , 'yes' ,'1'] ,
                 ['1','4','You done fucked up','yes', 'no' ,'I am' , 'hahaha' ,'3'] ,
@@ -66,18 +63,24 @@ def solve_assignment():
     form = SolveAssignment()   
 
     if form.validate_on_submit():
-        print(form.choice1.data)
-        print(form.choice2.data)
-        print(form.choice3.data)
-        print(form.choice4.data)
-        print(form.choice5.data)
-        #redirect to some other page
+        count = -1
+        for record in records:
+            count = count + 1
+            if getattr(form,field_list[count]).data == record[7]:
+                # points++
+                print(getattr(form,field_list[count]).data)
+            
+            getattr(form,field_list[count]).data = ''
+        
+        return redirect(url_for('assignments.after_submit'))
 
     return render_template('solve_assignment.html' , form = form, teacherLoggedIn = g.teacherLoggedIn, questions = questions , field_list = field_list)
 
     
         
-    
+@assignments_blueprint.route('/after_submit',  methods=['GET', 'POST'])
+def after_submit():
+    return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn)  
     
 
 
