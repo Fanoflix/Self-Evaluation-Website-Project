@@ -28,7 +28,8 @@ def delete_assignment():
 @assignments_blueprint.route('/solve_assignment',  methods=['GET', 'POST'])
 def solve_assignment():
 
-
+    # assignment = TableName1.query.filter_by(assignment_name = 'some name').first():
+    # id = assignment.TableName.assignment_id
     # a sample 
     records = [ 
                 ['1','1','How do you do when you cant do?','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
@@ -41,7 +42,7 @@ def solve_assignment():
 
 
     questions = []
-    # for record in TableName.query.filter_by(assignment_id = 'some number').all():
+    # for record in TableName.query.filter_by(assignment_id = id).all():
     for record in records:  
             questions.append(record[2])
   
@@ -50,15 +51,15 @@ def solve_assignment():
     count = 1
     field_list = []
 
-    # for record in TableName.query.filter_by(assignment_id = 'some number').all():
+    # for record in TableName.query.filter_by(assignment_id = id).all():
     for record in records:
         field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
         setattr(SolveAssignment, 'choice' + str(count), field) 
+        # i.e: choice1 = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
         field_list.append('choice'+str(count))
         count = count + 1
 
-    submit = SubmitField("Submit")
-    setattr(SolveAssignment, 'submit', submit)
+    setattr(SolveAssignment, 'submit', SubmitField("Submit"))
     #----------------------------------------------
     form = SolveAssignment()   
 
