@@ -1,0 +1,27 @@
+Added Assignments to student's Navbar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------bugs----------------
+Fix Navbar (profile element out of styling) 
+
+
+
+
+
+
+----------------Improvements----------------
+

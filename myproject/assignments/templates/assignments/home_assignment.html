@@ -4,10 +4,14 @@
 
 <div class="jumbotron">
     <ul style="list-style: none;">
-        <li><a href="{{ url_for('assignments.add_assignment')}}">Add Assignment</a> </li>
-        <li><a href="{{ url_for('assignments.update_assignment')}}">Update Assignment</a></li>
-        <li><a href="{{ url_for('assignments.delete_assignment')}}">Delete Assignment</a></li>
-        <li><a href="{{ url_for('assignments.solve_assignment')}}">Solve Assignment</a></li>
+        {% if studentLoggedIn %}
+          <!-- display list of assignments -->
+          <p>fuck you</p>
+        {% else %}
+            <li><a href="{{ url_for('assignments.add_assignment')}}">Add Assignment</a> </li>
+            <li><a href="{{ url_for('assignments.update_assignment')}}">Delete Assignment</a></li>
+            <!-- <li><a href="{{ url_for('assignments.solve_assignment')}}">Solve Assignment</a></li> -->
+        {% endif %}
 
     </ul>
     
