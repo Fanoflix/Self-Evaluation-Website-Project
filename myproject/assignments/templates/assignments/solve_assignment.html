@@ -18,13 +18,16 @@
                     <div class="form_fields">
                         <div class="ap_question">
                             <p>{{loop.index}}.</p>
-                            <p style="display: flex; justify-content: flex-start; align-items: center;"> {{question}}</p>
-                            <p style="
+                            <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{question}}</p>
+                            <div style=" display:flex; flex-direction:column; justify-content:center; align-items:center">
+                                <p style="
                                 width: 90px ;margin-left: auto; border: solid 1px black; border-radius:15px;
                                 display:flex; justify-content:center; position:sticky;
-                            "> 
+                                "> 
                                     1 Points
-                            </p>
+                                </p>
+                            </div>
+                            
                         </div>
                         <div class="ap_options"></p>
                             {{ form|attr(field_list[loop.index0])(class = 'radio_button') }} 
