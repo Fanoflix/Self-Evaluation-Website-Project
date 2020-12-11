@@ -676,7 +676,7 @@ a{
 
 .attempt_page_solving .form_fields .ap_question{
     display: grid;
-    grid-template-columns: 20px 3fr 60px;
+    grid-template-columns: 20px 3fr 90px;
 }
 
 .attempt_page_solving .form_fields .ap_options{
