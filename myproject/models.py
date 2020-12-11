@@ -163,6 +163,7 @@ class Assignment_Data(db.Model):
     
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     question_id = db.Column(db.Integer)
+    # niggas I thought pura question DB main store hoga..how tf we will retreive back the question
     assignment = db.relationship('Assignments', backref = 'assignments') # Backref
     choice1 = db.Column(db.Text)
     choice2 = db.Column(db.Text)

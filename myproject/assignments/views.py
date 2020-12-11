@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student, Teacher
+from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses
 from myproject.assignments.forms import SolveAssignment
 from wtforms import RadioField,SubmitField, StringField, Form, validators
 from myproject.assignments.forms import AddAssignment
@@ -50,9 +50,33 @@ def add_assignment():
         assignment_questions = 1
         assignment_name = form.assignment_name.data
         difficulty = form.difficulty.data
-        # print(form.course.data)
         course_id = form.course.data
-        print(g.whichTeacher)
+
+        updated_course = Courses.query.filter_by(id = course_id).first()
+        updated_course.no_of_assignments += 1  #incrementing the number of assignments for a course
+        db.session.add(updated_course)
+        db.session.commit()
+
+        #-----------------------------------Testing-----------------------------------
+        # print(difficulty)
+        # print(form.course.data)
+        # print(g.whichTeacher.id)
+        # print(getattr(form,all_questions[x][0]).data)
+        # print(getattr(form,all_questions[x][1]).data)
+        # print(getattr(form,all_questions[x][2]).data)
+        #-----------------------------------Testing-----------------------------------
+  
+        new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 1, g.whichTeacher.id)
+        db.session.add(new_assignment)
+        db.session.commit()
+
+        # new_assignment_data = [] list bana ke aur append krke bhi try kr liya
+
+        for x in range(10): # idhar loop dynamically run hoga based on the number of questions
+            #niggas I thought db main question store hoga, question ka data kidhar store karun warna :facepalm:
+            # new_assignment_data = (new_assignment.id, x+1, getattr(form,all_questions[x][1]).data, getattr(form,all_questions[x][2]).data, getattr(form,all_questions[x][3]).data, getattr(form,all_questions[x][4]).data, getattr(form,all_questions[x][5]).data)
+            # db.session.add(new_assignment_data)
+            # db.session.commit()
         
     return render_template('add_assignment.html', all_questions = all_questions, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn)
 

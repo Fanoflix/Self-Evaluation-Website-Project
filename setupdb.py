@@ -43,15 +43,19 @@ from myproject.models import Student, Courses
 
 # print(len(Student.query.filter_by(student_fname = 'check').all()))
 
-new_course = Courses('Web-Dev', 0)
-db.session.add(new_course)
-db.session.commit()
+# new_course = Courses('Web-Dev', 0)
+# db.session.add(new_course)
+# db.session.commit()
 
 
-new_course = Courses('Physics', 0)
-db.session.add(new_course)
-db.session.commit()
+# new_course = Courses('Physics', 0)
+# db.session.add(new_course)
+# db.session.commit()
 
-new_course = Courses('Web-Scraping', 0)
-db.session.add(new_course)
-db.session.commit()
+# new_course = Courses('Web-Scraping', 0)
+# db.session.add(new_course)
+# db.session.commit()
+
+
+for x in range(10):
+    print(x+1)

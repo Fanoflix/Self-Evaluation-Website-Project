@@ -1,7 +1,8 @@
 Added Assignments to student's Navbar
 Added Add form
-
-
+Added WhichTeacher to g.py
+Added a comment in models
+Forms Working perfectly
 
 
 
@@ -17,8 +18,16 @@ Added Add form
 
 ----------------Bugs----------------
 - Add_assignments validators on questions not working
+-For some reason all the other choices are automatically being filled
+-data not being inserted in Assignments_Data
 
-
+	When ever I try to:
+	
+		new_assignment_data = (new_assignment.id, x+1, getattr(form,all_questions[x][1]).data, getattr(form,all_questions[x][2]).data, getattr(form,all_questions[x][3]).data, getattr(form,all_questions[x][4]).data, getattr(form,all_questions[x][5]).data)
+        db.session.add(new_assignment_data)
+        db.session.commit()
+       
+			-Error: sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.tuple' is not mapped
 
 
 ----------------Improvements----------------
@@ -26,4 +35,5 @@ Added Add form
 -Add other field as disabled
 -Used javascript to enable that field when other selected
 on drop down menu
--	
+-DB main questions tou save krwalo
+-Add solution form remove krdena chaye I think
