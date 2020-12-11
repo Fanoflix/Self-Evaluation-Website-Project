@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student, Teacher
+from myproject.models import Student, Teacher, Settings
 from myproject.students.forms import SignUp,LogIn,ProfileTab,AccountTab,PrivacyTab,DeactivateTab
 
 students_blueprint = Blueprint('students', __name__ , template_folder='templates/students')
@@ -8,26 +8,39 @@ students_blueprint = Blueprint('students', __name__ , template_folder='templates
 @students_blueprint.route('/signup',  methods=['GET', 'POST'])
 def signup():
     form = SignUp()
-    signupFailed = False
+    signupFailed1 = False
+    signupFailed2 = False
+    signupFailed3 = False
 
     if form.validate_on_submit():
         fname = form.fname.data
         lname = form.lname.data
+        uname = form.uname.data
         email = form.email.data
         password1 = form.password1.data
         password2 = form.password2.data
         checkTeacherEmail = bool(Teacher.query.filter_by(teacher_email = email).first())
         checkStudentEmail = bool(Student.query.filter_by(student_email=email).first())
+        checkTeacherUname = bool(Teacher.query.filter_by(teacher_uname=uname).first())
+        checkStudentUname = bool(Student.query.filter_by(student_uname=uname).first())
 
-        # Check if Email is already registered
-        if checkTeacherEmail or checkStudentEmail:
-            return render_template('signup.html',form=form, signupFailed = True)
+         
+        if checkTeacherUname or checkStudentUname: # Check if Uname is already taken
+            return render_template('signup.html',form=form, signupFailed1 = True)            
+        elif checkTeacherEmail or checkStudentEmail:  # Check if Email is already registered
+            return render_template('signup.html',form=form, signupFailed2 = True)
+       
 
         if password1 != '' and password1 == password2:
-                new_student = Student(fname, lname, email, password1,0,0,0)
+                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 0, "", True, 1)
                 db.session.add(new_student)
                 db.session.commit()
+                settings = Settings(new_student.id, True, True)
+                db.session.add(settings)
+                db.session.commit()
                 return redirect(url_for('students.login'))
+        else:
+            return render_template('signup.html',form=form, signupFailed3 = True)
     
     return render_template('signup.html',form=form )
 
@@ -64,14 +77,14 @@ def profile():
 
     if form.validate_on_submit():
         user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
-        # if form.uname.data != "":
-        #     user.student_uname = form.uname.data
+        if form.uname.data != "":
+            user.student_uname = form.uname.data
         if form.fname.data != "":
             user.student_fname = form.fname.data
         if form.lname.data != "":
             user.student_lname = form.lname.data
-        # if form.bio.data != "":
-        #     user.student_bio = form.bio.data    
+        if form.bio.data != "":
+            user.student_bio = form.bio.data    
         db.session.add(user)
         db.session.commit()
         g.whichStudent = user
@@ -79,7 +92,7 @@ def profile():
         form.lname.data = ""
         form.bio.data = ""
 
-    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname )   
+    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname, uname = g.whichStudent.student_uname, bio = g.whichStudent.student_bio )   
 
 
 @students_blueprint.route('/photo' )
@@ -137,7 +150,10 @@ def deactivate_account():
         user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
        
         if user.check_password(form.password.data):
+            
+            settings = Settings.query.filter_by(student_id = g.whichStudent.id).first()
             db.session.delete(user)
+            db.session.delete(settings)
             db.session.commit()
             whichStudent = False
             g.studentLoggedIn = False
@@ -145,4 +161,8 @@ def deactivate_account():
         else:
             passwordMatchFailed = True 
 
-    return render_template('deactivate_account.html' , form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname, passwordMatchFailed = passwordMatchFailed)    
+    return render_template('deactivate_account.html' , form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname, passwordMatchFailed = passwordMatchFailed)
+
+
+# @students_blueprint.route('/<uname>')
+# def public_profile(uname):    

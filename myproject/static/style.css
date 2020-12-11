@@ -439,7 +439,9 @@ a{
     transform: scale(0.98);
     border: solid 2px rgba(134, 0, 0, 0.829);
     transition: all 0.1s ease-in-out;
+    
 }
+
 
 /*============================== LOGIN AND SIGNUP ==========================================*/
 
@@ -504,7 +506,7 @@ a{
 }
 
 .sshowcase-form{
-    height: 520px;
+    height: 580px;
 }
 
 .lsshowcase-form .lsform-control{
@@ -673,12 +675,14 @@ a{
 }
 
 .attempt_page_solving .form_fields .ap_question{
-    display: flex;
+    display: grid;
+    grid-template-columns: 20px 3fr 60px;
 }
 
 .attempt_page_solving .form_fields .ap_options{
     display: flex;
     margin-left: 20px;
+    
 }
 
 .ap_options .radio_button{

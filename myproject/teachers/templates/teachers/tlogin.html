@@ -5,14 +5,14 @@
     <div class="lscontainer grid">
         <div class="lsshowcase-text">
             <h1>Easy Grading</h1>
-            <p>RatorX provides you a platform to start your own bussiness. We bring all your students at one place, so that you can test them all at one place. <br> Login and upload the assignments at your own convenience.</p>
+            <p>RatorX provides you a platform to start your own bussiness. We bring all your students at one place, so that you can test them all at one place.</p>
             <!-- <a href="features.html" class="lsbtn">Read More</a> -->
         </div>
 
         <div class="lsshowcase-form lscard">
             <h1>Teacher's Login</h1>
             {% if loginFailed %}
-                <h6>Invalid email or password</h6>
+                <h6 style="color: red;font-weight:500">Invalid Email or Password</h6>
             {% endif %}
             <form method="POST">
                 {{ form.hidden_tag() }}
