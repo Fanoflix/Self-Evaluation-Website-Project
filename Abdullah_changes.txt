@@ -1,5 +1,5 @@
 Added Assignments to student's Navbar
-
+Added Add form
 
 
 
@@ -16,11 +16,14 @@ Added Assignments to student's Navbar
 
 
 ----------------Bugs----------------
--Student Signup button syling fucked up
--Teacher Signup button syling fucked up
-
+- Add_assignments validators on questions not working
 
 
 
 
 ----------------Improvements----------------
+
+-Add other field as disabled
+-Used javascript to enable that field when other selected
+on drop down menu
+-	

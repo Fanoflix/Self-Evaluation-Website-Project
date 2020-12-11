@@ -2,14 +2,15 @@ from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student, Teacher
 from myproject.assignments.forms import SolveAssignment
-from wtforms import RadioField,SubmitField
+from wtforms import RadioField,SubmitField, StringField, Form, validators
+from myproject.assignments.forms import AddAssignment
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
 
 
 @assignments_blueprint.route('/home_assignment',  methods=['GET', 'POST'])
 def home_assignment():
-    return render_template('home_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('home_assignment.html', teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn)
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
@@ -18,7 +19,45 @@ def description():
 
 @assignments_blueprint.route('/add_assignment',  methods=['GET', 'POST'])
 def add_assignment():
-    return render_template('add_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
+    all_questions = [] 
+    questions = []
+    index = []
+    assignment_questions = 1
+    for x in range (10):
+        field = StringField([ validators.Required() ])
+        setattr(AddAssignment, 'Question' + str(assignment_questions), field)
+        questions.append('Question' + str(assignment_questions))
+        choice = 1
+        for y in range (4):
+            setattr(AddAssignment, 'Choice' + str(choice), field)
+            questions.append('Choice' + str(choice))
+            choice += 1
+        setattr(AddAssignment, 'Answer' + str(assignment_questions), field)
+        questions.append('Answer' + str(assignment_questions))
+        index.append(str(assignment_questions))
+        assignment_questions += 1
+        all_questions.append(questions)
+        questions = []
+    setattr(AddAssignment, 'submit', SubmitField('Add Assignment') )
+
+
+    form = AddAssignment()
+
+    # while not form.validate_on_submit():
+    #     if (user plus dabaye):
+
+    if form.validate_on_submit():
+        assignment_questions = 1
+        assignment_name = form.assignment_name.data
+        difficulty = form.difficulty.data
+        # print(form.course.data)
+        course_id = form.course.data
+        print(g.whichTeacher)
+        
+    return render_template('add_assignment.html', all_questions = all_questions, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn)
+
+
+
 
 
 @assignments_blueprint.route('/delete_assignment',  methods=['GET', 'POST'])

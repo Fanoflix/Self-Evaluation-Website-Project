@@ -146,13 +146,16 @@ class Assignments(db.Model):
     difficulty = db.Column(db.Text)
     assignment_rating = db.Column(db.Integer)
     active_status = db.Column(db.Integer)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id')) # Teacher's id
+    teacher = db.relationship('Teacher') 
 
-    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, active_status):
+    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, active_status, teacher_id):
         self.assignment_name = assignment_name
         self.course_id = course_id
         self.difficulty = difficulty
         self.assignment_rating = assignment_rating
         self.active_status = active_status
+        self.teacher_id = teacher_id
 
 
 class Assignment_Data(db.Model):
