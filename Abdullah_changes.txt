@@ -1,0 +1,26 @@
+Added Assignments to student's Navbar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------Bugs----------------
+-Student Signup button syling fucked up
+-Teacher Signup button syling fucked up
+
+
+
+
+
+----------------Improvements----------------
