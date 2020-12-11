@@ -25,16 +25,17 @@
 </section>
 
 <section class="assignments">
-  <hr id="hrtop">
+  <!-- <hr id="hrtop"> -->
   <div class="assignments_heading">
       <h1>The world's largest selection of assignments</h1>
       <p>Choose from 100,000+ assignments with new assignments uploaded everyday</p>
+      <hr id="hrbottom">
   </div>
-  <hr id="hrbottom">
+  
 
   <div class="assignment_wrapper">
     {% for x in range(18) %}
-        <a href="#" class= "assignment_box">
+        <a href="{{url_for('assignments.solve_assignment')}}" class= "assignment_box">
             <div class="assignment_name">
               The complete normalization practice
             </div>
