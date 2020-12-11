@@ -26,6 +26,7 @@
             <div class="navright">
                 <ul>
                     {% if studentLoggedIn %}
+                    <li><a href="{{ url_for('assignments.home_assignment') }}">Assignments</a></li> 
                         <li><a href="#">Leaderboard</a></li>
                         <li>
                             <div class="dropdown" onclick="myFunction()">
