@@ -107,24 +107,28 @@ class Settings(db.Model):
         else:
             return 4 # Hide both == 4
 
-# COMPOSITE KEY MESSING ME UP
-# class Preferences(db.Model):
-#     __tablename__ = 'preferences'
+class Preferences(db.Model):
+    __tablename__ = 'preferences'
 
-#     preference_id = db.Column(db.Integer, primary_key = True)
-#     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-#     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
 
-#     def __init__(self, student_id, course_id):
-#         self.student_id = student_id
-#         self.course_id = course_id
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+            student_id, course_id,
+        ),
+    )
+
+    def __init__(self, student_id, course_id):
+        self.student_id = student_id
+        self.course_id = course_id
     
 
 class Courses(db.Model):
     __tablename__ = 'courses'
 
     id = db.Column(db.Integer, primary_key = True)
-    course_name = db.Column(db.Text)
+    course_name = db.Column(db.Text , unique = True)
     no_of_assignments = db.Column(db.Integer)
 
     def __init__(self, course_name, no_of_assigmnets):
@@ -151,31 +155,51 @@ class Assignments(db.Model):
         self.active_status = active_status
 
 
-# class Assignment_Data(db.Model):
-#     __tablename__ = 'assignment_data'
+class Assignment_Data(db.Model):
+    __tablename__ = 'assignment_data'
+    
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
+    question_id = db.Column(db.Integer)
+    assignment = db.relationship('Assignments', backref = 'assignments') # Backref
+    choice1 = db.Column(db.Text)
+    choice2 = db.Column(db.Text)
+    choice3 = db.Column(db.Text)
+    choice4 = db.Column(db.Text)
+    answer = db.Column(db.Text)
 
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+            assignment_id, question_id,
+        ),
+    )
+
+    def __init__(self, assignment_id, question_id, choice1, choice2, choice3, choice4, answer):
+        self.assignment_id = assignment_id
+        self.question_id = question_id
+        self.choice1 = choice1
+        self.choice2 = choice2
+        self.choice3 = choice3
+        self.choice4 = choice4
+        self.answer = answer
+
+
+# class Saved_Assignemnts(db.Model):
+#     __tablename__ = 'saved_assignments'
+
+#     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
 #     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
-#     assignment = db.relationship('Assignments') # Backref
-#     question = db.Column(db.Integer)
-#     choice1 = db.Column(db.Text)
-#     choice2 = db.Column(db.Text)
-#     choice3 = db.Column(db.Text)
-#     choice4 = db.Column(db.Text)
-#     answer = db.Column(db.Text)
+#     student = db.relationship('Student', backref="students")
+#     assginment = db.relationship('Assignments', backref="assignments")
 
-#     def __init__(self, assignment_id, questions, choice1, choice2, choice3, choice4, answer):
+#     __table_args__ = (
+#         db.PrimaryKeyConstraint(
+#             student_id, assignment_id,
+#         ),
+#     )
+    
+#     def __init__(self, student_id, assignment_id):
+#         self.student_id = student_id
 #         self.assignment_id = assignment_id
-#         self.questions = questions
-#         self.choice1 = choice1
-#         self.choice2 = choice2
-#         self.choice3 = choice3
-#         self.choice4 = choice4
-#         self.answer = answer
-
-
-# COMPOSITE KEY MESSING ME UP
-# class Solved_Assignments(db.Model):
-#     __tablename__ = 'solved_assignments'
 
 
     
