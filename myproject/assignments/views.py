@@ -9,7 +9,7 @@ assignments_blueprint = Blueprint('assignments', __name__ , template_folder='tem
 
 @assignments_blueprint.route('/home_assignment',  methods=['GET', 'POST'])
 def home_assignment():
-    return render_template('home_assignment.html' , teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn)
+    return render_template('home_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
