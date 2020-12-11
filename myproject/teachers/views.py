@@ -5,29 +5,40 @@ from myproject.teachers.forms import SignUp,LogIn, ProfileTab,AccountTab, Privac
 
 teachers_blueprint = Blueprint('teachers', __name__ , template_folder='templates/teachers')
 
+
+# TEACHERS ( teacher_fname, teacher_lname, teacher_uname, teacher_email, teacher_password, teacher_rating, teacher_no_Of_reviews, teacher_account_status, teacher_bio )
 @teachers_blueprint.route('/signup',  methods=['GET', 'POST'])
 def signup():
     form = SignUp()
+    signupFailed1 = False
+    signupFailed2 = False
+    signupFailed3 = False
 
     if form.validate_on_submit():
         fname = form.fname.data
         lname = form.lname.data
+        uname = form.uname.data
         email = form.email.data
         password1 = form.password1.data
         password2 = form.password2.data
 
         checkTeacherEmail = bool(Teacher.query.filter_by(teacher_email = email).first())
         checkStudentEmail = bool(Student.query.filter_by(student_email=email).first())
+        checkTeacherUname = bool(Teacher.query.filter_by(teacher_uname=uname).first())
+        checkStudentUname = bool(Student.query.filter_by(student_uname=uname).first())
 
-        # Check if Email is already registered
-        if checkTeacherEmail or checkStudentEmail:
-            return render_template('tsignup.html',form=form, signupFailed = True)
+        if checkTeacherUname or checkStudentUname: # Check if Uname is already taken
+            return render_template('tsignup.html',form=form, signupFailed1 = True)            
+        elif checkTeacherEmail or checkStudentEmail:  # Check if Email is already registered
+            return render_template('tsignup.html',form=form, signupFailed2 = True)
 
         if password1 != '' and password1 == password2:
-            new_teacher = Teacher(fname,lname,email,password1,0,0)
+            new_teacher = Teacher(fname,lname,uname,email,password1,0,0,True,"")
             db.session.add(new_teacher)
             db.session.commit()
             return redirect(url_for('teachers.login'))
+        else:
+            return render_template('tsignup.html',form=form, signupFailed3 = True)
     
     return render_template('tsignup.html',form=form )
 
@@ -67,14 +78,14 @@ def profile():
     form = ProfileTab()
     if form.validate_on_submit():
         updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
-        # if form.uname.data != "":
-            # updated_teacher.teacher_uname = form.uname.data
+        if form.uname.data != "":
+            updated_teacher.teacher_uname = form.uname.data
         if form.fname.data != "":
             updated_teacher.teacher_fname = form.fname.data
         if form.lname.data != "":
             updated_teacher.teacher_lname = form.lname.data
-        # if form.bio.data != "":
-        #     updated_teacher.teacher_bio = form.bio.data
+        if form.bio.data != "":
+            updated_teacher.teacher_bio = form.bio.data
 
         db.session.add(updated_teacher)
         db.session.commit()
@@ -83,7 +94,7 @@ def profile():
         form.lname.data = ""
         form.bio.data = ""
 
-    return render_template('tprofile.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname =g.whichTeacher.teacher_lname)
+    return render_template('tprofile.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname =g.whichTeacher.teacher_lname, uname = g.whichTeacher.teacher_uname,bio = g.whichTeacher.teacher_bio)
 
 
 # To Be done after updating models

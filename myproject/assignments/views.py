@@ -31,24 +31,38 @@ def delete_assignment():
 @assignments_blueprint.route('/solve_assignment',  methods=['GET', 'POST'])
 def solve_assignment():
 
-  
-    questions = [ 'How do you do when you cant do?' ,
-                'What is your name?' , 
-                'Is Abdullah a bot? Wrong answers only' , 
-                'You done fucked up',
-                'How is testing going?']
 
+    # a sample 
+    records = [ 
+                ['1','1','How do you do when you cant do???????????????????????????????????????????????????????????????????????????????????????????????????????????????????','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
+                ['1','2','What is your name?','I', 'you' ,'no' , 'yes' ,'4'] ,
+                ['1','3','Is Abdullah a bot? Wrong answers only','yes', 'yes' ,'yes' , 'yes' ,'1'] ,
+                ['1','4','You done fucked up','yes', 'no' ,'I am' , 'hahaha' ,'3'] ,
+                ['1','5','How is testing going?','perfect', 'good' ,'not bad' , 'fucked' ,'4'] 
+                ]
+        
+
+
+    questions = []
+    # for record in TableName.query.filter_by(assignment_id = 'some number').all():
+    for record in records:  
+            questions.append(record[2])
+  
+
+    #-----------Making a form------------------
     count = 1
     field_list = []
-    for x in range(5):
-        field = RadioField(choices=[('a1' , 'a1') , ('a2' , 'a2'), ('a3' , 'a3'), ('a4' , 'a4')])
+
+    # for record in TableName.query.filter_by(assignment_id = 'some number').all():
+    for record in records:
+        field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
         setattr(SolveAssignment, 'choice' + str(count), field) 
         field_list.append('choice'+str(count))
         count = count + 1
 
     submit = SubmitField("Submit")
     setattr(SolveAssignment, 'submit', submit)
-
+    #----------------------------------------------
     form = SolveAssignment()   
 
     if form.validate_on_submit():
