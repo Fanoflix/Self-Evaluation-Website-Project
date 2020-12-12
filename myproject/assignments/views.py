@@ -76,8 +76,8 @@ def add_assignment():
         #-----------------------------------Testing-----------------------------------
   
         new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 1, g.whichTeacher.id)
-        # db.session.add(new_assignment)
-        # db.session.commit()
+        db.session.add(new_assignment)
+        db.session.commit()
 
         # new_assignment_data = [] list bana ke aur append krke bhi try kr liya
 
