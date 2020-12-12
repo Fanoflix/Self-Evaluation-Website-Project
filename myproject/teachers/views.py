@@ -28,9 +28,9 @@ def signup():
         checkStudentUname = bool(Student.query.filter_by(student_uname=uname).first())
 
         if checkTeacherUname or checkStudentUname: # Check if Uname is already taken
-            return render_template('tsignup.html',form=form, signupFailed1 = True)            
+            return render_template('tsignup.html',form=form, signupFailed1 = True,searchForm = g.searchForm)            
         elif checkTeacherEmail or checkStudentEmail:  # Check if Email is already registered
-            return render_template('tsignup.html',form=form, signupFailed2 = True)
+            return render_template('tsignup.html',form=form, signupFailed2 = True,searchForm = g.searchForm)
 
         if password1 != '' and password1 == password2:
             new_teacher = Teacher(fname,lname,uname,email,password1,0,0,True,"")
@@ -38,9 +38,9 @@ def signup():
             db.session.commit()
             return redirect(url_for('teachers.login'))
         else:
-            return render_template('tsignup.html',form=form, signupFailed3 = True)
+            return render_template('tsignup.html',form=form, signupFailed3 = True,searchForm = g.searchForm)
     
-    return render_template('tsignup.html',form=form )
+    return render_template('tsignup.html',form=form ,searchForm = g.searchForm)
 
 
 @teachers_blueprint.route('/login' , methods =['GET' , 'POST'])
@@ -60,10 +60,10 @@ def login():
             g.whichTeacher = CheckTeacher
             return redirect( url_for('index') )
         else:
-            return render_template('tlogin.html' , form=form , loginFailed = True)
+            return render_template('tlogin.html' , form=form , loginFailed = True,searchForm = g.searchForm)
 
         
-    return render_template('tlogin.html' , form=form , loginFailed = False)
+    return render_template('tlogin.html' , form=form , loginFailed = False,searchForm = g.searchForm)
             
 @teachers_blueprint.route('/')
 def signout():
@@ -94,7 +94,7 @@ def profile():
         form.lname.data = ""
         form.bio.data = ""
 
-    return render_template('tprofile.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname =g.whichTeacher.teacher_lname, uname = g.whichTeacher.teacher_uname,bio = g.whichTeacher.teacher_bio)
+    return render_template('tprofile.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname =g.whichTeacher.teacher_lname, uname = g.whichTeacher.teacher_uname,bio = g.whichTeacher.teacher_bio,searchForm = g.searchForm)
 
 
 # To Be done after updating models
@@ -112,7 +112,7 @@ def photo():
        form.lname.data = ""
        form.description.data = ""
 
-    return render_template('tphoto.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname) 
+    return render_template('tphoto.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname,searchForm = g.searchForm) 
 
 @teachers_blueprint.route('/account', methods =['GET' , 'POST'])
 def account():
@@ -125,7 +125,7 @@ def account():
         if not updated_teacher.check_password(form.password1.data):
             passwordChangeFailed = True
             return render_template('taccount.html', form = form, teacherLoggedIn = g.teacherLoggedIn, fname = g.whichTeacher.teacher_fname,
-            lname = g.whichTeacher.teacher_lname, passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichTeacher.teacher_email ) 
+            lname = g.whichTeacher.teacher_lname, passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichTeacher.teacher_email ,searchForm = g.searchForm) 
             
         if form.password2.data == form.password3.data:
             updated_teacher.hash_password(form.password2.data)
@@ -136,7 +136,7 @@ def account():
             passwordMatchFailed = True
 
     return render_template('taccount.html', form = form, teacherLoggedIn = g.teacherLoggedIn, fname = g.whichTeacher.teacher_fname,
-        lname = g.whichTeacher.teacher_lname,passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichTeacher.teacher_email ) 
+        lname = g.whichTeacher.teacher_lname,passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichTeacher.teacher_email,searchForm = g.searchForm ) 
 
 
 # To Be done after updating models
@@ -153,7 +153,7 @@ def payment_method():
        form.fname.data = ""
        form.lname.data = ""
        form.description.data = ""
-    return render_template('tpayment_method.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname) 
+    return render_template('tpayment_method.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname,searchForm = g.searchForm) 
 
 @teachers_blueprint.route('/privacy', methods =['GET' , 'POST'])
 def privacy():
@@ -166,7 +166,7 @@ def privacy():
 
             # additional code here
            
-    return render_template('tprivacy.html', form = form, teacherLoggedIn = g.teacherLoggedIn ,  fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname)
+    return render_template('tprivacy.html', form = form, teacherLoggedIn = g.teacherLoggedIn ,  fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname,searchForm = g.searchForm)
 
 @teachers_blueprint.route('/deactivate_account', methods =['GET' , 'POST'] )
 def deactivate_account():
@@ -186,4 +186,4 @@ def deactivate_account():
             print('here')
             passwordMatchFailed = True 
 
-    return render_template('tdeactivate_account.html' , form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, passwordMatchFailed = passwordMatchFailed)     
+    return render_template('tdeactivate_account.html' , form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, passwordMatchFailed = passwordMatchFailed,searchForm = g.searchForm)     

@@ -10,12 +10,12 @@ assignments_blueprint = Blueprint('assignments', __name__ , template_folder='tem
 
 @assignments_blueprint.route('/home_assignment',  methods=['GET', 'POST'])
 def home_assignment():
-    return render_template('home_assignment.html', teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn)
+    return render_template('home_assignment.html', teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn,searchForm = g.searchForm)
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
 def description():
-    return render_template('description.html' , teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('description.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)
 
 @assignments_blueprint.route('/add_assignment',  methods=['GET', 'POST'])
 def add_assignment():
@@ -82,7 +82,7 @@ def add_assignment():
             db.session.commit()
             question = []
 
-    return render_template('add_assignment.html', all_questions = all_questions, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('add_assignment.html', all_questions = all_questions, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)
 
 
 
@@ -90,7 +90,7 @@ def add_assignment():
 
 @assignments_blueprint.route('/delete_assignment',  methods=['GET', 'POST'])
 def delete_assignment():
-    return render_template('delete_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('delete_assignment.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)
 
 @assignments_blueprint.route('/solve_assignment',  methods=['GET', 'POST'])
 def solve_assignment():
@@ -142,13 +142,13 @@ def solve_assignment():
         
         return redirect(url_for('assignments.after_submit'))
 
-    return render_template('solve_assignment.html' , form = form, teacherLoggedIn = g.teacherLoggedIn, questions = questions , field_list = field_list)
+    return render_template('solve_assignment.html' , form = form, teacherLoggedIn = g.teacherLoggedIn, questions = questions , field_list = field_list,searchForm = g.searchForm)
 
     
         
 @assignments_blueprint.route('/after_submit',  methods=['GET', 'POST'])
 def after_submit():
-    return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn)  
+    return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)  
     
 
 
