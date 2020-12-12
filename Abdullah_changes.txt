@@ -1,0 +1,36 @@
+Added Assignments to student's Navbar
+Added Add form
+Added WhichTeacher to g.py
+Added a comment in models
+Forms Working perfectly
+no_of_Assignments autoincrements perfectly each time a assignment is added to a speicific course.
+Additions in Assignments are working perfectly.
+
+
+
+
+----------------Bugs----------------
+- Add_assignments validators on questions not working
+-For some reason all the other choices are automatically being filled
+-data not being inserted in Assignments_Data
+
+	When ever I try to:
+	
+		new_assignment_data = (new_assignment.id, x+1, getattr(form,all_questions[x][1]).data, getattr(form,all_questions[x][2]).data, getattr(form,all_questions[x][3]).data, getattr(form,all_questions[x][4]).data, getattr(form,all_questions[x][5]).data)
+        db.session.add(new_assignment_data)
+        db.session.commit()
+       
+			-Error: sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.tuple' is not mapped
+
+
+
+
+----------------Improvements/Suggestions----------------
+
+-Add other field as disabled
+-Use javascript to enable Other's field when other selected
+on drop down menu for courses
+-others added as a courses but it should be deleted when a new course is being added and then added again so it is always at the end.
+-DB main questions tou save krwalo
+-Add solution form remove krdena chaye I think
+-Assignment main Cascade on delete lagana hy. so if I delete an assignment it should Also delete all the data assosiated

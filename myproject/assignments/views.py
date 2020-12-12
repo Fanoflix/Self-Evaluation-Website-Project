@@ -1,15 +1,16 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student, Teacher
+from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses
 from myproject.assignments.forms import SolveAssignment
-from wtforms import RadioField,SubmitField
+from wtforms import RadioField,SubmitField, StringField, Form, validators
+from myproject.assignments.forms import AddAssignment
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
 
 
 @assignments_blueprint.route('/home_assignment',  methods=['GET', 'POST'])
 def home_assignment():
-    return render_template('home_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('home_assignment.html', teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn)
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
@@ -18,7 +19,79 @@ def description():
 
 @assignments_blueprint.route('/add_assignment',  methods=['GET', 'POST'])
 def add_assignment():
-    return render_template('add_assignment.html' , teacherLoggedIn = g.teacherLoggedIn)
+    all_questions = [] 
+    questions = []
+    index = []
+    assignment_questions = 1
+    for x in range (10):
+        field = StringField([ validators.Required() ])
+        setattr(AddAssignment, 'Question' + str(assignment_questions), field)
+        questions.append('Question' + str(assignment_questions))
+        choice = 1
+        for y in range (4):
+            setattr(AddAssignment, 'Choice' + str(choice), field)
+            questions.append('Choice' + str(choice))
+            choice += 1
+        setattr(AddAssignment, 'Answer' + str(assignment_questions), field)
+        questions.append('Answer' + str(assignment_questions))
+        index.append(str(assignment_questions))
+        assignment_questions += 1
+        all_questions.append(questions)
+        questions = []
+    setattr(AddAssignment, 'submit', SubmitField('Add Assignment') )
+
+
+    form = AddAssignment()
+
+    if form.validate_on_submit():
+        assignment_questions = 1
+        assignment_name = form.assignment_name.data
+        difficulty = form.difficulty.data
+        course_id = form.course.data
+
+        updated_course = Courses.query.filter_by(id = course_id).first()
+        updated_course.no_of_assignments += 1  #incrementing the number of assignments for a course
+        db.session.add(updated_course)
+        db.session.commit()
+
+
+        #-------------------------------------DONT DELETE THIS-------------------------------------
+        # db.session.delete(Courses.query.filter_by(course_name = 'Others').first().id)
+        # new_course = Course(form.others.data, 0)
+        # db.session.add(new_course)
+        # db.session.commit()
+
+        # new_course = Course('Others', 0)
+        # db.session.add(new_course)
+        # db.session.commit()
+        #-------------------------------------DONT DELETE THIS-------------------------------------
+
+        #-----------------------------------Testing-----------------------------------
+        # print(difficulty)
+        # print(form.course.data)
+        # print(g.whichTeacher.id)
+        # print(getattr(form,all_questions[x][0]).data)
+        # print(getattr(form,all_questions[x][1]).data)
+        # print(getattr(form,all_questions[x][2]).data)
+        #-----------------------------------Testing-----------------------------------
+  
+        new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 1, g.whichTeacher.id)
+        db.session.add(new_assignment)
+        db.session.commit()
+
+        # new_assignment_data = [] list bana ke aur append krke bhi try kr liya
+
+        for x in range(10): # idhar loop dynamically run hoga based on the number of questions
+            # new_assignment_data = (new_assignment.id, x+1, getattr(form,all_questions[x][1]).data, getattr(form,all_questions[x][2]).data, getattr(form,all_questions[x][3]).data, getattr(form,all_questions[x][4]).data, getattr(form,all_questions[x][5]).data)
+            # db.session.add(new_assignment_data)
+            # db.session.commit()
+            pass
+    
+    other_course_id = Courses.query.filter_by(course_name = 'Others').first().id
+    return render_template('add_assignment.html', all_questions = all_questions, other_course_id = other_course_id, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn)
+
+
+
 
 
 @assignments_blueprint.route('/delete_assignment',  methods=['GET', 'POST'])
