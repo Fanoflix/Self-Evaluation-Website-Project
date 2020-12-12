@@ -13,10 +13,10 @@ class AddAssignment(FlaskForm):
     assignment_name = StringField('Name:', [ validators.Required() ]) 
     difficulty = SelectField('Difficulty:', choices = [('Beginner', 'Beginner'), ('intermediate', 'intermediate'), ('Expert', 'Expert')]) 
     course = SelectField('Course: ', choices = [(course.id, course.course_name) for course in Courses.query.all()])
+    others = StringField("Other:")
 
 
-
-class AddSolution(FlaskForm):
+# class AddSolution(FlaskForm):
     # assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     # question_id = db.Column(db.Integer)
     # assignment = db.relationship('Assignments', backref = 'assignments') # Backref
@@ -25,7 +25,7 @@ class AddSolution(FlaskForm):
     # choice3 = db.Column(db.Text)
     # choice4 = db.Column(db.Text)
     # answer = db.Column(db.Text)
-    pass
+    # pass
 
 class DeleteAssignment(FlaskForm):
     pass

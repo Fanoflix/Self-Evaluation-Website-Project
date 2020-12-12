@@ -3,15 +3,8 @@ Added Add form
 Added WhichTeacher to g.py
 Added a comment in models
 Forms Working perfectly
-
-
-
-
-
-
-
-
-
+no_of_Assignments autoincrements perfectly each time a assignment is added to a speicific course.
+Additions in Assignments are working perfectly.
 
 
 
@@ -30,10 +23,14 @@ Forms Working perfectly
 			-Error: sqlalchemy.orm.exc.UnmappedInstanceError: Class 'builtins.tuple' is not mapped
 
 
-----------------Improvements----------------
+
+
+----------------Improvements/Suggestions----------------
 
 -Add other field as disabled
--Used javascript to enable that field when other selected
-on drop down menu
+-Use javascript to enable Other's field when other selected
+on drop down menu for courses
+-others added as a courses but it should be deleted when a new course is being added and then added again so it is always at the end.
 -DB main questions tou save krwalo
 -Add solution form remove krdena chaye I think
+-Assignment main Cascade on delete lagana hy. so if I delete an assignment it should Also delete all the data assosiated

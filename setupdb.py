@@ -52,10 +52,10 @@ from myproject.models import Student, Courses
 # db.session.add(new_course)
 # db.session.commit()
 
-# new_course = Courses('Web-Scraping', 0)
-# db.session.add(new_course)
-# db.session.commit()
+new_course = Courses('Others', 0)
+db.session.add(new_course)
+db.session.commit()
 
 
-for x in range(10):
-    print(x+1)
+# for x in range(10):
+#     print(x+1)
