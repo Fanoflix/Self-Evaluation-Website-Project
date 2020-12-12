@@ -834,6 +834,169 @@ a{
     border-radius: 5px;
     margin-top: 5px;
 }
+/* ========================================search bar ======================================= */
+
+.result_wrapper{
+    /* background-color: violet; */
+    width: 70%;
+    margin: 30px 0;
+    margin-left: 15%;
+    margin-right: 15%;
+    min-height: 1000px;
+}
+
+.result_wrapper .heading{
+    font-weight: bolder;
+    font-size: 30px;
+    margin-top: 40px;
+}
+
+.applygrid{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    /* width: 90%; */
+    /* margin-left: 5%; */
+    gap: 20px;
+
+}
+
+.ref_teachers,
+.assignment{
+    margin:0 20px
+}
+
+.result_wrapper .assignment .assignment_box *{
+    margin-left: 20px;
+}
+
+.result_wrapper .assignment .assignment_box{
+    width: 35%;
+}
+
+.result_wrapper .assignment .assignment_box .rate_review{
+    margin-left: 0;
+}
+
+.result_wrapper .assignment .assignment_box .rate_review .reviews{
+    margin-left: 10px;
+}
+
+.result_wrapper  .sassignment_box{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(251, 251, 251);
+    box-shadow: 0 1px 3px rgba(104,104,104,0.8);
+    min-height: 200px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.result_wrapper .sassignment_box:hover{
+    text-decoration: none;
+}
+
+.result_wrapper  .sassignment_box *{
+    margin-left: 5%;
+    text-decoration: none;
+    color: black;
+}
+.result_wrapper  .sassignment_box .assignment_name{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    font-weight: bolder;
+    font-size: 22px;
+    text-transform: capitalize;
+}
+
+.result_wrapper  .sassignment_box .teacher_description{
+    font-size: 14px;
+    text-transform: capitalize;
+    font-weight: 350;
+}
+
+.result_wrapper  .sassignment_box .rate_review{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 20px;
+}
+
+.result_wrapper  .sassignment_box .rate_review .rating{
+    font-weight: 600;
+    color: rgb(218, 69, 0);
+    margin: 0;
+    padding:0;
+    margin-left: 2px;
+}
+
+.result_wrapper  .sassignment_box .rate_review .reviews{
+    font-weight: 350;
+    font-size: 14px;
+    margin:0;
+    padding:0;
+    margin-left: 5px;
+    margin-top:1px;
+}
+
+.result_wrapper  .sassignment_box .price{
+    margin:0;
+    margin-left: 5%;
+    margin-top: 5px;
+    font-weight: bolder;
+    font-size: 19px;
+}
+.result_wrapper  .sassignment_box .status{
+    background-color: 	rgb(255, 231, 153);
+    color: 	rgb(123, 65, 7);
+    font-weight: 750;
+    font-size: 14px;
+    padding: 0 5px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.result_wrapper .box{
+    display: grid;
+    grid-template-columns: 150px 220px;
+    background-color: rgb(251, 251, 251);
+    box-shadow: 0 1px 3px rgba(104,104,104,0.8);
+    min-height: 150px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.result_wrapper .pp{
+    background-color: rgb(104, 111, 122);
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    margin:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-size: 40px;
+    font-weight:650;
+}
+
+.result_wrapper .other{
+    color:black;
+    text-transform: capitalize;
+    margin-top: 30px;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.result_wrapper .other .name{
+    font-size: 17px;
+    font-weight:650;
+}
+.result_wrapper .other .rank{
+    margin-top: 5px;
+}
 
 /* ===================================footer================================================== */
 footer{

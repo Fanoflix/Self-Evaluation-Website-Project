@@ -2,6 +2,7 @@ from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Teacher,Student
 from myproject.teachers.forms import SignUp,LogIn, ProfileTab,AccountTab, PrivacyTab, DeactivateTab
+from myproject.search.form import Searching
 
 teachers_blueprint = Blueprint('teachers', __name__ , template_folder='templates/teachers')
 
@@ -9,6 +10,9 @@ teachers_blueprint = Blueprint('teachers', __name__ , template_folder='templates
 # TEACHERS ( teacher_fname, teacher_lname, teacher_uname, teacher_email, teacher_password, teacher_rating, teacher_no_Of_reviews, teacher_account_status, teacher_bio )
 @teachers_blueprint.route('/signup',  methods=['GET', 'POST'])
 def signup():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
     form = SignUp()
     signupFailed1 = False
     signupFailed2 = False
@@ -45,6 +49,11 @@ def signup():
 
 @teachers_blueprint.route('/login' , methods =['GET' , 'POST'])
 def login():
+    g.searchForm = Searching()
+
+    if g.searchForm.searched.data != '' and g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = LogIn()
     loginFailed = False
 
@@ -75,6 +84,10 @@ def signout():
     
 @teachers_blueprint.route('/profile', methods =['GET' , 'POST'])
 def profile():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = ProfileTab()
     if form.validate_on_submit():
         updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
@@ -100,6 +113,10 @@ def profile():
 # To Be done after updating models
 @teachers_blueprint.route('/photo', methods =['GET' , 'POST'])
 def photo():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = ProfileTab()
     if form.validate_on_submit():
        updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
@@ -116,6 +133,10 @@ def photo():
 
 @teachers_blueprint.route('/account', methods =['GET' , 'POST'])
 def account():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = AccountTab()
     passwordChangeFailed = False 
     passwordMatchFailed = False 
@@ -142,6 +163,10 @@ def account():
 # To Be done after updating models
 @teachers_blueprint.route('/payment_method', methods =['GET' , 'POST'])
 def payment_method():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = ProfileTab()
     if form.validate_on_submit():
        updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
@@ -157,6 +182,10 @@ def payment_method():
 
 @teachers_blueprint.route('/privacy', methods =['GET' , 'POST'])
 def privacy():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = PrivacyTab()
     if form.validate_on_submit():
         updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
@@ -170,6 +199,10 @@ def privacy():
 
 @teachers_blueprint.route('/deactivate_account', methods =['GET' , 'POST'] )
 def deactivate_account():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     form = DeactivateTab()
     passwordMatchFailed = False 
 

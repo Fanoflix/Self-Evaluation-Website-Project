@@ -14,7 +14,7 @@ def index():
     teacherLoggedIn = g.teacherLoggedIn
     
     if g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching'))
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
 
     return render_template('home.html' , studentLoggedIn = studentLoggedIn , teacherLoggedIn = teacherLoggedIn, searchForm =g.searchForm)
 
