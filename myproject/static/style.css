@@ -33,7 +33,7 @@ a{
 .navleft ul{
     /* background-color: red; */
     display: grid;
-    grid-template-columns: repeat(2,1fr);
+    grid-template-columns: 100px 100px 1fr;
     grid-gap: 20px;
     list-style: none;
     padding: 0.5rem;
@@ -84,6 +84,32 @@ a{
     margin-top: 9px;
     margin-left: 4px;
     font-size: 18px;
+}
+
+.navleft ul .search_bar{
+    display: grid;
+    grid-template-columns: 30px minmax(300px,auto);
+    justify-content: flex-start;
+    align-items: center;
+    background:white;
+    max-height: 34px;
+    margin: 8px 0;
+    border-radius: 20px;
+}
+
+.navleft ul .search_bar .search_icon{
+    margin: 0px 10px;
+    text-decoration: none;
+    color: orangered;
+}
+
+.navleft ul .search_bar .type_text .input{
+    border:none;
+    border-radius: 20px;
+    background-color: white;
+    min-width: 290px;
+    max-width: auto;
+    outline: none;
 }
 
 

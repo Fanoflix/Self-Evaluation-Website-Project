@@ -21,6 +21,18 @@
                 <ul>
                     <li><a class="brand" href="{{ url_for('index') }}">RatorX</a> </li>
                     <li> <a class="notBrand" href="#"> Categories</a></li>
+                    
+                    <form class="search_bar" method="POST">
+                        {{ searchForm.hidden_tag() }}
+                        <div class = "search_icon">
+                            {{searchForm.submit(class="fas fa-search")}}
+                        </div>
+                        <div class = "type_text">
+                            {{ searchForm.searched(class = "input" , placeholder="Search for anything") }}
+                        </div>
+                    </form>
+                  
+                    
                 </ul>
             </div>
             <div class="navright">
