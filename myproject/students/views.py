@@ -7,6 +7,10 @@ students_blueprint = Blueprint('students', __name__ , template_folder='templates
 
 @students_blueprint.route('/signup',  methods=['GET', 'POST'])
 def signup():
+
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
+
     form = SignUp()
     signupFailed1 = False
     signupFailed2 = False
@@ -47,6 +51,10 @@ def signup():
 
 @students_blueprint.route('/login' , methods =['GET' , 'POST'])
 def login():
+
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
+
     form = LogIn()
     loginFailed = False
 
@@ -73,6 +81,10 @@ def signout():
 
 @students_blueprint.route('/profile',  methods =['GET' , 'POST'])
 def profile():
+
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
+
     form = ProfileTab()
 
     if form.validate_on_submit():
@@ -97,11 +109,16 @@ def profile():
 
 @students_blueprint.route('/photo' )
 def photo():
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
 
     return render_template('photo.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,searchForm = g.searchForm) 
 
 @students_blueprint.route('/account',  methods =['GET' , 'POST'] )
 def account():
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
+
     form = AccountTab()
     passwordChangeFailed = False 
     passwordMatchFailed = False 
@@ -126,11 +143,17 @@ def account():
 
 @students_blueprint.route('/payment_method' )
 def payment_method():
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
 
     return render_template('payment_method.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,searchForm = g.searchForm) 
 
 @students_blueprint.route('/privacy',  methods =['GET' , 'POST']  )
 def privacy():
+
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
+
     form = PrivacyTab()
     if form.validate_on_submit():
         user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
@@ -144,6 +167,10 @@ def privacy():
 
 @students_blueprint.route('/deactivate_account' ,  methods =['GET' , 'POST'] )
 def deactivate_account():
+
+    if g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching'))
+        
     form = DeactivateTab()
     passwordMatchFailed = False 
     if form.validate_on_submit():
