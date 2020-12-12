@@ -1,5 +1,5 @@
 from myproject import db
-from myproject.models import Student, Courses
+from myproject.models import Student, Courses, Assignments,Assignment_Data
 
 # # db.create_all()
 
@@ -43,19 +43,28 @@ from myproject.models import Student, Courses
 
 # print(len(Student.query.filter_by(student_fname = 'check').all()))
 
-# new_course = Courses('Web-Dev', 0)
+# new_course = Courses('Software Development and Analysis', 0)
 # db.session.add(new_course)
 # db.session.commit()
 
 
-# new_course = Courses('Physics', 0)
+# new_course = Courses('Algorithms and Design', 0)
 # db.session.add(new_course)
 # db.session.commit()
 
-new_course = Courses('Others', 0)
-db.session.add(new_course)
-db.session.commit()
+# new_course = Courses('Parallel and Distributed Computing', 0)
+# db.session.add(new_course)
+# db.session.commit()
 
 
 # for x in range(10):
 #     print(x+1)
+
+
+# print(len(Courses.query.all()))
+
+# searched = Assignments.query.filter_by(assignment_name = 'a1').first()
+
+# Courses.__table__.drop(db.engine)
+# Assignments.__table__.drop(db.engine)
+# Assignment_Data.__table__.drop(db.engine)

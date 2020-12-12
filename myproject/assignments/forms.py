@@ -12,8 +12,7 @@ class DescriptionAssignment(FlaskForm):
 class AddAssignment(FlaskForm):
     assignment_name = StringField('Name:', [ validators.Required() ]) 
     difficulty = SelectField('Difficulty:', choices = [('Beginner', 'Beginner'), ('intermediate', 'intermediate'), ('Expert', 'Expert')]) 
-    course = SelectField('Course: ', choices = [(course.id, course.course_name) for course in Courses.query.all()])
-    others = StringField("Other:")
+    
 
 
 # class AddSolution(FlaskForm):

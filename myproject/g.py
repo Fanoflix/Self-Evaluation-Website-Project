@@ -8,5 +8,3 @@ def init():
     whichStudent = False
     whichTeacher = False
 
-
-# yaha se whichTeacher kyun gayab tha wtf
