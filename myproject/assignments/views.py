@@ -2,7 +2,7 @@ from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses
 from myproject.assignments.forms import SolveAssignment
-from wtforms import RadioField,SubmitField, StringField, Form, validators
+from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
 from myproject.assignments.forms import AddAssignment
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
@@ -19,18 +19,23 @@ def description():
 
 @assignments_blueprint.route('/add_assignment',  methods=['GET', 'POST'])
 def add_assignment():
+
+    course = SelectField("Courses",[validators.Required()], choices = [(course.id, course.course_name) for course in Courses.query.all()])
+    setattr(AddAssignment, 'course', course)
+ 
+
     all_questions = [] 
     questions = []
     index = []
     assignment_questions = 1
-    for x in range (10):
+    for x in range (1):
         field = StringField([ validators.Required() ])
         setattr(AddAssignment, 'Question' + str(assignment_questions), field)
         questions.append('Question' + str(assignment_questions))
         choice = 1
         for y in range (4):
-            setattr(AddAssignment, 'Choice' + str(choice), field)
-            questions.append('Choice' + str(choice))
+            setattr(AddAssignment, 'Choice' + str(assignment_questions) + str(choice), field)
+            questions.append('Choice' + str(assignment_questions) + str(choice))
             choice += 1
         setattr(AddAssignment, 'Answer' + str(assignment_questions), field)
         questions.append('Answer' + str(assignment_questions))
@@ -44,51 +49,40 @@ def add_assignment():
     form = AddAssignment()
 
     if form.validate_on_submit():
-        assignment_questions = 1
         assignment_name = form.assignment_name.data
         difficulty = form.difficulty.data
         course_id = form.course.data
+
+        # if course_id == len(Courses.query.all()):
+            # pass
+            #additional code here
 
         updated_course = Courses.query.filter_by(id = course_id).first()
         updated_course.no_of_assignments += 1  #incrementing the number of assignments for a course
         db.session.add(updated_course)
         db.session.commit()
 
-
-        #-------------------------------------DONT DELETE THIS-------------------------------------
-        # db.session.delete(Courses.query.filter_by(course_name = 'Others').first().id)
-        # new_course = Course(form.others.data, 0)
-        # db.session.add(new_course)
-        # db.session.commit()
-
-        # new_course = Course('Others', 0)
-        # db.session.add(new_course)
-        # db.session.commit()
-        #-------------------------------------DONT DELETE THIS-------------------------------------
-
-        #-----------------------------------Testing-----------------------------------
-        # print(difficulty)
-        # print(form.course.data)
-        # print(g.whichTeacher.id)
-        # print(getattr(form,all_questions[x][0]).data)
-        # print(getattr(form,all_questions[x][1]).data)
-        # print(getattr(form,all_questions[x][2]).data)
-        #-----------------------------------Testing-----------------------------------
-  
         new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 1, g.whichTeacher.id)
         db.session.add(new_assignment)
         db.session.commit()
 
-        # new_assignment_data = [] list bana ke aur append krke bhi try kr liya
+        new_assignment = Assignments.query.filter_by(assignment_name = assignment_name).first()
+        question = []
+        for x in range(1,assignment_questions): 
+            question.append(new_assignment.id)
+            question.append(x)
+            question.append( getattr( form , 'Question' + str(x) ).data )
+            for y in range(1,5):
+                question.append( getattr(form,'Choice' + str(x) + str(y)).data )
 
-        for x in range(10): # idhar loop dynamically run hoga based on the number of questions
-            # new_assignment_data = (new_assignment.id, x+1, getattr(form,all_questions[x][1]).data, getattr(form,all_questions[x][2]).data, getattr(form,all_questions[x][3]).data, getattr(form,all_questions[x][4]).data, getattr(form,all_questions[x][5]).data)
-            # db.session.add(new_assignment_data)
-            # db.session.commit()
-            pass
-    
-    other_course_id = Courses.query.filter_by(course_name = 'Others').first().id
-    return render_template('add_assignment.html', all_questions = all_questions, other_course_id = other_course_id, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn)
+            question.append (getattr(form, 'Answer' + str(x)).data )
+
+            new_question = Assignment_Data(question[0],question[1],question[2] ,question[3],question[4] ,question[5],question[6] ,question[7] )
+            db.session.add(new_question)
+            db.session.commit()
+            question = []
+
+    return render_template('add_assignment.html', all_questions = all_questions, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn)
 
 
 

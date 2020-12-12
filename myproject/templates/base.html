@@ -21,10 +21,6 @@
                 <ul>
                     <li><a class="brand" href="{{ url_for('index') }}">RatorX</a> </li>
                     <li> <a class="notBrand" href="#"> Categories</a></li>
-                    {% if studentLoggedIn or teacherLoggedIn  %}
-                        <li><a href="{{ url_for('assignments.home_assignment') }}">Assignments</a></li>
-                    {% endif %}
-                    <!-- ^^ for testing --> 
                 </ul>
             </div>
             <div class="navright">
