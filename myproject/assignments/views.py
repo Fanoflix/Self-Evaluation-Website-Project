@@ -136,74 +136,36 @@ def solve_assignment(aid):
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    #---------------------------Displaying from DB---------------------------
-    # records = []
-    # questions = []
-
-    # for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
-    #     questions.append(aid)
-    #     questions.append(q.question_id)
-    #     questions.append(q.question_text)
-    #     questions.append(q.choice1)
-    #     questions.append(q.choice2)
-    #     questions.append(q.choice3)
-    #     questions.append(q.choice4)
-    #     questions.append(q.answer)
-    #     records.append(questions)
-    #     questions = []
-
-
-    # count = 1
-    # field_list = []
-
-    # for record in records:
-    #     field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
-    #     setattr(DeleteAssignment, 'choice' + str(count), field) 
-    #     field_list.append('choice' + str(count))
-    #     count = count + 1
-
-    # setattr(DeleteAssignment, 'submit', SubmitField("Delete"))
-    
-    # questions = []
-    # for record in records:  
-    #     questions.append(record[2])
-
-    #---------------------------Displaying from DB---------------------------
-    
-    # assignment = TableName1.query.filter_by(assignment_name = 'some name').first():
-    # id = assignment.TableName.assignment_id
-    # a sample 
-
-    records = [ 
-                ['1','1','How do you do when you cant do?','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
-                ['1','2','What is your name?','I', 'you' ,'no' , 'yes' ,'4'] ,
-                ['1','3','Is Abdullah a bot? Wrong answers only','yes', 'yes' ,'yes' , 'yes' ,'1'] ,
-                ['1','4','You done fucked up','yes', 'no' ,'I am' , 'hahaha' ,'3'] ,
-                ['1','5','How is testing going?','perfect', 'good' ,'not bad' , 'fucked' ,'4'] 
-                ]
-        
-
-
+    records = []
     questions = []
-    # for record in TableName.query.filter_by(assignment_id = id).all():
-    for record in records:  
-            questions.append(record[2])
-  
 
-    #-----------Making a form------------------
+    for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
+        questions.append(aid)
+        questions.append(q.question_id)
+        questions.append(q.question_text)
+        questions.append(q.choice1)
+        questions.append(q.choice2)
+        questions.append(q.choice3)
+        questions.append(q.choice4)
+        questions.append(q.answer)
+        records.append(questions)
+        questions = []
+
     count = 1
     field_list = []
 
-    # for record in TableName.query.filter_by(assignment_id = id).all():
     for record in records:
         field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
         setattr(SolveAssignment, 'choice' + str(count), field) 
-        # i.e: choice1 = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
-        field_list.append('choice'+str(count))
+        field_list.append('choice' + str(count))
         count = count + 1
 
     setattr(SolveAssignment, 'submit', SubmitField("Submit"))
-    #----------------------------------------------
+    
+    questions = []
+    for record in records:  
+        questions.append(record[2])
+
     form = SolveAssignment()   
 
     if form.validate_on_submit():
