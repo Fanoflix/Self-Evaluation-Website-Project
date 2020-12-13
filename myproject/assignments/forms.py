@@ -14,18 +14,6 @@ class AddAssignment(FlaskForm):
     difficulty = SelectField('Difficulty:', choices = [('Beginner', 'Beginner'), ('intermediate', 'intermediate'), ('Expert', 'Expert')]) 
     
 
-
-# class AddSolution(FlaskForm):
-    # assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
-    # question_id = db.Column(db.Integer)
-    # assignment = db.relationship('Assignments', backref = 'assignments') # Backref
-    # choice1 = db.Column(db.Text)
-    # choice2 = db.Column(db.Text)
-    # choice3 = db.Column(db.Text)
-    # choice4 = db.Column(db.Text)
-    # answer = db.Column(db.Text)
-    # pass
-
 class DeleteAssignment(FlaskForm):
     pass
 

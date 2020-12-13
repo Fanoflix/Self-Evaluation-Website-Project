@@ -177,9 +177,10 @@ class Assignment_Data(db.Model):
         ),
     )
 
-    def __init__(self, assignment_id, question_id, choice1, choice2, choice3, choice4, answer):
+    def __init__(self, assignment_id, question_id, question_text,choice1, choice2, choice3, choice4, answer):
         self.assignment_id = assignment_id
         self.question_id = question_id
+        self.question_text = question_text
         self.choice1 = choice1
         self.choice2 = choice2
         self.choice3 = choice3
