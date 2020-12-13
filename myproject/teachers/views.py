@@ -4,6 +4,7 @@ from myproject import db,g
 from myproject.models import Teacher,Student
 from myproject.teachers.forms import SignUp,LogIn, ProfileTab,AccountTab, PrivacyTab, DeactivateTab
 from myproject.search.form import Searching
+from sqlalchemy import func
 
 teachers_blueprint = Blueprint('teachers', __name__ , template_folder='templates/teachers')
 
@@ -25,14 +26,14 @@ def signup():
         fname = form.fname.data
         lname = form.lname.data
         uname = form.uname.data
-        email = form.email.data
+        email = form.email.data.lower()
         password1 = form.password1.data
         password2 = form.password2.data
 
         checkTeacherEmail = bool(Teacher.query.filter_by(teacher_email = email).first())
-        checkStudentEmail = bool(Student.query.filter_by(student_email=email).first())
-        checkTeacherUname = bool(Teacher.query.filter_by(teacher_uname=uname).first())
-        checkStudentUname = bool(Student.query.filter_by(student_uname=uname).first())
+        checkStudentEmail = bool(Student.query.filter_by(student_email = email).first())
+        checkTeacherUname = bool(Teacher.query.filter(func.lower(Teacher.teacher_uname) == func.lower(uname)).first())
+        checkStudentUname = bool(Student.query.filter(func.lower(Student.student_uname) == func.lower(uname)).first())
 
         if checkTeacherUname or checkStudentUname: # Check if Uname is already taken
             return render_template('tsignup.html',form=form, signupFailed1 = True, searchForm = searchForm)        
@@ -60,7 +61,7 @@ def login():
     loginFailed = False
 
     if form.validate_on_submit():
-        email = form.email.data
+        email = form.email.data.lower()
         password = form.password.data
 
         
@@ -94,7 +95,16 @@ def profile():
     if form.validate_on_submit():
         updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
         if form.uname.data != "":
-            updated_teacher.teacher_uname = form.uname.data
+            CheckUser = bool(
+                (Teacher.query.filter(func.lower(Teacher.teacher_uname) == func.lower(form.uname.data)).first())
+                or
+                (Student.query.filter(func.lower(Student.student_uname) == func.lower(form.uname.data)).first())
+            )
+            
+            if not CheckUser:
+                updated_teacher.teacher_uname = form.uname.data
+            else:
+                pass
         if form.fname.data != "":
             updated_teacher.teacher_fname = form.fname.data
         if form.lname.data != "":
@@ -109,7 +119,7 @@ def profile():
         form.lname.data = ""
         form.bio.data = ""
 
-    return render_template('tprofile.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname =g.whichTeacher.teacher_lname, uname = g.whichTeacher.teacher_uname,bio = g.whichTeacher.teacher_bio, searchForm = searchForm)
+    return render_template('tprofile.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname.capitalize() , lname =g.whichTeacher.teacher_lname.capitalize() , uname = g.whichTeacher.teacher_uname,bio = g.whichTeacher.teacher_bio, searchForm = searchForm)
 
 
 # To Be done after updating models
@@ -118,18 +128,6 @@ def photo():
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
-
-    form = ProfileTab()
-    if form.validate_on_submit():
-       updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
-       updated_teacher.teacher_fname = form.fname.data
-       updated_teacher.teacher_lname = form.lname.data
-       db.session.add(updated_teacher)
-       db.session.commit()
-       g.whichTeacher = updated_teacher
-       form.fname.data = ""
-       form.lname.data = ""
-       form.description.data = ""
 
     return render_template('tphoto.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm)
 
@@ -169,17 +167,6 @@ def payment_method():
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    form = ProfileTab()
-    if form.validate_on_submit():
-       updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
-       updated_teacher.teacher_fname = form.fname.data
-       updated_teacher.teacher_lname = form.lname.data
-       db.session.add(updated_teacher)
-       db.session.commit()
-       g.whichTeacher = updated_teacher
-       form.fname.data = ""
-       form.lname.data = ""
-       form.description.data = ""
     return render_template('tpayment_method.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm) 
 
 @teachers_blueprint.route('/privacy', methods =['GET' , 'POST'])
@@ -197,7 +184,7 @@ def privacy():
 
             # additional code here
            
-    return render_template('tprivacy.html', form = form, teacherLoggedIn = g.teacherLoggedIn ,  fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm)
+    return render_template('tprivacy.html', form = form, teacherLoggedIn = g.teacherLoggedIn ,  fname = g.whichTeacher.teacher_fname.capitalize() , lname = g.whichTeacher.teacher_lname.capitalize() , searchForm = searchForm)
 
 @teachers_blueprint.route('/deactivate_account', methods =['GET' , 'POST'] )
 def deactivate_account():

@@ -3,6 +3,7 @@ from myproject import db,g
 from myproject.models import Student, Teacher, Settings
 from myproject.students.forms import SignUp,LogIn,ProfileTab,AccountTab,PrivacyTab,DeactivateTab
 from myproject.search.form import Searching
+from sqlalchemy import func
 
 students_blueprint = Blueprint('students', __name__ , template_folder='templates/students')
 
@@ -18,16 +19,16 @@ def signup():
     signupFailed3 = False
 
     if form.validate_on_submit():
-        fname = form.fname.data
-        lname = form.lname.data
-        uname = form.uname.data
-        email = form.email.data
+        fname = form.fname.data.lower()
+        lname = form.lname.data.lower()
+        uname = form.uname.data.lower()
+        email = form.email.data.lower()
         password1 = form.password1.data
         password2 = form.password2.data
         checkTeacherEmail = bool(Teacher.query.filter_by(teacher_email = email).first())
         checkStudentEmail = bool(Student.query.filter_by(student_email=email).first())
-        checkTeacherUname = bool(Teacher.query.filter_by(teacher_uname=uname).first())
-        checkStudentUname = bool(Student.query.filter_by(student_uname=uname).first())
+        checkTeacherUname = bool(Teacher.query.filter(func.lower(Teacher.teacher_uname) == func.lower(uname)).first())
+        checkStudentUname = bool(Student.query.filter(func.lower(Student.student_uname) == func.lower(uname)).first())
 
          
         if checkTeacherUname or checkStudentUname: # Check if Uname is already taken
@@ -61,7 +62,7 @@ def login():
     loginFailed = False
 
     if form.validate_on_submit():
-        email = form.email.data
+        email = form.email.data.lower()
         password = form.password.data
 
         CheckStudent = Student.query.filter_by(student_email = email).first()
@@ -92,7 +93,15 @@ def profile():
     if form.validate_on_submit():
         user = Student.query.filter_by(student_email = g.whichStudent.student_email).first()
         if form.uname.data != "":
-            user.student_uname = form.uname.data
+            CheckUser = bool(
+                (Teacher.query.filter(func.lower(Teacher.teacher_uname) == func.lower(form.uname.data)).first())
+                or
+                (Student.query.filter(func.lower(Student.student_uname) == func.lower(form.uname.data)).first())
+            )
+            if not CheckUser:
+                user.student_uname = form.uname.data
+            else:
+                pass
         if form.fname.data != "":
             user.student_fname = form.fname.data
         if form.lname.data != "":
@@ -106,7 +115,7 @@ def profile():
         form.lname.data = ""
         form.bio.data = ""
 
-    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname, uname = g.whichStudent.student_uname, bio = g.whichStudent.student_bio, searchForm = searchForm )   
+    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname.capitalize() , lname =g.whichStudent.student_lname.capitalize() , uname = g.whichStudent.student_uname, bio = g.whichStudent.student_bio, searchForm = searchForm )   
 
 
 @students_blueprint.route('/photo' )

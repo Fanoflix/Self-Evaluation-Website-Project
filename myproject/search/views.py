@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student, Teacher, Assignments, Courses, Assignment_Data
-from sqlalchemy import and_, or_, not_
+from sqlalchemy import and_, or_, not_,func
 from myproject.search.form import Searching
 
 
@@ -10,17 +10,18 @@ search_blueprint = Blueprint('search', __name__ , template_folder='templates/sea
 @search_blueprint.route('/<searched>' , methods = ['GET' , 'POST'])
 def searching(searched):
     
+    searched = searched.lower()
     ref_teachers = None
     ref_assignments = None
-    assignments = Assignments.query.filter_by(assignment_name = searched).first()
+    assignments = Assignments.query.filter(func.lower(Assignments.assignment_name) == searched).first()
     if assignments != None:
         ref_teachers = Assignments.query.filter_by(teacher_id = assignments.teacher_id)
     
     students = Student.query.filter(
         or_(
-            Student.student_fname.like( searched),
-            Student.student_lname.like( searched),
-            Student.student_uname.like( searched),
+            (func.lower(Student.student_fname) == searched),
+            (func.lower(Student.student_lname) == searched),
+            (func.lower(Student.student_uname) == searched),
         )
     )
 

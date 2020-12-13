@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="jumbotron" > 
+        <h1>Your Assignments Displayed Here</h1>
+        {% for assignment in all_assignments %}
+            <ul>
+                <li>
+                    <a href="{{ url_for('assignments.delete_assignment', aid = assignment.id) }}">{{ assignment.id }}: {{ assignment.assignment_name }}</a>
+                     <!-- <button style='border:none'><i class="fas fa-trash" style='color:red; border:none'></i> </button> -->
+                </li>
+            </ul>
+        {% endfor %}        
+    </div>   
+    
+{% endblock %}
