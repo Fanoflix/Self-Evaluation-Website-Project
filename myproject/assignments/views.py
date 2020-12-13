@@ -4,21 +4,33 @@ from myproject.models import Student, Teacher, Assignments, Assignment_Data, Cou
 from myproject.assignments.forms import SolveAssignment
 from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
 from myproject.assignments.forms import AddAssignment
+from myproject.search.form import Searching
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
 
 
 @assignments_blueprint.route('/home_assignment',  methods=['GET', 'POST'])
 def home_assignment():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+        
     return render_template('home_assignment.html', teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn,searchForm = g.searchForm)
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
 def description():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     return render_template('description.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)
 
 @assignments_blueprint.route('/add_assignment',  methods=['GET', 'POST'])
 def add_assignment():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
 
     course = SelectField("Courses",[validators.Required()], choices = [(course.id, course.course_name) for course in Courses.query.all()])
     setattr(AddAssignment, 'course', course)
@@ -90,10 +102,17 @@ def add_assignment():
 
 @assignments_blueprint.route('/delete_assignment',  methods=['GET', 'POST'])
 def delete_assignment():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+
     return render_template('delete_assignment.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)
 
 @assignments_blueprint.route('/solve_assignment',  methods=['GET', 'POST'])
 def solve_assignment():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
 
     # assignment = TableName1.query.filter_by(assignment_name = 'some name').first():
     # id = assignment.TableName.assignment_id
@@ -148,6 +167,9 @@ def solve_assignment():
         
 @assignments_blueprint.route('/after_submit',  methods=['GET', 'POST'])
 def after_submit():
+    g.searchForm = Searching()
+    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
     return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = g.searchForm)  
     
 

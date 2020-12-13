@@ -140,14 +140,14 @@ class Assignments(db.Model):
     __tablename__ = 'assignments'
 
     id = db.Column(db.Integer, primary_key = True)
-    assignment_name = db.Column(db.Text, unique = True)
+    assignment_name = db.Column(db.Text)
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id')) # Assignment tag
-    course = db.relationship('Courses') # Backref
+    course = db.relationship('Courses', backref='courses') # Backref
     difficulty = db.Column(db.Text)
     assignment_rating = db.Column(db.Integer)
     active_status = db.Column(db.Integer)
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id')) # Teacher's id
-    teacher = db.relationship('Teacher') 
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    teacher = db.relationship('Teacher', backref='teacher') # Backref
 
     def __init__(self, assignment_name, course_id, difficulty, assignment_rating, active_status, teacher_id):
         self.assignment_name = assignment_name
@@ -163,8 +163,8 @@ class Assignment_Data(db.Model):
     
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     question_id = db.Column(db.Integer)
+    question_text = db.Column(db.Text)
     assignment = db.relationship('Assignments', backref = 'assignments') # Backref
-    question = db.Column(db.Text)
     choice1 = db.Column(db.Text)
     choice2 = db.Column(db.Text)
     choice3 = db.Column(db.Text)
@@ -177,10 +177,9 @@ class Assignment_Data(db.Model):
         ),
     )
 
-    def __init__(self, assignment_id, question_id, question,choice1, choice2, choice3, choice4, answer):
+    def __init__(self, assignment_id, question_id, choice1, choice2, choice3, choice4, answer):
         self.assignment_id = assignment_id
         self.question_id = question_id
-        self.question = question
         self.choice1 = choice1
         self.choice2 = choice2
         self.choice3 = choice3
