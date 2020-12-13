@@ -8,10 +8,10 @@ students_blueprint = Blueprint('students', __name__ , template_folder='templates
 
 @students_blueprint.route('/signup',  methods=['GET', 'POST'])
 def signup():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
-
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+    
     form = SignUp()
     signupFailed1 = False
     signupFailed2 = False
@@ -31,13 +31,13 @@ def signup():
 
          
         if checkTeacherUname or checkStudentUname: # Check if Uname is already taken
-            return render_template('signup.html',form=form, signupFailed1 = True,searchForm = g.searchForm)            
+            return render_template('signup.html',form=form, signupFailed1 = True, searchForm = searchForm)      
         elif checkTeacherEmail or checkStudentEmail:  # Check if Email is already registered
-            return render_template('signup.html',form=form, signupFailed2 = True,searchForm = g.searchForm)
+            return render_template('signup.html',form=form, signupFailed2 = True, searchForm = searchForm)
        
 
         if password1 != '' and password1 == password2:
-                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 0, "", True, 1)
+                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 5, "", True, 1)
                 db.session.add(new_student)
                 db.session.commit()
                 settings = Settings(new_student.id, True, True)
@@ -45,17 +45,18 @@ def signup():
                 db.session.commit()
                 return redirect(url_for('students.login'))
         else:
-            return render_template('signup.html',form=form, signupFailed3 = True ,searchForm = g.searchForm)
+            return render_template('signup.html',form=form, signupFailed3 = True, searchForm = searchForm)
     
-    return render_template('signup.html',form=form ,searchForm = g.searchForm)
+    return render_template('signup.html',form=form, searchForm = searchForm )
 
 
 @students_blueprint.route('/login' , methods =['GET' , 'POST'])
 def login():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
 
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+    
     form = LogIn()
     loginFailed = False
 
@@ -70,9 +71,9 @@ def login():
             g.whichStudent = CheckStudent
             return redirect( url_for('index') )
         else:
-            return render_template('login.html' , form=form , loginFailed = True,searchForm = g.searchForm)
+            return render_template('login.html' , form=form , loginFailed = True, searchForm = searchForm)
 
-    return render_template('login.html', form=form, loginFailed = False,searchForm = g.searchForm)
+    return render_template('login.html', form=form, loginFailed = False, searchForm = searchForm)
             
 @students_blueprint.route('/' )
 def signout():
@@ -82,9 +83,9 @@ def signout():
 
 @students_blueprint.route('/profile',  methods =['GET' , 'POST'])
 def profile():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
     form = ProfileTab()
 
@@ -105,23 +106,23 @@ def profile():
         form.lname.data = ""
         form.bio.data = ""
 
-    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname, uname = g.whichStudent.student_uname, bio = g.whichStudent.student_bio,searchForm = g.searchForm )   
+    return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname =g.whichStudent.student_lname, uname = g.whichStudent.student_uname, bio = g.whichStudent.student_bio, searchForm = searchForm )   
 
 
 @students_blueprint.route('/photo' )
 def photo():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    return render_template('photo.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,searchForm = g.searchForm) 
+    return render_template('photo.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,searchForm = searchForm) 
 
 @students_blueprint.route('/account',  methods =['GET' , 'POST'] )
 def account():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
-
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+    
     form = AccountTab()
     passwordChangeFailed = False 
     passwordMatchFailed = False 
@@ -131,7 +132,7 @@ def account():
         if not user.check_password(form.password1.data):
             passwordChangeFailed = True
             return render_template('account.html', form = form, studentLoggedIn = g.studentLoggedIn, fname = g.whichStudent.student_fname,
-            lname = g.whichStudent.student_lname, passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichStudent.student_email,searchForm = g.searchForm ) 
+            lname = g.whichStudent.student_lname, passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichStudent.student_email, searchForm = searchForm) 
             
         if form.password2.data == form.password3.data:
             user.hash_password(form.password2.data)
@@ -142,21 +143,21 @@ def account():
             passwordMatchFailed = True
 
     return render_template('account.html', form = form, studentLoggedIn = g.studentLoggedIn, fname = g.whichStudent.student_fname,
-        lname = g.whichStudent.student_lname,passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichStudent.student_email,searchForm = g.searchForm ) 
+        lname = g.whichStudent.student_lname,passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichStudent.student_email, searchForm = searchForm ) 
 
 @students_blueprint.route('/payment_method' )
 def payment_method():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    return render_template('payment_method.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,searchForm = g.searchForm) 
+    return render_template('payment_method.html' , studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,  searchForm = searchForm)
 
 @students_blueprint.route('/privacy',  methods =['GET' , 'POST']  )
 def privacy():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and  g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
     form = PrivacyTab()
     if form.validate_on_submit():
@@ -167,14 +168,14 @@ def privacy():
 
             # additional code here
            
-    return render_template('privacy.html', form = form, studentLoggedIn = g.studentLoggedIn ,  fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,searchForm = g.searchForm)  
+    return render_template('privacy.html', form = form, studentLoggedIn = g.studentLoggedIn ,  fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname,  searchForm = searchForm)  
 
 @students_blueprint.route('/deactivate_account' ,  methods =['GET' , 'POST'] )
 def deactivate_account():
-    g.searchForm = Searching()
-    if g.searchForm.searched.data != '' and g.searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = g.searchForm.searched.data))
-        
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+
     form = DeactivateTab()
     passwordMatchFailed = False 
     if form.validate_on_submit():
@@ -192,8 +193,14 @@ def deactivate_account():
         else:
             passwordMatchFailed = True 
 
-    return render_template('deactivate_account.html' , form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname, passwordMatchFailed = passwordMatchFailed,searchForm = g.searchForm)
+    return render_template('deactivate_account.html' , form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname, passwordMatchFailed = passwordMatchFailed, searchForm = searchForm)
 
 
-# @students_blueprint.route('/<uname>')
-# def public_profile(uname):    
+@students_blueprint.route('/<uname>')
+def public_profile(uname):
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+
+    student = Student.query.filter_by(student_uname = uname).first()
+    return render_template('spublic_profile.html', student=student, searchForm = searchForm)

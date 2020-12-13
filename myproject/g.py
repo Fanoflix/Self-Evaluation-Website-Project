@@ -1,6 +1,3 @@
-
-
-
 def init():
     global studentLoggedIn
     global teacherLoggedIn
@@ -13,4 +10,3 @@ def init():
     teacherLoggedIn = False
     whichStudent = False
     whichTeacher = False
-

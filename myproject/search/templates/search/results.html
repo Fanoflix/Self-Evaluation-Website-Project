@@ -64,7 +64,7 @@
                     </div>
                     <div class="applygrid">
                         {% for student in students %}                
-                            <a class="box" href="#">
+                            <a class="box" href="{{url_for('students.public_profile', uname = student.student_uname)}}">
                                 <div class="pp">
                                     {{student.student_fname[0]}}{{student.student_lname[0] }}
                                 </div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="applygrid">
                 {% for teacher in teachers %}                
-                    <a class="box" href="#">
+                    <a class="box" href="{{url_for('teachers.public_profile', uname = teacher.teacher_uname)}}">
                         <div class="pp">
                             {{teacher.teacher_fname[0]}}{{teacher.teacher_lname[0] }}
                         </div>
