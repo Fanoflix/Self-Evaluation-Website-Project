@@ -1,21 +1,12 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
 from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses
-from myproject.assignments.forms import SolveAssignment
+from myproject.assignments.forms import SolveAssignment, AddAssignment, DeleteAssignment
 from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
-from myproject.assignments.forms import AddAssignment
 from myproject.search.form import Searching
+from sqlalchemy import func
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
-
-
-@assignments_blueprint.route('/home_assignment',  methods=['GET', 'POST'])
-def home_assignment():
-    searchForm = Searching()
-    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = searchForm.searched.data))
-        
-    return render_template('home_assignment.html', teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn,searchForm = searchForm)
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
@@ -40,7 +31,7 @@ def add_assignment():
     questions = []
     index = []
     assignment_questions = 1
-    for x in range (1):
+    for x in range (3): #for no of questions
         field = StringField([ validators.Required() ])
         setattr(AddAssignment, 'Question' + str(assignment_questions), field)
         questions.append('Question' + str(assignment_questions))
@@ -65,38 +56,36 @@ def add_assignment():
         difficulty = form.difficulty.data
         course_id = form.course.data
 
-        # if course_id == len(Courses.query.all()):
-            # pass
-            #additional code here
-
         updated_course = Courses.query.filter_by(id = course_id).first()
         updated_course.no_of_assignments += 1  #incrementing the number of assignments for a course
         db.session.add(updated_course)
         db.session.commit()
+        
+        CheckAssignment = bool(Assignments.query.filter(func.lower(Assignments.assignment_name) == func.lower(assignment_name)).first())
 
-        CheckAssignment = bool(Assignments.query.filter(func.lower(Assignments.assignment_name) == func.lower(new_assignment)).first())
         if not CheckAssignment:
             new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 1, g.whichTeacher.id)
             db.session.add(new_assignment)
             db.session.commit()
-        else:
-            pass 
 
-        new_assignment = Assignments.query.filter_by(assignment_name = assignment_name).first()
-        question = []
-        for x in range(1,assignment_questions): 
-            question.append(new_assignment.id)
-            question.append(x)
-            question.append( getattr( form , 'Question' + str(x) ).data )
-            for y in range(1,5):
-                question.append( getattr(form,'Choice' + str(x) + str(y)).data )
-
-            question.append (getattr(form, 'Answer' + str(x)).data )
-
-            new_question = Assignment_Data(question[0],question[1],question[2] ,question[3],question[4] ,question[5],question[6] ,question[7] )
-            db.session.add(new_question)
-            db.session.commit()
             question = []
+            for x in range(1,assignment_questions): 
+                question.append(new_assignment.id)
+                question.append(x)
+                question.append( getattr( form , 'Question' + str(x) ).data )
+                for y in range(1,5):
+                    question.append( getattr(form,'Choice' + str(x) + str(y)).data )
+
+                question.append (getattr(form, 'Answer' + str(x)).data )
+
+                new_question = Assignment_Data(question[0],question[1],question[2] ,question[3],question[4] ,question[5],question[6] ,question[7] )
+                db.session.add(new_question)
+                db.session.commit()
+                question = []
+        else:
+            pass
+        
+        return redirect(url_for('assignments.list_assignment'))
 
     return render_template('add_assignment.html', all_questions = all_questions, index = index, form = form, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm)
 
@@ -110,48 +99,26 @@ def delete_assignment(aid):
     if searchForm.searched.data != '' and searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
     
-    assignment = Assignments.query.filter_by(id = aid).first()
-    records = []
-    questions = []
+    assignment_data = Assignment_Data.query.filter_by(assignment_id = aid).all()
 
-    for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
-        questions.append(aid)
-        questions.append(q.question_id)
-        questions.append(q.question)
-        questions.append(q.choice1)
-        questions.append(q.choice2)
-        questions.append(q.choice3)
-        questions.append(q.choice4)
-        questions.append(q.answer)
-        records.append(questions)
-        questions = []
-
-    count = 1
-    field_list = []
-
-    for record in records:
-        field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
-        setattr(DeleteAssignment, 'choice' + str(count), field) 
-        field_list.append('choice' + str(count))
-        count = count + 1
-
-    setattr(DeleteAssignment, 'submit', SubmitField("Delete"))
-    
-    form = DeleteAssignment()   
-
-    print(records)
-    # time.sleep(30)
+    form = DeleteAssignment()
+    #try with multiple questions
     if form.validate_on_submit():
         for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
             db.session.delete(q)
             db.session.commit()
 
         assignment = Assignments.query.filter_by(id = aid).first()
+        updated_course = Courses.query.filter_by(id = assignment.course_id).first()
+        updated_course.no_of_assignments -= 1  #incrementing the number of assignments for a course
+        db.session.add(updated_course)
+        db.session.commit()
         db.session.delete(assignment)
         db.session.commit()
-        return redirect(url_for('assignments.home_assignment'))
 
-    return render_template('delete_assignment.html' , form = form ,teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm)
+        return redirect(url_for('assignments.list_assignment'))
+
+    return render_template('delete_assignment.html', form = form, teacherLoggedIn = g.teacherLoggedIn, assignment_data = assignment_data, searchForm = searchForm)
 
 
 @assignments_blueprint.route('/list_assignment', methods=['GET', 'POST'])
@@ -169,9 +136,44 @@ def solve_assignment(aid):
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
+    #---------------------------Displaying from DB---------------------------
+    # records = []
+    # questions = []
+
+    # for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
+    #     questions.append(aid)
+    #     questions.append(q.question_id)
+    #     questions.append(q.question_text)
+    #     questions.append(q.choice1)
+    #     questions.append(q.choice2)
+    #     questions.append(q.choice3)
+    #     questions.append(q.choice4)
+    #     questions.append(q.answer)
+    #     records.append(questions)
+    #     questions = []
+
+
+    # count = 1
+    # field_list = []
+
+    # for record in records:
+    #     field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
+    #     setattr(DeleteAssignment, 'choice' + str(count), field) 
+    #     field_list.append('choice' + str(count))
+    #     count = count + 1
+
+    # setattr(DeleteAssignment, 'submit', SubmitField("Delete"))
+    
+    # questions = []
+    # for record in records:  
+    #     questions.append(record[2])
+
+    #---------------------------Displaying from DB---------------------------
+    
     # assignment = TableName1.query.filter_by(assignment_name = 'some name').first():
     # id = assignment.TableName.assignment_id
     # a sample 
+
     records = [ 
                 ['1','1','How do you do when you cant do?','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
                 ['1','2','What is your name?','I', 'you' ,'no' , 'yes' ,'4'] ,

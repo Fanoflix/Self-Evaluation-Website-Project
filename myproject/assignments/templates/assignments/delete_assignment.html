@@ -14,11 +14,11 @@
                 {{ form.hidden_tag() }}
                 <!-- Outer Loop -->
                 
-                {% for question in questions %}
+                {% for assignment in assignment_data %}
                     <div class="form_fields">
                         <div class="ap_question">
-                            <p>{{loop.index}}.</p>
-                            <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{question}}</p>
+                            <p>{{assignment.question_id}}.</p>
+                            <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{assignment.question_text}}</p>
                             <div style=" display:flex; flex-direction:column; justify-content:center; align-items:center">
                                 <p style="
                                 width: 90px ;margin-left: auto; border: solid 1px black; border-radius:15px;
@@ -30,7 +30,12 @@
                             
                         </div>
                         <div class="ap_options"></p>
-                            {{ form|attr(field_list[loop.index0])(class = 'radio_button') }} 
+                           <ul>
+                               <li>{{ assignment.choice1 }}</li>
+                               <li>{{ assignment.choice2 }}</li>
+                               <li>{{ assignment.choice3 }}</li>
+                               <li>{{ assignment.choice4 }}</li>
+                           </ul> 
                         </div>
     
                         
