@@ -129,7 +129,7 @@ def photo():
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    return render_template('tphoto.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm)
+    return render_template('tphoto.html',  teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm)
 
 @teachers_blueprint.route('/account', methods =['GET' , 'POST'])
 def account():
@@ -167,7 +167,7 @@ def payment_method():
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    return render_template('tpayment_method.html', form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm) 
+    return render_template('tpayment_method.html',  teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, searchForm = searchForm) 
 
 @teachers_blueprint.route('/privacy', methods =['GET' , 'POST'])
 def privacy():
@@ -211,7 +211,7 @@ def deactivate_account():
     return render_template('tdeactivate_account.html' , form = form, teacherLoggedIn = g.teacherLoggedIn , fname = g.whichTeacher.teacher_fname, lname = g.whichTeacher.teacher_lname, passwordMatchFailed = passwordMatchFailed, searchForm = searchForm)     
 
 
-@teachers_blueprint.route('/<uname>')
+@teachers_blueprint.route('/<uname>' , methods =['GET' , 'POST'])
 def public_profile(uname):
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():

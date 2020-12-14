@@ -7,6 +7,6 @@ import time
 #DONT RUN THIS FILE EVERYTIME OR IT RESET THE DB
 os.system('python execute_migration.py')
 time.sleep(5)
-os.system('python setupcourses.py')
+os.system('python setupdb.py')
 os.system('python app.py')
 

@@ -2,6 +2,7 @@ from myproject import app
 from myproject import g
 from myproject.search.form import Searching
 from myproject.models import Assignments
+from sqlalchemy import desc
 from flask import render_template,redirect,url_for
 
 g.init()
@@ -11,7 +12,9 @@ def index():
     searchForm = Searching()
     studentLoggedIn = g.studentLoggedIn
     teacherLoggedIn = g.teacherLoggedIn
-    all_assignments = Assignments.query.all()
+    
+    all_assignments = Assignments.query.order_by(Assignments.assignment_review.desc()).limit(20)
+    # all_assignments = Assignments.query.all()
 
     if searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))

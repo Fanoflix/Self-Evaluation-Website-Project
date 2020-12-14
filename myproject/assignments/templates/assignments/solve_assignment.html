@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
     
+    
    <div class="attempt_page_wrapper">
 
         <div class="attempt_page_heading">
-            <h1>Assignment Name</h1>
-            <p>Total Points: 10</p>
+            <h1>{{questions[0].assignment.assignment_name}}</h1>
+            <p>Total Points: {{ total_points}}</p>
             <hr>
         </div>
 
@@ -18,13 +19,13 @@
                     <div class="form_fields">
                         <div class="ap_question">
                             <p>{{loop.index}}.</p>
-                            <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{question}}</p>
+                            <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{question.question_text}}</p>
                             <div style=" display:flex; flex-direction:column; justify-content:center; align-items:center">
                                 <p style="
                                 width: 90px ;margin-left: auto; border: solid 1px black; border-radius:15px;
                                 display:flex; justify-content:center; position:sticky;
                                 "> 
-                                    1 Points
+                                    {{points}} Points
                                 </p>
                             </div>
                             
@@ -44,5 +45,4 @@
         </div>
 
    </div>
-    
 {% endblock %}

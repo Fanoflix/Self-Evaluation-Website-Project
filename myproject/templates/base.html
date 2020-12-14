@@ -16,6 +16,9 @@
     </style>
     <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" integrity="sha384-9/D4ECZvKMVEJ9Bhr3ZnUAF+Ahlagp1cyPC7h5yDlZdXs4DQ/vRftzfd+2uFUuqS" crossorigin="anonymous"></script>
     <title>RatorX</title>
+    {% if request.endpoint == 'assignments.solve_assignment' or  request.endpoint == 'assignments.after_submit' %}
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    {% endif %}
 </head>
 <body>
     <div class="wrapper" >
@@ -29,7 +32,8 @@
                     <form class="search_bar" method="POST">
                         {{ searchForm.hidden_tag() }}
                         <div class = "search_icon">
-                            {{searchForm.submit(class="fas fa-search")}}
+                            <i class="fas fa-search"> </i>
+                            {{searchForm.submit( class =" search_btn")}}
                         </div>
                         <div class = "type_text">
                             {{ searchForm.searched(class = "input" , placeholder="Search for anything") }}

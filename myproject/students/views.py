@@ -38,7 +38,7 @@ def signup():
        
 
         if password1 != '' and password1 == password2:
-                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 5, "", True, 1)
+                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 0, "", True, 1)
                 db.session.add(new_student)
                 db.session.commit()
                 settings = Settings(new_student.id, True, True)
@@ -118,7 +118,7 @@ def profile():
     return render_template('profile.html', form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname.capitalize() , lname =g.whichStudent.student_lname.capitalize() , uname = g.whichStudent.student_uname, bio = g.whichStudent.student_bio, searchForm = searchForm )   
 
 
-@students_blueprint.route('/photo' )
+@students_blueprint.route('/photo'  , methods =['GET' , 'POST'])
 def photo():
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
@@ -154,7 +154,7 @@ def account():
     return render_template('account.html', form = form, studentLoggedIn = g.studentLoggedIn, fname = g.whichStudent.student_fname,
         lname = g.whichStudent.student_lname,passwordChangeFailed = passwordChangeFailed,passwordMatchFailed = passwordMatchFailed , userEmail = g.whichStudent.student_email, searchForm = searchForm ) 
 
-@students_blueprint.route('/payment_method' )
+@students_blueprint.route('/payment_method' , methods =['GET' , 'POST'])
 def payment_method():
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
@@ -205,7 +205,7 @@ def deactivate_account():
     return render_template('deactivate_account.html' , form = form, studentLoggedIn = g.studentLoggedIn , fname = g.whichStudent.student_fname, lname = g.whichStudent.student_lname, passwordMatchFailed = passwordMatchFailed, searchForm = searchForm)
 
 
-@students_blueprint.route('/<uname>')
+@students_blueprint.route('/<uname>' , methods =['GET' , 'POST'])
 def public_profile(uname):
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():

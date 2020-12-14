@@ -132,64 +132,151 @@ def list_assignment():
 
 @assignments_blueprint.route('/solve_assignment/<aid>',  methods=['GET', 'POST'])
 def solve_assignment(aid):
+    earned_points = 0
+    passed = False
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    records = []
-    questions = []
+    questions = Assignment_Data.query.filter_by(assignment_id = aid)
 
-    for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
-        questions.append(aid)
-        questions.append(q.question_id)
-        questions.append(q.question_text)
-        questions.append(q.choice1)
-        questions.append(q.choice2)
-        questions.append(q.choice3)
-        questions.append(q.choice4)
-        questions.append(q.answer)
-        records.append(questions)
-        questions = []
+    
+   
+    # records = [ 
+    #             ['1','1','How do you do when you cant do?','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
+    #             ['1','2','What is your name?','I', 'you' ,'no' , 'yes' ,'4'] ,
+    #             ['1','3','Is Abdullah a bot? Wrong answers only','yes', 'yes' ,'yes' , 'yes' ,'1'] ,
+    #             ['1','4','You done fucked up','yes', 'no' ,'I am' , 'hahaha' ,'3'] ,
+    #             ['1','5','How is testing going?','perfect', 'good' ,'not bad' , 'fucked' ,'4'] 
+    #             ]
+        
 
-    count = 1
+
+  
+
+    #-----------Making a form------------------
+    no_of_question = 1
     field_list = []
 
-    for record in records:
-        field = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
-        setattr(SolveAssignment, 'choice' + str(count), field) 
-        field_list.append('choice' + str(count))
-        count = count + 1
+    # for record in TableName.query.filter_by(assignment_id = id).all():
+    for record in questions:
+        field = RadioField(choices=[('1' , record.choice1) , ('2' , record.choice2), ('3' , record.choice3), ('4' , record.choice4) ])
+        setattr(SolveAssignment, 'radioField' + str(no_of_question), field) 
+        # i.e: choice1 = RadioField(choices=[('1' , record[3]) , ('2' , record[4]), ('3' , record[5]), ('4' , record[6]) ])
+        field_list.append('radioField'+str(no_of_question))
+        no_of_question = no_of_question + 1
 
     setattr(SolveAssignment, 'submit', SubmitField("Submit"))
-    
-    questions = []
-    for record in records:  
-        questions.append(record[2])
+    #----------------------------------------------
+
+    if questions[0].assignment.difficulty == 'expert':
+        total_points = 5* (no_of_question - 1)
+        points = 5
+    elif questions[0].assignment.difficulty == 'intermediate':
+        total_points = 3* (no_of_question - 1)
+        points = 3
+    else:
+        total_points = 1* (no_of_question - 1)
+        points = 1
+
 
     form = SolveAssignment()   
-
+    
     if form.validate_on_submit():
-        count = -1
-        for record in records:
-            count = count + 1
-            if getattr(form,field_list[count]).data == record[7]:
-                # points++
-                print(getattr(form,field_list[count]).data)
-            
-            getattr(form,field_list[count]).data = ''
-        
-        return redirect(url_for('assignments.after_submit'))
+        student = Student.query.filter_by(id = g.whichStudent.id).first()
+        student.student_attempted += 1
+        db.session.add(student)
+        db.session.commit()
 
-    return render_template('solve_assignment.html' , form = form, teacherLoggedIn = g.teacherLoggedIn, questions = questions , field_list = field_list,searchForm = searchForm)
+        count = -1
+        for record in questions:
+            count = count + 1
+            if getattr(form,field_list[count]).data == record.answer:
+                getattr(form,field_list[count]).data = ''
+                earned_points += points 
+                
+        print(earned_points)
+        if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
+            student.student_solved += 1
+            student.student_score += earned_points
+            passed = True
+        elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
+            student.student_solved += 1
+            student.student_score += earned_points
+            passed = True
+        elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
+            student.student_solved += 1
+            student.student_score += earned_points
+            passed = True
+        else:
+            passed = False
+        
+        db.session.add(student)
+        db.session.commit()
+
+        this_position = (student.student_score * student.student_solved) /student.student_attempted
+        student.student_rank = 1
+        all_students = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_attempted > 0)
+        
+        # counting no of students
+        no_of_students = 0
+        for studs in all_students:
+            no_of_students += 1
+       
+        print(no_of_students)
+       # checking if there is only for one student with condition Student.student_attempted > 0
+        if no_of_students == 1 and passed == True and all_students[0].student_rank == 0:         
+            all_students[0].student_rank += 1
+            db.session.add(all_students[0])
+        else:
+            for stud in all_students:
+                if stud.id != student.id:
+                        position  = (stud.student_score * stud.student_solved) /stud.student_attempted
+                        if this_position > position:
+                            student.student_rank = stud.student_rank
+                            stud.student_rank += 1
+                            db.session.add(stud)
+                            break
+                        elif student.student_rank > stud.student_rank:
+                            stud.student_rank -= 1
+                            student.student_rank += 1
+                            db.session.add(stud)
+                            break
+                        else:
+                            student.student_rank += 1
+                            db.session.add(stud)
+
+        db.session.add(student)
+        db.session.commit()
+        return redirect(url_for('assignments.after_submit',passed = passed))
+
+    return render_template('solve_assignment.html' ,form = form, teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
 
     
         
-@assignments_blueprint.route('/after_submit',  methods=['GET', 'POST'])
-def after_submit():
+@assignments_blueprint.route('/after_submit/<passed>',  methods=['GET', 'POST'])
+def after_submit(passed):
+    rank_change = False
+    rank_changed_by = 0
+    points_earned = 0
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
-    return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm)  
+
+    student = Student.query.filter_by(id = g.whichStudent.id).first()
+
+    if student.student_rank != g.whichStudent.student_rank:
+        rank_changed_by = g.whichStudent.student_rank - student.student_rank
+        rank_change = True
+
+    if student.student_score != g.whichStudent.student_score:
+        points_earned = student.student_score - g.whichStudent.student_score
+    
+    g.whichStudent = False 
+    g.whichStudent = student
+
+ 
+    return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm , passed = passed,rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn)  
     
 
 
