@@ -144,16 +144,18 @@ class Assignments(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id')) # Assignment tag
     course = db.relationship('Courses', backref='courses') # Backref
     difficulty = db.Column(db.Text)
-    assignment_rating = db.Column(db.Integer)
+    assignment_rating = db.Column(db.Float)
+    assignment_review = db.Column(db.Integer)
     active_status = db.Column(db.Integer)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     teacher = db.relationship('Teacher', backref='teacher') # Backref
 
-    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, active_status, teacher_id):
+    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, assignment_review, active_status, teacher_id):
         self.assignment_name = assignment_name
         self.course_id = course_id
         self.difficulty = difficulty
         self.assignment_rating = assignment_rating
+        self.assignment_review = assignment_review
         self.active_status = active_status
         self.teacher_id = teacher_id
 

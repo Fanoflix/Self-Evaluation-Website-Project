@@ -33,19 +33,17 @@
   <hr id="hrbottom">
 
   <div class="assignment_wrapper">
-     <!-- for assignment in all_assignments 
-        <a href="url_for('assignments.solve_assignment', aid = assignment.id)" class= "assignment_box"> -->
-    {% for x in range(18) %}
-        <a href="#" class= "assignment_box">
+    {% for assignment in all_assignments  %}
+          <a href="{{url_for('assignments.solve_assignment', aid = assignment.id)}}" class= "assignment_box"> 
             <div class="assignment_name">
-              The complete normalization practice
+              {{assignment.assignment_name}}
             </div>
             <div class="teacher_description">
-              Musab Python, Abdullah bot
+              {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
             </div>
             <div class="rate_review">
-              <div class = "rating"> 4.4 </div>
-              <div class = "reviews"> (15,149) </div>
+              <div class = "rating"> {{assignment.assignment_rating }}</div>
+              <div class = "reviews"> ({{assignment.assignment_review}}) </div>
             </div>
             <div class="price">$4.99</div>
             <div class="status">New</div>

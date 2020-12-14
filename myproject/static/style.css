@@ -101,6 +101,17 @@ a{
     margin: 0px 10px;
     text-decoration: none;
     color: orangered;
+    display: flex;
+}
+
+.navleft ul .search_bar .search_icon .search_btn{
+    border:none;
+    outline: none;
+    background-color: white;
+    font-weight: 0;
+    color: white;
+    width: 0;
+    height: 0;
 }
 
 .navleft ul .search_bar .type_text .input{
@@ -110,6 +121,10 @@ a{
     min-width: 290px;
     max-width: auto;
     outline: none;
+}
+
+.navleft ul .search_bar .type_text .input::placeholder{
+    color: black;
 }
 
 

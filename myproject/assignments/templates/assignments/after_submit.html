@@ -1,7 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
     <div class="jumbotron">
-        <h1>After Submit Page</h1>
+        <h1>Result:</h1> <br> <br>
+
+
+               
+        {% if passed == 'True' %}
+                <h4>You Passed!</h4> <br>
+                <h6>Points Earned: {{points_earned}} </h6> <br> 
+                 <h6>  Total Points: {{ student.student_score}} </h6> <br>
+        {% else %}
+                 YOU FAILED BITCH!
+        {% endif %}
+
+        {% if rank_changed %}
+            <h6> Your Rank is increased by {{rank_changed_by}} </h6> <br>
+            <h6> Your New Rank: {{ student.student_rank}} </h6><br>
+        {% else %}
+        <h6>Your Rank: {{ student.student_rank}}</h6> 
+        {% endif %}
+               
+        
+        
     </div>
     
 {% endblock %}
