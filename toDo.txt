@@ -1,11 +1,6 @@
 TO DO
 
-# AMMMAR  
-- leaderboard (leave css shit) (priority)
-    - this shit need to be maintained ...yahan bhi acha khasa kaam ha.
-
-# AMMAR (do this after making leaderboard) (leave css shit)
-- student "public profile" bane gi, plus all the data to display on that page.
+#AMMAR (FIX THIS SHIT)
 - public profile must display 
     - username
     - name
@@ -13,82 +8,59 @@ TO DO
     - student no of attempted assignment 
     - student no of solved assignment
 - student privacy backend with db implementation.
-- student photo tab page with css need to be made. ///// leave
-- student payment method wala tab banana ha 
-- option to see student saved assignments on his profile ///// leave
+- option to see student saved assignments on his profile.
 
 - teacher "public profile" bane gi, plus all the data to display on that page. 
 - need to add something in teacher privacy tab , dont wanna delete it.
-- teacher photo wala page with css, and implementation  /////
-- teacher payment details wala page (maybe ratorX charge these niggas a little bit optional shit)
-    (will do it later)
-- teacher ratings shit need to be implemented , i.e student will give teachers ratings 
-    and reviews etc /// leave
-- option to do the above that after assignment submission maybe and also otherwise. ///// leave
+
+
 
 
 
 # ABDULLAH
-- In teacher assignment tab , option to :
+- Give student option to rate and review teachers and assignment after solving assignment.
+
+# ABDULLAH
+- Teacher assignment tab , option to :
     - teacher active assignment must be displayed (suppose some teacher has uploaded 5 assignment then active assignment = 5)
-    - upload new assignment with solution
-    - delete assignments with solution
-    - not only different difficulty assignment will have more points they must have higher passing marks shit 
-        like expert 70% and beginner 50%
-    - some assignment may only be solved after buying 
 
-
-    - ofcourse these assignment need to come to main page if there are less assignment there .. ///// leave this
-    - assignment block on page must show teacher name  and teacher rating and assignment difficulty level /// leave this
-    
-
-- SEARCHING SHIT 
-    - will try our best to make a small search engine so that people can browse assignment and teachers 
-        major db and backend shit here ...fucked
-    
-    
-    - when a student click on assignment ...will be redirected to page that will have teacher + assignment description 
-        and an option to solve the assignment which will further redirect him to assignment solving
-    - ofc need to make that page with pappu validation ... yeh bhi acha khasa kaam ha 
-    - will compare student solution with actual solution , give him pass or fail grade , give him points.
-    - must solve in a given time limit ... fucked
-
-
-
-# END MA DEKEIN GA
-- Preferences 
+# MAHAD AND ABDULLAH
+- Preferences
+    - must display 20 highest rated + highest no of reviews assignment then neechay Preferences
     - each student main page after login shall show him suggested assignment.. this is tough shit may look easy
     - need to make this shit somehow change as db changes ... fucked
 
+# MAHAD
+- Assignments 
+    - When a student click on assignment ...will be redirected to page that will have teacher + assignment description and an 
+      option to solve the assignment which will further redirect him to assignment solving (assignment_description basically).
+    - CSS Rehti ha , achi khasi
+
+# MAHAD
+- Searching
+    - have to further optimize it
+
+# MAHAD and AMMAR(WILL START ONLY  AFTER YOU FINISH YOUR ABOVE TASK)
+- Login Required Stuff and Validation
 
 
-- OAUTH SHIT AND PAYMENT STRIPE SHIT
 
-    ALL OF THESE PAGES NEED TO BE MADE WITH CSS ....AB JO PAGES BAN GAYE HAN UN ME KEERA NAHI NIKALNA WE DONT HAVE TIME 
-    FOR THAT SHIT .. NEED TO SOMEHOW BRING GIT INTO OUR WORK FOR COLLAB IF NEEDED .. I THINK HOGI ..MAJOR NEEDS
+====================================================LEFT FOR LATER ===================================================
+- student photo tab page with css need to be made. 
+- student payment method wala tab banana ha. 
 
-    JAB MEIN KOI CHEEZ BTA RAHA HN GA TOH PICHE GITHUB KA ADVENTURE PA KOI NI JAYE GA XD
+- teacher photo wala page with css, and implementation. 
+- teacher payment details wala page (maybe ratorX charge these niggas a little bit optional shit).
 
-    PLEASE DO CONSISTENT WORK AGAR PICHE SA KOI FORMAT, STRUCTURE , STYLE CHALTA HUWA ARAHA HA TOH SAB USSAY FOLLOW KRENGE.
+- student and teacher joined date.
 
-    WE HAVE ALOT TO DO AUR TIME NAHI HA...WITH CLASSES, assignments etc going on.
+- some assignment will be free , some can be solved only after buying them.
+- In the Assignments box , below New likha ha , i want more like trending, hot etc
 
-    PLEASE AB SA HAR DIN MIN 6 HOURS EACH OF US ...THATS 18 HOURS OF WORK ...TIME TRACKING  = ON
+- OAUTH
+- PAYMENT STRIPE 
+========================================================================================================================
 
-    NEED ATLEAST 2 DAYS BEFORE EVALUATION TO TEST , OPTIMIZE EVERYTHING. 
 
-    AMMAR 
-        - TMHARA KAAM DB RELATED AUR FRONTEND RELATED MAINLY ...BACKEND NOT SO MUCH()
-        - PLEASE SLACK NI KRYO FORAN FORAN SAB KRKE DEDENA IF REQUIRED
-        - JIN CHEEZON MEIN DB USE HORAHA HOGA ZYADA WO TM KRNA ILL HELP
-        - OTHERWISE SMALL TIME WORK ON BACKEND ATLEAST FOR THE NEXT FEW DAYS
 
-    ABDULLAH
-        - HEAVY LIFTING BACKEND 
-        - JALDI KAAM KRNA HA 
-        - PAPPU CODING
-
-    
-    BACKEND: ABDULLAH MAHAD AMMAR 
-    FRONTEND: MAHAD AMMAR ABDULLAH(dummy pages to bana skte ho with no styling)
-    DATABASE: AMMAR MAHAD ABDULLAH 
+- NEED ATLEAST 2 DAYS BEFORE EVALUATION TO TEST , OPTIMIZE EVERYTHING. 
