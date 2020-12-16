@@ -468,7 +468,7 @@ a{
 .content2 .inside .forms .deactivate_tab_btn{
     margin: 0;
     margin-top: 20px;
-    border: solid 1px rgba(134, 0, 0, 0.829);
+    border: solid 1px rgba(134, 0, 0, 0.876);
     width: 30%;
     height: 40px;
     background-color: white;
@@ -751,6 +751,100 @@ a{
 
 .ap_submit:focus{
     outline: none;
+}
+.delete_assignment_btn{
+    position: relative;
+    top: -10px;
+    height: 30px;
+    margin-left:750px;
+    color:white;
+    font-size: 16px;
+    font-weight:600;
+    width:180px;
+    border:none;
+    border-radius:5px;
+    background-color: rgb(179, 23, 23);
+
+}
+
+.delete_assignment_btn:hover{
+    transform: scale(0.99);
+}
+/* =====================================List Assignment ============================================== */
+
+.list_assignment_wrapper{
+    /* background-color: rgb(212, 211, 211); */
+    width: 70%;
+    margin: 30px 15%;
+    /* margin-bottom: 50px; */
+}
+
+.list_top_container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.list_top_container .main_heading{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.list_top_container .main_heading .heading{
+    font-weight: bold;
+    font-size: 40px;
+    margin: 0;
+}
+
+.list_top_container .main_heading .add_assignment_btn{
+    background-color: green;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    border-radius: 4px;
+    padding: 5px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+.list_top_container .main_heading .add_assignment_btn:hover{
+    text-decoration: none;
+    transform: scale(0.99);
+}
+
+
+
+.list_top_container .stats{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background: rgb(206, 206, 206);
+    box-shadow: 0 1px 3px rgba(56, 56, 56, 0.8);
+    border-radius: 5px;
+    width: 240px;
+    min-height: 150px;
+}
+
+.list_top_container .stats *:first-child{
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.list_top_container .stats *{
+    margin-bottom: 5px;
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.list_assignment_wrapper .display_assignment{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 20px;
 }
 /* ====================================Assignment Section ==========================================*/
 

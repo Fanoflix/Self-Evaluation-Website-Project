@@ -1,18 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="jumbotron" > 
-        <h1>Your Assignments Displayed Here</h1>
-        {% for assignment in all_assignments %}
-            <ul>
-                <li>
-                    <a href="{{ url_for('assignments.delete_assignment', aid = assignment.id) }}">{{ assignment.id }}: {{ assignment.assignment_name }}</a>
-                     <!-- <button style='border:none'><i class="fas fa-trash" style='color:red; border:none'></i> </button> -->
-                </li>
-            </ul>
-        {% endfor %}
-        <br>
-        <br>
-        <h3><a href="{{ url_for('assignments.add_assignment')}}">Add Assignment <small><i class="fas fa-plus"></i></small></a></h3>        
+    <div class="list_assignment_wrapper" > 
+        <div class = list_top_container> 
+             <div class="main_heading">
+                <div class="heading"> Your Assignments </div>
+                <a  class="add_assignment_btn" href="{{ url_for('assignments.add_assignment')}}">Add New Assignment <small><i class="fas fa-plus"></i></small></a>
+            </div>
+            
+            <div class="stats">
+                    <div>
+                        STATS
+                    </div>
+                    <hr style="border: solid 1px orangered; margin: 0 17px; margin-bottom:10px; width:200px">
+                    <div>
+                        Active Assignments: 149
+                    </div>
+                    <div>
+                        Total Reviews: 259650
+                    </div>
+            </div>
+        </div >
+        <hr style="margin-bottom:25px;">
+        <div class="display_assignment">
+            {% for assignment in all_assignments %}
+                <a class= "assignment_box" href="{{ url_for('assignments.delete_assignment', aid = assignment.id) }}"> 
+                    <div class="assignment_name">
+                        {{assignment.assignment_name}}
+                    </div>
+                    <div class="teacher_description">
+                        {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
+                    </div>
+                    <div class="rate_review">
+                        <div class = "rating"> {{assignment.assignment_rating }}</div>
+                        <div class = "reviews"> ({{assignment.assignment_review}}) </div>
+                    </div>
+                    <div class="price">$4.99</div>
+                    <div class="status">New</div>
+                </a>
+
+            {% endfor %}
+        </div>
+        
+ 
     </div>   
     
 {% endblock %}

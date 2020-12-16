@@ -15,5 +15,5 @@ class AddAssignment(FlaskForm):
     
 
 class DeleteAssignment(FlaskForm):
-    submit = SubmitField("Delete")
+    submit = SubmitField("Delete Assignment")
 
