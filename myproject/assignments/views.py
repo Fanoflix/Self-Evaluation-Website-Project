@@ -100,6 +100,19 @@ def delete_assignment(aid):
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
     
     assignment_data = Assignment_Data.query.filter_by(assignment_id = aid).all()
+    no_of_question = 0
+    for question in assignment_data:
+        no_of_question +=1
+    
+    if assignment_data[0].assignment.difficulty == 'expert':
+        total_points = 5* (no_of_question)
+        points = 5
+    elif assignment_data[0].assignment.difficulty == 'intermediate':
+        total_points = 3* (no_of_question)
+        points = 3
+    else:
+        total_points = 1* (no_of_question)
+        points = 1
 
     form = DeleteAssignment()
     #try with multiple questions
@@ -118,7 +131,7 @@ def delete_assignment(aid):
 
         return redirect(url_for('assignments.list_assignment'))
 
-    return render_template('delete_assignment.html', form = form, teacherLoggedIn = g.teacherLoggedIn, assignment_data = assignment_data, searchForm = searchForm)
+    return render_template('delete_assignment.html', form = form, teacherLoggedIn = g.teacherLoggedIn, assignment_data = assignment_data, searchForm = searchForm, total_points = total_points , points =points )
 
 
 @assignments_blueprint.route('/list_assignment', methods=['GET', 'POST'])

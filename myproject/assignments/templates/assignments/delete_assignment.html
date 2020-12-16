@@ -4,8 +4,11 @@
    <div class="attempt_page_wrapper">
 
         <div class="attempt_page_heading">
-            <h1>Assignment Name</h1>
-            <p>Total Points: 10</p>
+            <h1>{{assignment_data[0].assignment.assignment_name}}</h1>
+            <div style="display: flex; margin:0; height:20px"> 
+                <p>Total Points: {{total_points}}</p>
+                {{ form.submit( class = "delete_assignment_btn")}} 
+            </div>
             <hr>
         </div>
 
@@ -24,7 +27,7 @@
                                 width: 90px ;margin-left: auto; border: solid 1px black; border-radius:15px;
                                 display:flex; justify-content:center; position:sticky;
                                 "> 
-                                    1 Points
+                                    {{points}} Points
                                 </p>
                             </div>
                             
@@ -43,7 +46,7 @@
                     
                 {% endfor %}
 
-                 {{ form.submit(class = 'ap_submit') }} 
+                 
                  
             </form>
         </div>
