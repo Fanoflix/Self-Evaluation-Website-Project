@@ -1,30 +1,47 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="jumbotron" >
-        <h1>Add_Assignment</h1>
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            {{ form.assignment_name.label }} {{ form.assignment_name() }} <br>
-            {{ form.difficulty.label }} {{ form.difficulty() }} <br>
-            {{ form.course.label }} {{ form.course() }} <br>
-            
-            {% for question in all_questions %}
-                <p style = "font-weight: bold;">Question {{index[loop.index0] }}</p>
-                {{ form|attr(question[0])(placeholder="Question" + index[loop.index0], style = "margin:10px 0px;") }} <br>
-                {{ form|attr(question[1])(placeholder= "Choice 1", style = "margin:10px 0px;") }} <br>
-                {{ form|attr(question[2])(placeholder= "Choice 2", style = "margin:10px 0px;") }} <br>
-                {{ form|attr(question[3])(placeholder= "Choice 3", style = "margin:10px 0px;") }} <br>
-                {{ form|attr(question[4])(placeholder= "Choice 4", style = "margin:10px 0px;") }} <br>
-                {{ form|attr(question[5])(placeholder= "Answer", style = "margin:10px 0px;") }} <br>
-            {% endfor %}
-            {{ form.submit() }}
-        </form>
-            <a href="">
-                <i class="far fa-plus-square"></i>
-            </a> 
+    <div class="add_assignment_wrapper" >
+        <div class = "main_heading">
+            Add New Assignment
+        </div>
+        <form method="POST" class="add_assignment">
+            <div class="assignment_details">
+                {{ form.hidden_tag() }}
+                <div class="form_labels">
+                    <p class = "field1"> Assignment Name: </p>
+                    <p class = "field2"> Select Difficulty: </p>
+                    <p class = "field3"> Select Course: </p>
+                </div>
+                <div class="form_fields">
+                     {{ form.assignment_name( class = "fields") }} 
+                     {{ form.difficulty(class = "fields" , style = "width:230px;") }} 
+                     {{ form.course(class = "fields") }} 
+                </div>   
+            </div>
+            <div class="questions_details" >
+                <div class="question">
+                {% for question in all_questions %}
+                    <p class = "question_no">QUESTION {{index[loop.index0] }}</p>
+                    {{ form|attr(question[0])(placeholder="",class =  'field question_field') }} 
+                    {{ form|attr(question[1])(placeholder= "Choice 1", class = 'field choice_field') }} 
+                    {{ form|attr(question[2])(placeholder= "Choice 2", class = 'field choice_field') }} 
+                    {{ form|attr(question[3])(placeholder= "Choice 3", class = 'field choice_field') }} 
+                    {{ form|attr(question[4])(placeholder= "Choice 4", class = 'field choice_field') }} 
+                    {{ form|attr(question[5])(placeholder= "Answer", class = 'field answer_field') }}
+                {% endfor %}
+                </div>
+            </div>
 
-    </div>
-</div>
+           <div class="add_assignmnet_btn_div">
+                
+                <div class="add_assignment_btn2"> Add Question</div>
+                {{ form.submit(class="add_assignment_btn") }}
+                
+           </div>
+
+    
+            
+        </form>
     </div>
     
 {% endblock %}
