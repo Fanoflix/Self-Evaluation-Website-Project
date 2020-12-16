@@ -10,8 +10,8 @@ class DescriptionAssignment(FlaskForm):
     pass
 
 class AddAssignment(FlaskForm):
-    assignment_name = StringField('Name:', [ validators.Required() ]) 
-    difficulty = SelectField('Difficulty:', choices = [('Beginner', 'Beginner'), ('intermediate', 'intermediate'), ('Expert', 'Expert')]) 
+    assignment_name = StringField('Assignment Name:', [ validators.Required() ]) 
+    difficulty = SelectField('Select Difficulty:', choices = [('Beginner', 'Beginner'), ('intermediate', 'intermediate'), ('Expert', 'Expert')]) 
     
 
 class DeleteAssignment(FlaskForm):

@@ -23,7 +23,7 @@ def add_assignment():
     if searchForm.searched.data != '' and searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    course = SelectField("Courses",[validators.Required()], choices = [(course.id, course.course_name) for course in Courses.query.all()])
+    course = SelectField("Select Courses:",[validators.Required()], choices = [(course.id, course.course_name) for course in Courses.query.all()])
     setattr(AddAssignment, 'course', course)
  
 
@@ -31,7 +31,7 @@ def add_assignment():
     questions = []
     index = []
     assignment_questions = 1
-    for x in range (3): #for no of questions
+    for x in range (10): #for no of questions
         field = StringField([ validators.Required() ])
         setattr(AddAssignment, 'Question' + str(assignment_questions), field)
         questions.append('Question' + str(assignment_questions))
