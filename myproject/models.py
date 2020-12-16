@@ -56,7 +56,7 @@ class Student(db.Model):
     student_privacy_settings = db.Column(db.Integer)
 
     # Backrefs
-    settings = db.relationship('Settings', backref='settings', uselist=False) # One to One relationship: Student can have 1 setting
+    settings = db.relationship('Settings', backref='Settings_JOIN_Student', uselist=False) # One to One relationship: Student can have 1 setting
 
 
     def __init__(self, student_fname, student_lname, student_uname, student_email, student_password,student_attempted, student_solved, student_rank, student_score, student_bio, student_account_status, student_privacy_settings):
@@ -89,7 +89,7 @@ class Settings(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), primary_key = True) # Can be a PK because its a 1-1 Relationship
     display_rank = db.Column(db.Boolean)
     display_stats = db.Column(db.Boolean)
-    student = db.relationship('Student', backref="student", uselist = False) # Backref
+    student = db.relationship('Student', backref="Student_JOIN_Settings", uselist = False) # Backref
 
     def __init__(self, student_id, display_rank, display_stats):
         self.student_id = student_id
@@ -142,22 +142,42 @@ class Assignments(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     assignment_name = db.Column(db.Text)
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id')) # Assignment tag
-    course = db.relationship('Courses', backref='courses') # Backref
+    course = db.relationship('Courses', backref='Courses_JOIN_Assignments') # Backref
     difficulty = db.Column(db.Text)
+    assignment_no_of_reviews = db.Column(db.Integer)
     assignment_rating = db.Column(db.Float)
-    assignment_review = db.Column(db.Integer)
     active_status = db.Column(db.Integer)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
-    teacher = db.relationship('Teacher', backref='teacher') # Backref
+    teacher = db.relationship('Teacher', backref='Teacher_JOIN_Assignments') # Backref
 
-    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, assignment_review, active_status, teacher_id):
+    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, assignment_no_of_reviews, active_status, teacher_id):
         self.assignment_name = assignment_name
         self.course_id = course_id
         self.difficulty = difficulty
+        self.assignment_no_of_reviews = assignment_no_of_reviews
         self.assignment_rating = assignment_rating
-        self.assignment_review = assignment_review
         self.active_status = active_status
         self.teacher_id = teacher_id
+        
+
+class Assignment_Review(db.Model):
+    __tablename__ = 'assignment_review'
+    
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
+    review_id = db.Column(db.Integer)
+    review_text = db.Column(db.Text)
+    assignment = db.relationship('Assignments', backref = 'Assignment_Review_JOIN_Assignments') #(not redundent)
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+            review_id, assignment_id,
+        ),
+    )
+
+    def __init__(self, review_id, assignment_id, review_text):
+        self.review_id = review_id
+        self.assignment_id = assignment_id
+        self.review_text = review_text
 
 
 class Assignment_Data(db.Model):
@@ -166,7 +186,7 @@ class Assignment_Data(db.Model):
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     question_id = db.Column(db.Integer)
     question_text = db.Column(db.Text)
-    assignment = db.relationship('Assignments', backref = 'assignments') # Backref
+    assignment = db.relationship('Assignments', backref = 'Assignment_Data_JOIN_Assignments') # Backref
     choice1 = db.Column(db.Text)
     choice2 = db.Column(db.Text)
     choice3 = db.Column(db.Text)
@@ -189,85 +209,20 @@ class Assignment_Data(db.Model):
         self.choice4 = choice4
         self.answer = answer
 
+class Saved_Assignemnts(db.Model):
+    __tablename__ = 'saved_assignments'
 
-# class Saved_Assignemnts(db.Model):
-#     __tablename__ = 'saved_assignments'
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
+    student = db.relationship('Student', backref="Saved_Assignments_JOIN_Student")
+    assignment = db.relationship('Assignments', backref="Saved_Assignments_JOIN_Assignments")
 
-#     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-#     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
-#     student = db.relationship('Student', backref="students")
-#     assginment = db.relationship('Assignments', backref="assignments")
-
-#     __table_args__ = (
-#         db.PrimaryKeyConstraint(
-#             student_id, assignment_id,
-#         ),
-#     )
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+            student_id, assignment_id,
+        ),
+    )
     
-#     def __init__(self, student_id, assignment_id):
-#         self.student_id = student_id
-#         self.assignment_id = assignment_id
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# class Puppy(db.Model):
-
-#     __tablename__ = 'puppies'
-#     id = db.Column(db.Integer,primary_key = True)
-#     name = db.Column(db.Text)
-#     owner = db.relationship('Owner',backref='puppy',uselist=False)
-
-#     def __init__(self,name):
-#         self.name = name
-
-#     def __repr__(self):
-#         if self.owner:
-#             return f"Puppy name is {self.name} and owner is {self.owner.name}"
-#         else:
-#             return f"Puppy name is {self.name} and has no owner assigned yet."
-
-# class Owner(db.Model):
-
-#     __tablename__ = 'owners'
-
-#     id = db.Column(db.Integer,primary_key= True)
-#     name = db.Column(db.Text)
-#     # We use puppies.id because __tablename__='puppies'
-#     puppy_id = db.Column(db.Integer,db.ForeignKey('puppies.id'))
-
-#     def __init__(self,name,puppy_id):
-#         self.name = name
-#         self.puppy_id = puppy_id
-
-#     def __repr__(self):
-#         return f"Owner Name: {self.name}"
+    def __init__(self, student_id, assignment_id):
+        self.student_id = student_id
+        self.assignment_id = assignment_id

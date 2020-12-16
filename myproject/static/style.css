@@ -752,6 +752,14 @@ a{
 .ap_submit:focus{
     outline: none;
 }
+
+.attempt_page_heading .delete_and_points{
+    display: flex;
+    margin: 0;
+    height: 60px;
+    justify-content: space-between;
+}
+
 .delete_assignment_btn{
     position: relative;
     top: -10px;

@@ -13,7 +13,7 @@ def index():
     studentLoggedIn = g.studentLoggedIn
     teacherLoggedIn = g.teacherLoggedIn
     
-    all_assignments = Assignments.query.order_by(Assignments.assignment_review.desc()).limit(20)
+    all_assignments = Assignments.query.order_by(Assignments.assignment_rating.desc()).limit(20)
     # all_assignments = Assignments.query.all()
 
     if searchForm.validate_on_submit():

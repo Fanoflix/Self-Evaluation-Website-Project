@@ -1,6 +1,6 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses
+from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review
 from myproject.assignments.forms import SolveAssignment, AddAssignment, DeleteAssignment
 from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
 from myproject.search.form import Searching
@@ -23,7 +23,7 @@ def add_assignment():
     if searchForm.searched.data != '' and searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    course = SelectField("Select Courses:",[validators.Required()], choices = [(course.id, course.course_name) for course in Courses.query.all()])
+    course = SelectField("Courses",[validators.Required()], choices = [(course.id, course.course_name) for course in Courses.query.all()])
     setattr(AddAssignment, 'course', course)
  
 
@@ -31,7 +31,7 @@ def add_assignment():
     questions = []
     index = []
     assignment_questions = 1
-    for x in range (10): #for no of questions
+    for x in range (3): #for no of questions
         field = StringField([ validators.Required() ])
         setattr(AddAssignment, 'Question' + str(assignment_questions), field)
         questions.append('Question' + str(assignment_questions))
@@ -64,7 +64,7 @@ def add_assignment():
         CheckAssignment = bool(Assignments.query.filter(func.lower(Assignments.assignment_name) == func.lower(assignment_name)).first())
 
         if not CheckAssignment:
-            new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 1, g.whichTeacher.id)
+            new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 0, 1, g.whichTeacher.id)
             db.session.add(new_assignment)
             db.session.commit()
 
@@ -78,7 +78,7 @@ def add_assignment():
 
                 question.append (getattr(form, 'Answer' + str(x)).data )
 
-                new_question = Assignment_Data(question[0],question[1],question[2] ,question[3],question[4] ,question[5],question[6] ,question[7] )
+                new_question = Assignment_Data(question[0], question[1], question[2], question[3], question[4], question[5], question[6], question[7])
                 db.session.add(new_question)
                 db.session.commit()
                 question = []
@@ -140,8 +140,21 @@ def list_assignment():
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
+    total_assignments = 0
+    total_reviews = 0
+    total_assignment_rating = 0
     all_assignments = Assignments.query.filter_by(teacher_id = g.whichTeacher.id)
-    return render_template('list_assignment.html', all_assignments = all_assignments, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm)
+
+    for assignment in all_assignments:
+        for review in Assignment_Review.query.filter_by(assignment_id = assignment.id):
+            total_reviews += 1
+
+        total_assignments += 1
+        # total_reviews += assignment.assignment_review
+        total_assignment_rating += assignment.assignment_rating
+    
+    average_rating = total_assignment_rating/total_assignments
+    return render_template('list_assignment.html',average_rating=average_rating, total_reviews=total_reviews, all_assignments=all_assignments, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm, total_assignments=total_assignments)
 
 @assignments_blueprint.route('/solve_assignment/<aid>',  methods=['GET', 'POST'])
 def solve_assignment(aid):
@@ -153,25 +166,10 @@ def solve_assignment(aid):
 
     questions = Assignment_Data.query.filter_by(assignment_id = aid)
 
-    
-   
-    # records = [ 
-    #             ['1','1','How do you do when you cant do?','you do', 'you dont' ,'you cant' , 'you suck' ,'2'] ,
-    #             ['1','2','What is your name?','I', 'you' ,'no' , 'yes' ,'4'] ,
-    #             ['1','3','Is Abdullah a bot? Wrong answers only','yes', 'yes' ,'yes' , 'yes' ,'1'] ,
-    #             ['1','4','You done fucked up','yes', 'no' ,'I am' , 'hahaha' ,'3'] ,
-    #             ['1','5','How is testing going?','perfect', 'good' ,'not bad' , 'fucked' ,'4'] 
-    #             ]
-        
-
-
-  
-
     #-----------Making a form------------------
     no_of_question = 1
     field_list = []
 
-    # for record in TableName.query.filter_by(assignment_id = id).all():
     for record in questions:
         field = RadioField(choices=[('1' , record.choice1) , ('2' , record.choice2), ('3' , record.choice3), ('4' , record.choice4) ])
         setattr(SolveAssignment, 'radioField' + str(no_of_question), field) 

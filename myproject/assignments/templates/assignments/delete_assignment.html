@@ -5,11 +5,11 @@
 
         <div class="attempt_page_heading">
             <h1>{{assignment_data[0].assignment.assignment_name}}</h1>
-            <div style="display: flex; margin:0; height:20px"> 
-                <p>Total Points: {{total_points}}</p>
+            <div class = "delete_and_points"> 
+                <p style="font-weight: bold">Total Points: {{total_points}}</p>
                 {{ form.submit( class = "delete_assignment_btn")}} 
             </div>
-            <hr>
+            <hr style = "height:5px;">
         </div>
 
         <div class="attempt_page_solving">
@@ -34,10 +34,12 @@
                         </div>
                         <div class="ap_options"></p>
                            <ul>
-                               <li>{{ assignment.choice1 }}</li>
+                               <li  >{{ assignment.choice1 }}</li>
                                <li>{{ assignment.choice2 }}</li>
                                <li>{{ assignment.choice3 }}</li>
                                <li>{{ assignment.choice4 }}</li>
+                               <br>
+                               <p style="font-weight: bold; color: green">Correct Answer: {{assignment.answer}}</p>
                            </ul> 
                         </div>
     

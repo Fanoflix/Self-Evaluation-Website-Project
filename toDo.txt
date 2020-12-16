@@ -20,21 +20,13 @@ TO DO
 # ABDULLAH
 - Give student option to rate and review teachers and assignment after solving assignment.
 
-# ABDULLAH
-- Teacher assignment tab , option to :
-    - teacher active assignment must be displayed (suppose some teacher has uploaded 5 assignment then active assignment = 5)
 
-# MAHAD AND ABDULLAH
+# MAHAD 50% AND ABDULLAH 50%
 - Preferences
     - must display 20 highest rated + highest no of reviews assignment then neechay Preferences
     - each student main page after login shall show him suggested assignment.. this is tough shit may look easy
     - need to make this shit somehow change as db changes ... fucked
 
-# MAHAD
-- Assignments 
-    - When a student click on assignment ...will be redirected to page that will have teacher + assignment description and an 
-      option to solve the assignment which will further redirect him to assignment solving (assignment_description basically).
-    - CSS Rehti ha , achi khasi
 
 # MAHAD
 - Searching
