@@ -1,10 +1,11 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review
-from myproject.assignments.forms import SolveAssignment, AddAssignment, DeleteAssignment
+from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review, Saved_Assignemnts
+from myproject.assignments.forms import SolveAssignment, AddAssignment, DeleteAssignment, SubmitAssignment
 from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
 from myproject.search.form import Searching
 from sqlalchemy import func
+import time
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
 
@@ -288,17 +289,47 @@ def after_submit(passed, aid):
     g.whichStudent = False 
     g.whichStudent = student
 
+    form = SubmitAssignment()
+    if form.validate_on_submit():
+        total_avg_rating = 0
+        aid = int(aid)
+        review_text = form.review.data
+        rating = float(form.rating.data)
+        assignment = Assignments.query.filter_by(id = aid).first()
+        assignment.assignment_no_of_reviews += 1
+        assignment.teacher.teacher_no_Of_reviews += 1
+        #Taking the average of rating
+        # assignment.assignment_rating += rating #Adding new rating to the old rating
+        # assignment.assignment_rating /= 2 #Averaging (this is not the correct way. The correct way would be to add all individual ratings all over again)
+        for assignment_review in Assignment_Review.query.filter_by(assignment_id = int(aid)).all():
+            total_avg_rating += assignment_review.individual_rating
 
-    #this chunk of code repeating several times for some reasons
-    #aur aid main "styles3.min.css" ye ah raha hy dafaq ????????????????????????????
-    print('\n\nNo Errors so Far')
-    print(type(aid))
-    # aid = int(float(aid)) # this mofo wasted 1 hour
-    print(aid)
-    print(type(aid))
-    # assignment = Assignments.query.filter_by(id = aid).first()
-    # print(assignment.assignment_name)
-    return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm , passed = passed,rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn)  
+        total_avg_rating += rating
+        total_avg_rating /= assignment.assignment_no_of_reviews
+        assignment.assignment_rating = total_avg_rating
+
+        g.total_reviews += 1
+        # THIS RATING IS NULL FOR SOME REASON IDK its beyond science
+        assignment_review = Assignment_Review(g.total_reviews, int(aid), float(rating), review_text)
+        save_assignment = Saved_Assignemnts(g.whichStudent.id, int(aid))
+        db.session.add(save_assignment)
+        db.session.add(assignment)
+        db.session.add(assignment_review)
+        db.session.commit()
+
+        total_avg_rating = 0
+        assignment_teacher = Assignments.query.filter_by(id = aid).first()
+        for assignment in Assignments.query.filter_by(teacher_id = assignment_teacher.teacher.id):
+            total_avg_rating += assignment.assignment_rating
+
+        total_avg_rating /= assignment_teacher.teacher.teacher_no_Of_reviews
+        assignment_teacher.teacher.teacher_rating = total_avg_rating
+        db.session.add(assignment_teacher)
+        db.session.commit()
+
+        return redirect(url_for('index'))
+
+    return render_template('after_submit.html' , form = form, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm , passed = passed,rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn)  
     
 
 

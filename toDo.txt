@@ -17,8 +17,10 @@ TO DO
 
 
 
-# ABDULLAH
-- Give student option to rate and review teachers and assignment after solving assignment.
+
+
+# MAHAD
+-Assignment_Review has one NULL rating...Data coming From form fucked
 
 
 # MAHAD 50% AND ABDULLAH 50%
