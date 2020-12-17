@@ -1,10 +1,10 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from myproject import db,g
-from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review, Saved_Assignemnts
+from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review, Solved_Assignemnts
 from myproject.assignments.forms import SolveAssignment, AddAssignment, DeleteAssignment, SubmitAssignment
 from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
 from myproject.search.form import Searching
-from sqlalchemy import func
+from sqlalchemy import func, and_ , inspect
 import time
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
@@ -65,7 +65,7 @@ def add_assignment():
         CheckAssignment = bool(Assignments.query.filter(func.lower(Assignments.assignment_name) == func.lower(assignment_name)).first())
 
         if not CheckAssignment:
-            new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 0, 1, g.whichTeacher.id)
+            new_assignment = Assignments(assignment_name, course_id, difficulty, 0, 0, 0, 1, g.whichTeacher.id)
             db.session.add(new_assignment)
             db.session.commit()
 
@@ -159,8 +159,8 @@ def list_assignment():
 
 @assignments_blueprint.route('/solve_assignment/<aid>',  methods=['GET', 'POST'])
 def solve_assignment(aid):
-    earned_points = 0
-    passed = False
+
+    # ----------Searching Section------------
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
@@ -179,8 +179,9 @@ def solve_assignment(aid):
         no_of_question = no_of_question + 1
 
     setattr(SolveAssignment, 'submit', SubmitField("Submit"))
-    #----------------------------------------------
 
+
+    #----- Checking Assignment Difficulty and Points ------------
     if questions[0].assignment.difficulty == 'expert':
         total_points = 5* (no_of_question - 1)
         points = 5
@@ -194,142 +195,239 @@ def solve_assignment(aid):
 
     form = SolveAssignment()   
     
+    # The Entire SOLVE ASSIGNMENT LOGIC with maintainence of Leaderboard starts from here...
     if form.validate_on_submit():
+        earned_points = 0
+        passed = False
+        student = None
+
+        # When student press submit: student_attempted =  student_attempted + 1 ;
         student = Student.query.filter_by(id = g.whichStudent.id).first()
         student.student_attempted += 1
-        db.session.add(student)
-        db.session.commit()
+        
 
+        # Calculating student earned points for this assignment
         count = -1
         for record in questions:
             count = count + 1
             if getattr(form,field_list[count]).data == record.answer:
                 getattr(form,field_list[count]).data = ''
                 earned_points += points 
-                
-        print(earned_points)
-        if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
-            student.student_solved += 1
-            student.student_score += earned_points
+
+
+        #checking if student has already solved this assignment or not.        
+        assignment_already_solved = Solved_Assignemnts.query.filter(
+                                        and_(
+                                                Solved_Assignemnts.assignment_id.like(aid),
+                                                Solved_Assignemnts.student_id.like(g.whichStudent.id),
+                                        )
+                                    ).first()
+
+
+        # if student has already solved this assignment before
+        if assignment_already_solved != None:
             passed = True
-        elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
-            student.student_solved += 1
-            student.student_score += earned_points
-            passed = True
-        elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
-            student.student_solved += 1
-            student.student_score += earned_points
-            passed = True
-        else:
-            passed = False
+            # then Check if student newScore is greated than his previousScore in this assignment; else score unchanged.
+            if earned_points > assignment_already_solved.points:
+                #if it is greater then : remove his previoseScore from his total score..
+                student.student_score = student.student_score - assignment_already_solved.points
+                # and add this new score to his total score
+                student.student_score = student.student_score + earned_points
+            elif assignment_already_solved.points == total_points:
+                student.student_attempted -= 1
+            #endif
+
+
+        # if this is student first attempt..
+        else: 
+            # then check whether student has passed or failed 
+            if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
+                passed = True
+            elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
+                passed = True
+            elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
+                passed = True
+            else:
+                passed = False
+            #endif
+
+            # if passed
+            if passed == True:
+                #then student_solved ++ and student_score = student_score + earned_points
+                student.student_solved += 1
+                student.student_score += earned_points
+            #endif
+            solved = Solved_Assignemnts(student.id , int(aid), earned_points)
+            db.session.add(solved)
+        #endif
         
+        # student record is updated
         db.session.add(student)
         db.session.commit()
 
-        this_position = (student.student_score * student.student_solved) /student.student_attempted
-        student.student_rank = 1
+
+
+        #Updating the Leaderboard
+        #========================
+        student = Student.query.filter_by(id = g.whichStudent.id).first()
+
+        #student_new_position
+        this_position = (student.student_score * student.student_solved) /student.student_attempted 
+        
+        #finding all the students who have attempted atleast one assignment, sorted by thier rank in asc order.
         all_students = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_attempted > 0)
         
-        # counting no of students
+        # counting no of students in all_students
         no_of_students = 0
         for studs in all_students:
             no_of_students += 1
        
-        print(no_of_students)
-       # checking if there is only for one student with condition Student.student_attempted > 0
-        if no_of_students == 1 and passed == True and all_students[0].student_rank == 0:         
-            all_students[0].student_rank += 1
-            db.session.add(all_students[0])
-        else:
+       # check if there is only one student and his rank is 0 and he has passed the assignment.
+        if no_of_students == 1:        
             for stud in all_students:
-                if stud.id != student.id:
-                        position  = (stud.student_score * stud.student_solved) /stud.student_attempted
-                        if this_position > position:
-                            student.student_rank = stud.student_rank
-                            stud.student_rank += 1
-                            db.session.add(stud)
-                            break
-                        elif student.student_rank > stud.student_rank:
-                            stud.student_rank -= 1
-                            student.student_rank += 1
-                            db.session.add(stud)
-                            break
-                        else:
-                            student.student_rank += 1
-                            db.session.add(stud)
+                stud.student_rank = 1
+                db.session.add(stud)
+            #endfor    
+        elif no_of_students > 1: # if more than one student (here there will always  be one student with rank = 1st)
+            
+            found = False
+            temp = 1
+            for stud in all_students:
+                if stud.id == student.id:
+                    if stud.student_rank == 0:
+                        student.student_rank = no_of_students
+                    break
+                #endif
 
-        db.session.add(student)
+                position  = (stud.student_score * stud.student_solved) /stud.student_attempted
+                if this_position > position:
+                    temp = student.student_rank
+                    student.student_rank = stud.student_rank
+                    db.session.add(student)
+                    found = True
+                    break
+                elif this_position == position:
+                    break
+                #endif    
+            #endfor
+
+            if found == True:
+                count = 1
+                for stud in all_students:
+                    if count == temp:
+                        break
+                    #endif
+                    stud.student_rank +=  1
+                    db.session.add(stud)
+                    count += 1
+                #endfor 
+            #endif   
+        #endif
         db.session.commit()
-        return redirect(url_for('assignments.after_submit',passed = passed, aid = int(aid)))
+        
+        return redirect(url_for('assignments.after_submit',passed = passed, aid = aid))
+    #endif
 
-    #Too View the answers..................Delete this when done
-    temp_assignment_data = Assignment_Data.query.filter_by(assignment_id = aid)
-    return render_template('solve_assignment.html', temp_assignment_data = temp_assignment_data, form = form, teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
+    return render_template('solve_assignment.html',  form = form, teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
 
     
         
 @assignments_blueprint.route('/after_submit/<passed>/<aid>',  methods=['GET', 'POST'])
 def after_submit(passed, aid):
+    
     rank_change = False
     rank_changed_by = 0
     points_earned = 0
-    searchForm = Searching()
-    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
-        return redirect(url_for('search.searching', searched = searchForm.searched.data))
-
+    
     student = Student.query.filter_by(id = g.whichStudent.id).first()
 
+    # check if student rank has changed then by how much
     if student.student_rank != g.whichStudent.student_rank:
         rank_changed_by = g.whichStudent.student_rank - student.student_rank
         rank_change = True
 
+    # check if student score has changed then by how much.
     if student.student_score != g.whichStudent.student_score:
         points_earned = student.student_score - g.whichStudent.student_score
     
+    # update g.whichStudent 
     g.whichStudent = False 
     g.whichStudent = student
+    print(f"g.whichStudent.id = {g.whichStudent.id} ")
 
+    # --- Searching ----
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+
+
+    
     form = SubmitAssignment()
-    if form.validate_on_submit():
-        total_avg_rating = 0
-        aid = int(aid)
-        review_text = form.review.data
-        rating = float(form.rating.data)
+
+    # Check if student has already given his assignment review or not.
+    aid = int(aid)
+    review_already_given = Assignment_Review.query.filter(
+        and_(
+            Assignment_Review.assignment_id.like(aid),
+            Assignment_Review.student_id.like(g.whichStudent.id),
+        )
+    ).first()
+    
+    
+    # the Entire "Giving Assignment, Teacher rating and reviews" coding.
+    if form.validate_on_submit(): 
+
+        #if this happens, then this is the first time, student is rating and giving review AND student must have given both rating and review to the solved assignment(because validator required at both fields).
+
+        # get all reviews of assignment whose assignment_id = aid.
+        last_review = Assignment_Review.query.filter_by(assignment_id = aid).all()
+
+        if last_review != []: # if not empty
+            print("here")
+            review_no = last_review[-1].review_id + 1 # add 1 to last review_id
+        else:  
+            review_no = 1
+        #endif
+
+
+        # Done with Assignment_Review Table
+        assignment_review = Assignment_Review(review_no, aid, g.whichStudent.id, form.rating.data, form.review.data)
+        db.session.add(assignment_review)
+        
+
+        # Now updating Assignment assignment_rating,assignment_no_of_reviews and assignment_no_of_ratings.
         assignment = Assignments.query.filter_by(id = aid).first()
         assignment.assignment_no_of_reviews += 1
-        assignment.teacher.teacher_no_Of_reviews += 1
-        #Taking the average of rating
-        # assignment.assignment_rating += rating #Adding new rating to the old rating
-        # assignment.assignment_rating /= 2 #Averaging (this is not the correct way. The correct way would be to add all individual ratings all over again)
-        for assignment_review in Assignment_Review.query.filter_by(assignment_id = int(aid)).all():
-            total_avg_rating += assignment_review.individual_rating
+        if assignment.assignment_no_of_ratings == 0:
+            assignment.assignment_rating = form.rating.data
+        else:
+            assignment.assignment_rating = ( (assignment.assignment_rating * assignment.assignment_no_of_ratings) + float(form.rating.data)) / (assignment.assignment_no_of_ratings + 1)
+        #endif
 
-        total_avg_rating += rating
-        total_avg_rating /= assignment.assignment_no_of_reviews
-        assignment.assignment_rating = total_avg_rating
-
-        g.total_reviews += 1
-        # THIS RATING IS NULL FOR SOME REASON IDK its beyond science
-        assignment_review = Assignment_Review(g.total_reviews, int(aid), float(rating), review_text)
-        save_assignment = Saved_Assignemnts(g.whichStudent.id, int(aid))
-        db.session.add(save_assignment)
+        assignment.assignment_no_of_ratings += 1
         db.session.add(assignment)
-        db.session.add(assignment_review)
         db.session.commit()
 
-        total_avg_rating = 0
-        assignment_teacher = Assignments.query.filter_by(id = aid).first()
-        for assignment in Assignments.query.filter_by(teacher_id = assignment_teacher.teacher.id):
-            total_avg_rating += assignment.assignment_rating
+        # Now updating Teacher teacher_rating and teacher_no_Of_reviews.
+        teacher = Teacher.query.filter_by(id = assignment.teacher_id).first()
+        teacher_assignments = Assignments.query.filter_by(teacher_id = teacher.id)
 
-        total_avg_rating /= assignment_teacher.teacher.teacher_no_Of_reviews
-        assignment_teacher.teacher.teacher_rating = total_avg_rating
-        db.session.add(assignment_teacher)
+        count = 0
+        avg_teacher_rating = 0
+        for assignment in teacher_assignments:
+            count += 1
+            avg_teacher_rating += assignment.assignment_rating
+        #endfor
+
+        teacher.teacher_rating = avg_teacher_rating/count
+        teacher.teacher_no_Of_reviews += 1
+
+        db.session.add(teacher)
         db.session.commit()
-
         return redirect(url_for('index'))
-
-    return render_template('after_submit.html' , form = form, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm , passed = passed,rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn)  
+    #endif
+    
+    return render_template('after_submit.html' , form = form, searchForm = searchForm , passed = passed, rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn , review_already_given = review_already_given)  
     
 
 

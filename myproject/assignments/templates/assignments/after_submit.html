@@ -10,7 +10,7 @@
                 <h6>Points Earned: {{points_earned}} </h6> <br> 
                  <h6>  Total Points: {{ student.student_score}} </h6> <br>
         {% else %}
-                 YOU FAILED BITCH!
+                 YOU FAILED BITCH! <br>
         {% endif %}
 
         {% if rank_changed %}
@@ -20,13 +20,19 @@
         <h6>Your Rank: {{ student.student_rank}}</h6> 
         {% endif %}
 
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            {{ form.review.label }} {{ form.review() }} <br>
-            {{ form.rating.label }} {{ form.rating() }} <br>
-            {{ form.submit() }}
-
-        </form>
+        {% if review_already_given %}
+            Your Rating: {{review_already_given.assignment_rating}} <br>
+            {{ form.review.label }} {{ form.review( placeholder = review_already_given.review_text) }} 
+        {% else %}
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.review.label }} {{ form.review() }} <br>
+                {{ form.rating.label }} {{ form.rating() }} <br>
+                {{ form.submit() }}
+            </form>
+        {% endif %}
+        
+        
                
     </div>
     

@@ -144,18 +144,20 @@ class Assignments(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id')) # Assignment tag
     course = db.relationship('Courses', backref='Courses_JOIN_Assignments') # Backref
     difficulty = db.Column(db.Text)
-    assignment_no_of_reviews = db.Column(db.Integer)
     assignment_rating = db.Column(db.Float)
+    assignment_no_of_reviews = db.Column(db.Integer)
+    assignment_no_of_ratings = db.Column(db.Integer)
     active_status = db.Column(db.Integer)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     teacher = db.relationship('Teacher', backref='Teacher_JOIN_Assignments') # Backref
 
-    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, assignment_no_of_reviews, active_status, teacher_id):
+    def __init__(self, assignment_name, course_id, difficulty, assignment_rating, assignment_no_of_reviews, assignment_no_of_ratings, active_status, teacher_id):
         self.assignment_name = assignment_name
         self.course_id = course_id
         self.difficulty = difficulty
-        self.assignment_no_of_reviews = assignment_no_of_reviews
         self.assignment_rating = assignment_rating
+        self.assignment_no_of_reviews = assignment_no_of_reviews
+        self.assignment_no_of_ratings = assignment_no_of_ratings
         self.active_status = active_status
         self.teacher_id = teacher_id
         
@@ -165,19 +167,22 @@ class Assignment_Review(db.Model):
     
     review_id = db.Column(db.Integer)
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
-    individual_rating = db.Column(db.Float) #added this column here
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    assignment_rating = db.Column(db.Float)
     review_text = db.Column(db.Text)
     assignment = db.relationship('Assignments', backref = 'Assignment_Review_JOIN_Assignments') #(not redundent)
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
-            review_id, assignment_id,
+            review_id, assignment_id, student_id
         ),
     )
 
-    def __init__(self, review_id, assignment_id, individual_rating, review_text):
+    def __init__(self, review_id, assignment_id, student_id, assignment_rating, review_text):
         self.review_id = review_id
         self.assignment_id = assignment_id
+        self.student_id = student_id
+        self.assignment_rating = assignment_rating
         self.review_text = review_text
 
 
@@ -210,13 +215,14 @@ class Assignment_Data(db.Model):
         self.choice4 = choice4
         self.answer = answer
 
-class Saved_Assignemnts(db.Model):
-    __tablename__ = 'saved_assignments'
+class Solved_Assignemnts(db.Model):
+    __tablename__ = 'solved_assignments'
 
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
-    student = db.relationship('Student', backref="Saved_Assignments_JOIN_Student")
-    assignment = db.relationship('Assignments', backref="Saved_Assignments_JOIN_Assignments")
+    points = db.Column(db.Integer)
+    student = db.relationship('Student', backref="Solved_Assignemnts_JOIN_Student")
+    assignment = db.relationship('Assignments', backref="Solved_Assignemnts_JOIN_Assignments")
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
@@ -224,6 +230,7 @@ class Saved_Assignemnts(db.Model):
         ),
     )
     
-    def __init__(self, student_id, assignment_id):
+    def __init__(self, student_id, assignment_id, points):
         self.student_id = student_id
         self.assignment_id = assignment_id
+        self.points = points
