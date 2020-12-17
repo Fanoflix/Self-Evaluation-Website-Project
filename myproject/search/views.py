@@ -32,8 +32,8 @@ def searching(searched):
             Teacher.teacher_uname.like( searched),
         )
     )
-    
-    courses = Courses.query.filter_by(course_name = searched).first()
+
+    courses = Courses.query.filter(func.lower(Courses.course_name) == searched).first()
     if courses != None:
         ref_assignments = Assignments.query.filter_by(course_id = courses.id)
 

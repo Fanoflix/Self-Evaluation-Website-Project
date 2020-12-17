@@ -17,8 +17,8 @@
                         {{assignments.teacher.teacher_fname}} {{" "}} {{assignments.teacher.teacher_lname}}
                     </div>
                     <div class="rate_review">
-                        <div class = "rating"> 4.4 </div>
-                        <div class = "reviews"> (15,149) </div>
+                        <div class = "rating"> {{"$%.1f"|format(assignments.assignment_rating)}} </div>
+                        <div class = "reviews"> {{assignments.assignment_no_of_reviews}} </div>
                     </div>
                     <div class="price">$4.99</div>
                     <div class="status">New</div>
@@ -43,7 +43,7 @@
                                 {{assignment.teacher.teacher_fname}} {{" "}} {{assignment.teacher.teacher_lname}}
                             </div>
                             <div class="rate_review">
-                                <div class = "rating"> {{assignment.assignment_rating}} </div>
+                                <div class = "rating"> {{"$%.1f"|format(assignment.assignment_rating)}} </div>
                                 <div class = "reviews"> {{assignment.assignment_no_of_reviews}} </div>
                             </div>
                             <div class="price">$4.99</div>
@@ -135,8 +135,8 @@
                                 {{assignment.teacher.teacher_fname}} {{" "}} {{assignment.teacher.teacher_lname}}
                             </div>
                             <div class="rate_review">
-                                <div class = "rating"> 4.4 </div>
-                                <div class = "reviews"> (15,149) </div>
+                                <div class = "rating">{{"$%.1f"|format(assignment.assignment_rating)}} </div>
+                                <div class = "reviews"> {{assignment.assignment_no_of_reviews}} </div>
                             </div>
                             <div class="price">$4.99</div>
                             <div class="status">New</div>

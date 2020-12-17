@@ -1,5 +1,5 @@
 from myproject import db
-from myproject.models import Student, Courses, Assignments,Assignment_Data, Assignment_Review, Saved_Assignemnts
+from myproject.models import Student, Courses, Assignments,Assignment_Data, Assignment_Review, Solved_Assignemnts,Settings
 
 # # db.create_all()
 
@@ -69,27 +69,43 @@ from myproject.models import Student, Courses, Assignments,Assignment_Data, Assi
 # Assignments.__table__.drop(db.engine)
 # Assignment_Data.__table__.drop(db.engine)
 
-student = Student('Abdullah', 'Raheel', 'Ar', 'asd@asd', 'asd', 1, 1, 1, 1, '', True, 1)
-db.session.add(student)
+# student = Student('Abdullah', 'Raheel', 'Ar', 'asd@asd', 'asd', 1, 1, 1, 1, '', True, 1)
+# db.session.add(student)
+# db.session.commit()
+
+# review = Assignment_Review(1, 1, 'Mahad lund')
+# db.session.add(review)
+# db.session.commit()
+
+# save = Saved_Assignemnts(1, 1)
+# db.session.add(save)
+# db.session.commit()
+
+# check_save = Saved_Assignemnts.query.filter_by(assignment_id = 1).first()
+# review_1 = Assignment_Review.query.filter_by(assignment_id = 1).first()
+# # print(review_1.assignment_name)
+# print(review_1.assignment.assignment_name)
+# print(review_1.assignment.course_id)
+# print(review_1.assignment.difficulty)
+# print(review_1.assignment.assignment_rating)
+# print('\n\n\n')
+# print(check_save.assignment.assignment_name)
+# print(check_save.student.student_fname)
+
+# arr = [  ]
+
+# if arr != []: # if not empty
+#     review_no = arr[-1]["key2"] + 1 # add 1 to last review_id
+# else:  
+#     review_no = 1
+# #endif
+
+# print(review_no)
+
+student = Student.query.filter_by(id = 3).first()
+settig = Settings.query.filter_by(student_id = 3).first()
+solve = Solved_Assignemnts.query.filter_by(student_id = 3).first()
+db.session.delete(settig)
+db.session.delete(solve)
+db.session.delete(student)
 db.session.commit()
-
-review = Assignment_Review(1, 1, 'Mahad lund')
-db.session.add(review)
-db.session.commit()
-
-save = Saved_Assignemnts(1, 1)
-db.session.add(save)
-db.session.commit()
-
-check_save = Saved_Assignemnts.query.filter_by(assignment_id = 1).first()
-review_1 = Assignment_Review.query.filter_by(assignment_id = 1).first()
-# print(review_1.assignment_name)
-print(review_1.assignment.assignment_name)
-print(review_1.assignment.course_id)
-print(review_1.assignment.difficulty)
-print(review_1.assignment.assignment_rating)
-print('\n\n\n')
-print(check_save.assignment.assignment_name)
-print(check_save.student.student_fname)
-
-
