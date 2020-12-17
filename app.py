@@ -24,7 +24,7 @@ def index():
             c_id = assignment.assignment.course.id
             for prefed_assignment in Assignments.query.filter_by(course_id = c_id).all():
                 if prefed_assignment != assignment: #basically kiye howe assignments wapis na dikhaye usko
-                    display_assignments.append(prefed_assignment)
+                    display_assignments.append(prefed_assignment) #this is appending regardless of the if condition
         
         print(display_assignments) #this working Perfectly so far (ab display krwa dena isko)
     #---------------------------------------------------------------------------------------------------------------------------
