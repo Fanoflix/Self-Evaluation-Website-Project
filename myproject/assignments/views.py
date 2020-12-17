@@ -259,14 +259,16 @@ def solve_assignment(aid):
 
         db.session.add(student)
         db.session.commit()
-        return redirect(url_for('assignments.after_submit',passed = passed))
+        return redirect(url_for('assignments.after_submit',passed = passed, aid = int(aid)))
 
-    return render_template('solve_assignment.html' ,form = form, teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
+    #Too View the answers..................Delete this when done
+    temp_assignment_data = Assignment_Data.query.filter_by(assignment_id = aid)
+    return render_template('solve_assignment.html', temp_assignment_data = temp_assignment_data, form = form, teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
 
     
         
-@assignments_blueprint.route('/after_submit/<passed>',  methods=['GET', 'POST'])
-def after_submit(passed):
+@assignments_blueprint.route('/after_submit/<passed>/<aid>',  methods=['GET', 'POST'])
+def after_submit(passed, aid):
     rank_change = False
     rank_changed_by = 0
     points_earned = 0
@@ -286,7 +288,16 @@ def after_submit(passed):
     g.whichStudent = False 
     g.whichStudent = student
 
- 
+
+    #this chunk of code repeating several times for some reasons
+    #aur aid main "styles3.min.css" ye ah raha hy dafaq ????????????????????????????
+    print('\n\nNo Errors so Far')
+    print(type(aid))
+    # aid = int(float(aid)) # this mofo wasted 1 hour
+    print(aid)
+    print(type(aid))
+    # assignment = Assignments.query.filter_by(id = aid).first()
+    # print(assignment.assignment_name)
     return render_template('after_submit.html' , teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm , passed = passed,rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn)  
     
 
