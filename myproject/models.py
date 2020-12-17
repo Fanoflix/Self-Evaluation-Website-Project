@@ -163,8 +163,9 @@ class Assignments(db.Model):
 class Assignment_Review(db.Model):
     __tablename__ = 'assignment_review'
     
-    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     review_id = db.Column(db.Integer)
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
+    individual_rating = db.Column(db.Float) #added this column here
     review_text = db.Column(db.Text)
     assignment = db.relationship('Assignments', backref = 'Assignment_Review_JOIN_Assignments') #(not redundent)
 
@@ -174,7 +175,7 @@ class Assignment_Review(db.Model):
         ),
     )
 
-    def __init__(self, review_id, assignment_id, review_text):
+    def __init__(self, review_id, assignment_id, individual_rating, review_text):
         self.review_id = review_id
         self.assignment_id = assignment_id
         self.review_text = review_text

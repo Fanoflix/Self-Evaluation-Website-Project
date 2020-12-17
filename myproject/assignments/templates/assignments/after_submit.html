@@ -19,9 +19,15 @@
         {% else %}
         <h6>Your Rank: {{ student.student_rank}}</h6> 
         {% endif %}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.review.label }} {{ form.review() }} <br>
+            {{ form.rating.label }} {{ form.rating() }} <br>
+            {{ form.submit() }}
+
+        </form>
                
-        
-        
     </div>
     
 {% endblock %}

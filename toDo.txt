@@ -14,18 +14,12 @@ TO DO
 - need to add something in teacher privacy tab , dont wanna delete it.
 
 
+# MAHAD
+-Assignment_Review has one NULL rating...Data coming From form fucked
 
 
-
-# ABDULLAH
-- Give student option to rate and review teachers and assignment after solving assignment.
-
-
-# MAHAD 50% AND ABDULLAH 50%
-- Preferences
-    - must display 20 highest rated + highest no of reviews assignment then neechay Preferences
-    - each student main page after login shall show him suggested assignment.. this is tough shit may look easy
-    - need to make this shit somehow change as db changes ... fucked
+# MAHAD
+Display the Display_Assignments on index (bs pass krwa ke dikhana hy....styling bhi krdena)
 
 
 # MAHAD
