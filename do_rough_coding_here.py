@@ -103,16 +103,16 @@ from myproject.models import Student, Courses, Assignments,Assignment_Data, Assi
 # print(review_no)
 
 
-student = Student.query.filter_by(id = 2).first()
-student.student_rank = 1
-db.session.add(student)
-student = Student.query.filter_by(id = 3).first()
-student.student_rank = 2
-db.session.add(student)
-student = Student.query.filter_by(id = 1).first()
-student.student_rank = 3
-db.session.add(student)
-db.session.commit()
+# student = Student.query.filter_by(id = 2).first()
+# student.student_rank = 1
+# db.session.add(student)
+# student = Student.query.filter_by(id = 3).first()
+# student.student_rank = 2
+# db.session.add(student)
+# student = Student.query.filter_by(id = 1).first()
+# student.student_rank = 3
+# db.session.add(student)
+# db.session.commit()
 # settig = Settings.query.filter_by(student_id = 3).first()
 # solve = Solved_Assignemnts.query.filter_by(student_id = 3).first()
 # db.session.delete(settig)
@@ -220,3 +220,4 @@ db.session.commit()
 # #endif   
 
 # db.session.commit()
+
