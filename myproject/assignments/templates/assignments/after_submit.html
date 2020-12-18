@@ -1,39 +1,64 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="jumbotron">
-        <h1>Result:</h1> <br> <br>
-
-
-               
+    <div class="after_submit_wrapper">           
         {% if passed == 'True' %}
-                <h4>You Passed!</h4> <br>
-                <h6>Points Earned: {{points_earned}} </h6> <br> 
-                 <h6>  Total Points: {{ student.student_score}} </h6> <br>
+                <div class="result">
+                    <h4>You Passed!</h4>
+                    <h6>Points Earned: {{points_earned}} </h6>
+                    <h6>  Total Points: {{ student.student_score}} </h6>
+                    {% if rank_changed %}
+                        <h6 style="color: green;"> Your Rank is increased by {{rank_changed_by}} </h6> 
+                        <h6>Your New Rank: {{ student.student_rank}} </h6>
+                    {% else %}
+                        <h6> Your Rank: {{ student.student_rank}} </h6>
+                    {% endif %}
+                </div>        
         {% else %}
-                 YOU FAILED BITCH! <br>
+                <div class="result fail">
+                    <h4 style="color: red;">You Failed! </h4>
+                    <h6> Your Rank: {{ student.student_rank}} </h6>
+                </div>     
         {% endif %}
-
-        {% if rank_changed %}
-            <h6> Your Rank is increased by {{rank_changed_by}} </h6> <br>
-            <h6> Your New Rank: {{ student.student_rank}} </h6><br>
-        {% else %}
-        <h6>Your Rank: {{ student.student_rank}}</h6> 
-        {% endif %}
+    
+         
+        
 
         {% if review_already_given %}
-            Your Rating: {{review_already_given.assignment_rating}} <br>
-            {{ form.review.label }} {{ form.review( placeholder = review_already_given.review_text) }} 
+                <div class="your_review">
+                    <div class="rating">
+                        <p class="rating_label">Your Rating:</p>
+                        <div class="rating_field" >
+                            {{review_already_given.assignment_rating}} / 5.0
+                        </div>
+                    </div>
+                    <div class="review">
+                        <p class="review_label">Your Review:</p>
+                        <div class = "review_field"> 
+                            <p>{{review_already_given.review_text}} </p>
+                        </div>
+
+                    </div>
+                </div>
+             
         {% else %}
-            <form method="POST">
+            <form method="POST" class="give_review">
                 {{ form.hidden_tag() }}
-                {{ form.review.label }} {{ form.review() }} <br>
-                {{ form.rating.label }} {{ form.rating() }} <br>
-                {{ form.submit() }}
+                <div class="rating">
+                    <p class="rating_label">Rate this Assignment:</p>
+                    {{ form.rating(class="rating_field") }} 
+                </div>
+
+                <div class="review">
+                    <p class="review_label">Give this assignment a review</p>
+                    {{ form.review(class="review_field") }}
+                </div>
+                <div class="review_btn">
+                    {{ form.submit(class="rate_review_btn") }}
+                </div>
+               
             </form>
         {% endif %}
-        
-        
-               
+                
     </div>
     
 {% endblock %}

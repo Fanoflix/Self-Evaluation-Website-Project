@@ -4,6 +4,7 @@ from myproject.search.form import Searching
 from myproject.models import Assignments, Solved_Assignemnts
 from sqlalchemy import desc
 from flask import render_template,redirect,url_for
+import sys,copy
 
 g.init()
 

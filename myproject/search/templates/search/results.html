@@ -9,7 +9,7 @@
                     <hr>
                 </div>
             
-                <a class="assignment_box" href="#"> 
+                <a class="assignment_box" href="{{url_for('assignments.solve_assignment', aid = assignments.id )}}"> 
                     <div class="assignment_name">
                         {{assignments.assignment_name}}
                     </div>
@@ -35,7 +35,7 @@
                 <div class="applygrid">
                 {% for assignment in ref_teachers %}
                     {% if assignment != assignments %}
-                        <a class="sassignment_box" href="#">
+                        <a class="sassignment_box" href="{{url_for('assignments.solve_assignment', aid = assignment.id )}}">
                             <div class="assignment_name">
                                 {{assignment.assignment_name}}
                             </div>
@@ -127,7 +127,7 @@
                 </div>
                 <div class="applygrid">
                 {% for assignment in ref_assignments %}
-                        <a class="sassignment_box" href="#">
+                        <a class="sassignment_box" href="{{url_for('assignments.solve_assignment', aid = assignment.id )}}">
                             <div class="assignment_name">
                                 {{assignment.assignment_name}}
                             </div>

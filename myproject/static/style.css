@@ -1065,7 +1065,183 @@ a{
     transform: scale(0.99);
 }  
 
+/* ====================================After Submit ============================================ */
+.after_submit_wrapper{
 
+    width: 50%;
+    margin: 50px 25%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.after_submit_wrapper .result{
+    background-color: rgb(230, 230, 230);
+    border-radius: 10px;
+    width:400px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.after_submit_wrapper .fail{
+    height: 120px;
+}
+
+.after_submit_wrapper .result h4{
+    font-weight: 600;
+    font-size: 50px;
+    letter-spacing: 2px;
+    color: green;
+}
+
+.after_submit_wrapper .result h6{
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: black;
+}
+
+.after_submit_wrapper .your_review{
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    width: 700px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+
+}
+
+.after_submit_wrapper .your_review *{
+    margin: 0; 
+    padding: 0;
+}
+
+.your_review .rating {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    /* width: 70%; */
+    height: 50px;
+    margin-bottom: -5px;
+    margin-left: 10%;   
+    /* background-color: white; */
+    background-color: white;
+    border-radius: 30px;
+}
+
+.your_review .rating .rating_label{
+    margin-right: 20px;
+    font-size: 22px;
+    font-weight: 500;
+   
+}
+
+.your_review .rating .rating_field{
+    font-size: 22px;
+    font-weight: 500;
+    color:  rgb(218, 69, 0);
+}
+
+
+.your_review .review{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+    margin-right: 10%;
+    min-width: 80%;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+
+.your_review .review .review_label{
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.your_review .review .review_field{
+    /* background-color: white; */
+    border: solid 2px  rgb(102, 102, 102);
+    border-radius: 5px;
+    min-height: 200px;
+    width: 95%;
+}
+
+.your_review .review .review_field *{
+    margin-left: 5px;
+    margin-top: 5px;
+}
+/* ------------------------------------------------------------------------------ */
+.after_submit_wrapper .give_review{
+    display: flex;
+    flex-direction: column;
+    margin: 50px 0;
+    width: 60vh;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.after_submit_wrapper .give_review *{
+    margin: 0;
+    padding: 0;
+}
+
+.give_review .rating {
+    display: flex;
+}
+
+.give_review .rating .rating_label{
+    margin-right: 20px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.give_review .rating .rating_field{
+    border: solid 2px  black;
+    border-radius: 20px;
+    padding: 2px 5px;
+    width: 11vh;
+    font-size: 16px;
+    font-weight: 500;
+    color:  rgb(218, 69, 0);
+    margin-bottom: 20px;
+}
+
+.give_review .rating .rating_field:focus{
+   outline: none;
+}
+
+.give_review .review .review_label{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.give_review .review .review_field{
+    width: 60vh;
+    height: 25vh;
+    margin-bottom: 10px;
+}
+
+.give_review .review_btn{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60vh;
+}
+
+.give_review .review_btn .rate_review_btn{  
+    width: 18vh;
+    padding: 5px 10px;
+    font-size: 18px;
+    background-color: rgb(241, 241, 241);
+    border: solid 1px rgb(182, 182, 182);
+}
 /* ====================================Assignment Section ==========================================*/
 
 .assignments .assignments_heading{

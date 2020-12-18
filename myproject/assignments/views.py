@@ -227,6 +227,7 @@ def solve_assignment(aid):
         # if student has already solved this assignment before
         if assignment_already_solved != None:
             passed = True
+            old_rank_points = (student.student_score * student.student_solved) /student.student_attempted
             # then Check if student newScore is greated than his previousScore in this assignment; else score unchanged.
             if earned_points > assignment_already_solved.points:
                 #if it is greater then : remove his previoseScore from his total score..
@@ -316,9 +317,6 @@ def solve_assignment(aid):
                     rank_increased = True
                     break
 
-                elif new_rank_points == position :
-                    break
-
                 elif old_rank_points > new_rank_points and stud.student_rank > student.student_rank:
                     new_rank = stud.student_rank
                     rank_decreased = True
@@ -357,14 +355,14 @@ def solve_assignment(aid):
         return redirect(url_for('assignments.after_submit',passed = passed, aid = aid))
     #endif
 
-    return render_template('solve_assignment.html',  form = form, teacherLoggedIn = g.teacherLoggedIn, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
+    return render_template('solve_assignment.html',  form = form, studentLoggedIn = g.studentLoggedIn ,questions = questions ,total_points = total_points, points = points, field_list = field_list,searchForm = searchForm)
 
     
         
 @assignments_blueprint.route('/after_submit/<passed>/<aid>',  methods=['GET', 'POST'])
 def after_submit(passed, aid):
     
-    rank_change = False
+    rank_changed = False
     rank_changed_by = 0
     points_earned = 0
     
@@ -374,7 +372,7 @@ def after_submit(passed, aid):
     if student.student_rank != g.whichStudent.student_rank:
         rank_changed_by = g.whichStudent.student_rank - student.student_rank
         g.whichStudent.student_rank = student.student_rank
-        rank_change = True
+        rank_changed = True
 
     # check if student score has changed then by how much.
     if student.student_score != g.whichStudent.student_score:
@@ -441,8 +439,9 @@ def after_submit(passed, aid):
         count = 0
         avg_teacher_rating = 0
         for assignment in teacher_assignments:
-            count += 1
-            avg_teacher_rating += assignment.assignment_rating
+            if assignment.assignment_rating > 0:
+                count += 1
+                avg_teacher_rating += assignment.assignment_rating
         #endfor
 
         teacher.teacher_rating = avg_teacher_rating/count
@@ -453,7 +452,7 @@ def after_submit(passed, aid):
         return redirect(url_for('index'))
     #endif
     
-    return render_template('after_submit.html' , form = form, searchForm = searchForm , passed = passed, rank_change = rank_change ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn , review_already_given = review_already_given)  
+    return render_template('after_submit.html' , form = form, searchForm = searchForm , passed = passed, rank_changed = rank_changed ,rank_changed_by = rank_changed_by , points_earned =points_earned , student = student , studentLoggedIn = g.studentLoggedIn , review_already_given = review_already_given)  
     
 
 
