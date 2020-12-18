@@ -7,24 +7,24 @@ TO DO
     - his overall rank and course wise rank 
     - student no of attempted assignment 
     - student no of solved assignment
+
 - student privacy backend with db implementation.
-- option to see student saved assignments on his profile.
+
+- option to see student saved assignments on his profile. 
+
+- Instead of deleting student/teacher recored from the db on deactivation, change student/teacher account status = 0 
+  and make them disappear from everywhere.
 
 - teacher "public profile" bane gi, plus all the data to display on that page. 
+
 - need to add something in teacher privacy tab , dont wanna delete it.
-
-
-# MAHAD
--Assignment_Review has one NULL rating...Data coming From form fucked
-
-
-# MAHAD
-Display the Display_Assignments on index (bs pass krwa ke dikhana hy....styling bhi krdena)
 
 
 # MAHAD
 - Searching
     - have to further optimize it
+- Implement Catergories
+
 
 # MAHAD and AMMAR(WILL START ONLY  AFTER YOU FINISH YOUR ABOVE TASK)
 - Login Required Stuff and Validation
