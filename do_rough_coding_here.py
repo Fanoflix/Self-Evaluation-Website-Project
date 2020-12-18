@@ -102,10 +102,121 @@ from myproject.models import Student, Courses, Assignments,Assignment_Data, Assi
 
 # print(review_no)
 
+
+student = Student.query.filter_by(id = 2).first()
+student.student_rank = 1
+db.session.add(student)
 student = Student.query.filter_by(id = 3).first()
-settig = Settings.query.filter_by(student_id = 3).first()
-solve = Solved_Assignemnts.query.filter_by(student_id = 3).first()
-db.session.delete(settig)
-db.session.delete(solve)
-db.session.delete(student)
+student.student_rank = 2
+db.session.add(student)
+student = Student.query.filter_by(id = 1).first()
+student.student_rank = 3
+db.session.add(student)
 db.session.commit()
+# settig = Settings.query.filter_by(student_id = 3).first()
+# solve = Solved_Assignemnts.query.filter_by(student_id = 3).first()
+# db.session.delete(settig)
+# db.session.delete(solve)
+# db.session.delete(student)
+
+
+#Updating the Leaderboard
+#========================
+# old_rank_points = 200
+# student = Student.query.filter_by(id =1).first()
+
+# #student_new_position
+# new_rank_points = (100 * student.student_solved) /student.student_attempted 
+
+# #finding all the students who have attempted atleast one assignment, sorted by thier rank in asc order.
+# all_students = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_attempted > 0)
+
+# # counting no of students in all_students
+# no_of_students = 0
+# for studs in all_students:
+#     no_of_students += 1
+
+# # check if there is only one student and his rank is 0 and he has passed the assignment.
+# if no_of_students == 1:        
+#     for stud in all_students:
+#         stud.student_rank = 1
+#         db.session.add(stud)
+#     #endfor    
+# # if more than one student (here there will always  be one student with rank = 1st)
+# elif no_of_students > 1: 
+#     print("no_of_students > 1")
+#     found = False
+#     less = False
+#     temp = 1
+#     for stud in all_students:
+#         print(f"Stud.id:{stud.id}") 
+#         if stud.id == student.id:
+#             print(f"Stud.id:{stud.id} {student.id}:Student.id")
+#             if stud.student_rank == 0:
+#                 student.student_rank = no_of_students
+#                 print('rank = 0')
+
+#             if old_rank_points > new_rank_points:
+#                 continue
+
+#             break
+#         #endif
+
+#         position  = (stud.student_score * stud.student_solved) /stud.student_attempted
+#         if new_rank_points > position and old_rank_points <= new_rank_points:
+#             print(f"Greater  {new_rank_points} > {position}")
+#             temp = student.student_rank
+#             print(f"temp = {temp}")
+#             new_rank = int(stud.student_rank)
+#             print(f"student_rank: {student.student_rank}")
+#             print(f"stud_rank: {stud.student_rank}")
+#             # db.session.add(student)
+#             found = True
+#             break
+#         elif new_rank_points == position :
+#             print(f"Equal  {new_rank_points} = {position}")
+#             break
+
+#         elif old_rank_points > new_rank_points and stud.student_rank > student.student_rank:
+#             new_rank = stud.student_rank
+#             print(new_rank)
+#             less = True
+#         #endif    
+#     #endfor
+# #endif
+
+# if found == True:
+#     print(f"found = {found}")
+#     for stud in all_students:
+#         print(f"stud.id: {stud.id}")
+#         if stud.student_rank == temp:
+#             break
+#         #endif
+#         if stud.student_rank >= new_rank:
+#             print(f"stud_before_rank: {stud.student_rank}")
+#             stud.student_rank +=  1
+#             print(f"stud_after_rank: {stud.student_rank}")
+#             db.session.add(stud)
+#         #endif
+#     #endfor 
+#     student.student_rank = new_rank
+#     db.session.add(student)
+# elif less == True:
+#     print(f"less = {less}")
+#     for stud in all_students:
+#         print(f"stud.id: {stud.id}")
+#         if stud.student_rank == new_rank + 1:
+#             break
+#         #endif
+#         if stud.student_rank > student.student_rank:
+#             print(f"stud_before_rank: {stud.student_rank}")
+#             stud.student_rank -= 1
+#             print(f"stud_after_rank: {stud.student_rank}")
+#             db.session.add(stud)
+#         #endif
+#     #endfor 
+#     student.student_rank = new_rank
+#     db.session.add(student)
+# #endif   
+
+# db.session.commit()

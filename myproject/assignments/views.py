@@ -233,6 +233,8 @@ def solve_assignment(aid):
                 student.student_score = student.student_score - assignment_already_solved.points
                 # and add this new score to his total score
                 student.student_score = student.student_score + earned_points
+                assignment_already_solved.points = earned_points
+                db.session.add(assignment_already_solved)
             elif assignment_already_solved.points == total_points:
                 student.student_attempted -= 1
             #endif
@@ -251,10 +253,12 @@ def solve_assignment(aid):
                 passed = False
             #endif
 
+            old_rank_points = (student.student_score * student.student_solved) /student.student_attempted
             # if passed
             if passed == True:
                 #then student_solved ++ and student_score = student_score + earned_points
                 student.student_solved += 1
+                g.whichStudent.student_solved += 1
                 student.student_score += earned_points
             #endif
             solved = Solved_Assignemnts(student.id , int(aid), earned_points)
@@ -262,6 +266,7 @@ def solve_assignment(aid):
         #endif
         
         # student record is updated
+        g.whichStudent.student_attempted = student.student_attempted
         db.session.add(student)
         db.session.commit()
 
@@ -272,7 +277,7 @@ def solve_assignment(aid):
         student = Student.query.filter_by(id = g.whichStudent.id).first()
 
         #student_new_position
-        this_position = (student.student_score * student.student_solved) /student.student_attempted 
+        new_rank_points = (student.student_score * student.student_solved) /student.student_attempted 
         
         #finding all the students who have attempted atleast one assignment, sorted by thier rank in asc order.
         all_students = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_attempted > 0)
@@ -288,43 +293,67 @@ def solve_assignment(aid):
                 stud.student_rank = 1
                 db.session.add(stud)
             #endfor    
-        elif no_of_students > 1: # if more than one student (here there will always  be one student with rank = 1st)
-            
-            found = False
+        # if more than one student (here there will always  be one student with rank = 1st)
+        elif no_of_students > 1: 
+            rank_increased = False
+            rank_decreased = False
             temp = 1
             for stud in all_students:
                 if stud.id == student.id:
                     if stud.student_rank == 0:
                         student.student_rank = no_of_students
+
+                    if old_rank_points > new_rank_points:
+                        continue
+
                     break
                 #endif
 
                 position  = (stud.student_score * stud.student_solved) /stud.student_attempted
-                if this_position > position:
+                if new_rank_points > position and old_rank_points <= new_rank_points:
                     temp = student.student_rank
-                    student.student_rank = stud.student_rank
-                    db.session.add(student)
-                    found = True
+                    new_rank = int(stud.student_rank)
+                    rank_increased = True
                     break
-                elif this_position == position:
+
+                elif new_rank_points == position :
                     break
+
+                elif old_rank_points > new_rank_points and stud.student_rank > student.student_rank:
+                    new_rank = stud.student_rank
+                    rank_decreased = True
                 #endif    
             #endfor
+        #endif
 
-            if found == True:
-                count = 1
-                for stud in all_students:
-                    if count == temp:
-                        break
-                    #endif
+        if rank_increased == True:
+            for stud in all_students:
+                if stud.student_rank == temp:
+                    break
+                #endif
+                if stud.student_rank >= new_rank:
                     stud.student_rank +=  1
                     db.session.add(stud)
-                    count += 1
-                #endfor 
-            #endif   
-        #endif
-        db.session.commit()
+                #endif
+            #endfor 
+            student.student_rank = new_rank
+            db.session.add(student)
+            
+        elif rank_decreased == True:
+            for stud in all_students:
+                if stud.student_rank == new_rank + 1:
+                    break
+                #endif
+                if stud.student_rank > student.student_rank:
+                    stud.student_rank -= 1
+                    db.session.add(stud)
+                #endif
+            #endfor 
+            student.student_rank = new_rank
+            db.session.add(student)
+        #endif   
         
+        db.session.commit()
         return redirect(url_for('assignments.after_submit',passed = passed, aid = aid))
     #endif
 
@@ -344,16 +373,13 @@ def after_submit(passed, aid):
     # check if student rank has changed then by how much
     if student.student_rank != g.whichStudent.student_rank:
         rank_changed_by = g.whichStudent.student_rank - student.student_rank
+        g.whichStudent.student_rank = student.student_rank
         rank_change = True
 
     # check if student score has changed then by how much.
     if student.student_score != g.whichStudent.student_score:
         points_earned = student.student_score - g.whichStudent.student_score
-    
-    # update g.whichStudent 
-    g.whichStudent = False 
-    g.whichStudent = student
-    print(f"g.whichStudent.id = {g.whichStudent.id} ")
+        g.whichStudent.student_score = student.student_score
 
     # --- Searching ----
     searchForm = Searching()
