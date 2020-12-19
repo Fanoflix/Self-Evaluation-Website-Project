@@ -1,5 +1,6 @@
 from re import search
 from flask import Blueprint,render_template,redirect,url_for,flash,session
+from flask_login import login_user,login_required,logout_user,current_user
 from myproject import db,g
 from myproject.models import Teacher,Student
 from myproject.teachers.forms import SignUp,LogIn, ProfileTab,AccountTab, PrivacyTab, DeactivateTab
@@ -115,6 +116,7 @@ def profile():
         db.session.add(updated_teacher)
         db.session.commit()
         g.whichTeacher = updated_teacher
+        form.uname.data = ""
         form.fname.data = ""
         form.lname.data = ""
         form.bio.data = ""

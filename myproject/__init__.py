@@ -2,9 +2,16 @@ import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_login import LoginManager   
 
 app = Flask(__name__)
 
+login_manager = LoginManager()
+
+# login_manager.blueprint_login_views = {  
+#         'students':  "students.login",  
+#         'teachers': "teachers.login",  
+#     }   
 
 # Often people will also separate these into a separate config.py file 
 app.config['SECRET_KEY'] = 'mysecretkey'
@@ -34,3 +41,7 @@ app.register_blueprint(teachers_blueprint,url_prefix='/teachers')
 app.register_blueprint(assignments_blueprint,url_prefix='/assignments')
 app.register_blueprint(leaderboard_blueprint,url_prefix='/leaderboard')
 app.register_blueprint(search_blueprint,url_prefix='/search')
+
+
+login_manager.init_app(app)
+login_manager.login_view = 'students.login'
