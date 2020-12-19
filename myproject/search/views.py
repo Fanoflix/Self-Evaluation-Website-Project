@@ -41,4 +41,4 @@ def searching(searched):
     if searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    return render_template('results.html' ,searchForm = searchForm , teachers = teachers , students = students , assignments= assignments ,  courses = courses,ref_teachers = ref_teachers,ref_assignments = ref_assignments, studentLoggedIn = g.studentLoggedIn , teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('results.html' ,searchForm = searchForm , teachers = teachers , students = students , assignments= assignments ,  courses = courses,ref_teachers = ref_teachers,ref_assignments = ref_assignments,teacherLoggedIn = g.teacherLoggedIn)

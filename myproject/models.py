@@ -1,9 +1,15 @@
 from collections import UserList
 from sqlalchemy.orm import backref
 from sqlalchemy.sql.schema import ForeignKey
-from myproject import db
+from myproject import db,login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
+@login_manager.user_loader
+def load_user(student_id):
+    return Student.query.get(student_id)
+
+    
 class Teacher(db.Model):
     __tablename__ = 'teachers'
 
@@ -38,7 +44,7 @@ class Teacher(db.Model):
     def __repr__(self):
         return f"Teacher Id: {self.id} First Name: {self.teacher_fname} Last Name: {self.teacher_lname}"
 
-class Student(db.Model):
+class Student(db.Model,UserMixin):
     __tablename__ = 'students'
 
     id = db.Column(db.Integer,primary_key = True)

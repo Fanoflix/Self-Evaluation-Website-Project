@@ -5,18 +5,23 @@
                 <div class="result">
                     <h4>You Passed!</h4>
                     <h6>Points Earned: {{points_earned}} </h6>
-                    <h6>  Total Points: {{ student.student_score}} </h6>
+                    <h6>  Total Points: {{ current_user.student_score}} </h6>
                     {% if rank_changed %}
-                        <h6 style="color: green;"> Your Rank is increased by {{rank_changed_by}} </h6> 
-                        <h6>Your New Rank: {{ student.student_rank}} </h6>
+                        {% if old_rank > current_user.student_rank %}
+                            <h6 style="color: green;"> Your Rank is increased from {{old_rank}} to {{current_user.student_rank}} </h6>
+                        {% else %}
+                            <h6 style="color: green;"> Your Rank is decreased from {{old_rank}} to {{current_user.student_rank}} </h6>
+                        {% endif %}
+    
+                        <h6>Your New Rank: {{ current_user.student_rank}} </h6>
                     {% else %}
-                        <h6> Your Rank: {{ student.student_rank}} </h6>
+                        <h6> Your Rank: {{ current_user.student_rank}} </h6>
                     {% endif %}
                 </div>        
         {% else %}
                 <div class="result fail">
                     <h4 style="color: red;">You Failed! </h4>
-                    <h6> Your Rank: {{ student.student_rank}} </h6>
+                    <h6> Your Rank: {{ current_user.student_rank}} </h6>
                 </div>     
         {% endif %}
     

@@ -23,14 +23,39 @@
       <p>Solve on your schedule</p>
   </div>
 </section>
+{% if current_user.is_authenticated and top_pick%}
+        <section class="assignments">
+          <div class="assignments_heading">
+              <h1>Our Top Pick for you</h1>
+              <hr id="hrbottom">
+          </div>
+        
+          <div class="assignment_wrapper">
+              <a href="{{url_for('assignments.solve_assignment', aid = top_pick.id)}}" class= "assignment_box"> 
+                <div class="assignment_name">
+                  {{top_pick.assignment_name}}
+                </div>
+                <div class="teacher_description">
+                  {{top_pick.teacher.teacher_fname}} {{ " "}} {{ top_pick.teacher.teacher_lname}}
+                </div>
+                <div class="rate_review"> 
+                  <div class = "rating"> {{ "$%.1f"|format(top_pick.assignment_rating) }}</div>
+                  <div class = "reviews"> ({{top_pick.assignment_no_of_reviews}}) </div>
+                </div>
+                <div class="price">Free</div>
+                <div class="status">New</div>
+              </a>
+          </div>
+        </section>  
+{% endif %}
 
-<section class="assignments">
-  <hr id="hrtop">
+<section class="assignments" style="margin-top:80px;">
   <div class="assignments_heading">
       <h1>The world's largest selection of assignments</h1>
       <p>Choose from 100,000+ assignments with new assignments uploaded everyday</p>
+      <hr id="hrbottom">
   </div>
-  <hr id="hrbottom">
+  
 
   <div class="assignment_wrapper">
     {% for assignment in all_assignments  %}
@@ -45,13 +70,96 @@
               <div class = "rating"> {{ "$%.1f"|format(assignment.assignment_rating) }}</div>
               <div class = "reviews"> ({{assignment.assignment_no_of_reviews}}) </div>
             </div>
-            <div class="price">$4.99</div>
+            <div class="price">Free</div>
             <div class="status">New</div>
           </a>
     {% endfor %}
   </div>
 </section>
 
+{% if current_user.is_authenticated %}
+    {% if recomended_assignments_x[0] %}
+    
+      <section class="assignments" style="margin-top: 80px;">
+        <div class="assignments_heading">
+            <h1 style="color: rgba(0,0,0,0.8); font-size: 28px; font-weight:700">Because you solved "{{recomended_assignments_x[0].course.course_name|capitalize}}" assignments </h1>
+            <hr id="hrbottom">
+        </div>
+        <div class="assignment_wrapper">
+          {% for assignment in recomended_assignments_x  %} 
+                <a href="{{url_for('assignments.solve_assignment', aid = assignment.id)}}" class= "assignment_box"> 
+                  <div class="assignment_name">
+                    {{assignment.assignment_name}}
+                  </div>
+                  <div class="teacher_description">
+                    {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
+                  </div>
+                  <div class="rate_review"> 
+                    <div class = "rating"> {{ "$%.1f"|format(assignment.assignment_rating) }}</div>
+                    <div class = "reviews"> ({{assignment.assignment_no_of_reviews}}) </div>
+                  </div>
+                  <div class="price">Free</div>
+                  <div class="status">New</div>
+                </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if recomended_assignments_y[0] %}
+      <section class="assignments" style="margin-top: 80px;">
+        <div class="assignments_heading">
+            <h1 style="color: rgba(0,0,0,0.8); font-size: 28px; font-weight:700">Because you solved "{{recomended_assignments_y[0].course.course_name|capitalize}}" assignments </h1>
+            <hr id="hrbottom">
+        </div>
+        <div class="assignment_wrapper">
+          {% for assignment in recomended_assignments_y  %} 
+                <a href="{{url_for('assignments.solve_assignment', aid = assignment.id)}}" class= "assignment_box"> 
+                  <div class="assignment_name">
+                    {{assignment.assignment_name}}
+                  </div>
+                  <div class="teacher_description">
+                    {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
+                  </div>
+                  <div class="rate_review"> 
+                    <div class = "rating"> {{ "$%.1f"|format(assignment.assignment_rating) }}</div>
+                    <div class = "reviews"> ({{assignment.assignment_no_of_reviews}}) </div>
+                  </div>
+                  <div class="price">Free</div>
+                  <div class="status">New</div>
+                </a>
+          {% endfor %}
+        </div>
+      </section> 
+    {% endif %}
+    
+    {% if recomended_assignments_z[0] %}
+      <section class="assignments" style="margin-top: 80px;">
+        <div class="assignments_heading">
+            <h1 style="color: rgba(0,0,0,0.8); font-size: 28px; font-weight:700">Because you solved "{{recomended_assignments_z[0].course.course_name|capitalize}}" assignments </h1>
+            <hr id="hrbottom">
+        </div>
+        <div class="assignment_wrapper">
+          {% for assignment in recomended_assignments_z  %} 
+                <a href="{{url_for('assignments.solve_assignment', aid = assignment.id)}}" class= "assignment_box"> 
+                  <div class="assignment_name">
+                    {{assignment.assignment_name}}
+                  </div>
+                  <div class="teacher_description">
+                    {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
+                  </div>
+                  <div class="rate_review"> 
+                    <div class = "rating"> {{ "$%.1f"|format(assignment.assignment_rating) }}</div>
+                    <div class = "reviews"> ({{assignment.assignment_no_of_reviews}}) </div>
+                  </div>
+                  <div class="price">Free</div>
+                  <div class="status">New</div>
+                </a>
+          {% endfor %}
+        </div>
+      </section>  
+    {% endif %}
+{% endif %}
 
 <section class="info">
   <img src="../static/pic1.jpg" alt="" style="width: 100%;">

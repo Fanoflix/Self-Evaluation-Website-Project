@@ -5,13 +5,13 @@
             <div class="side">
                 <div class="up">
                         <div class="pp" style="text-transform: uppercase;">
-                            {{fname[0]}}{{lname[0]}}
+                            {{fname[0]|capitalize}}{{lname[0]|capitalize}}
                         </div>
-                        <h5 id="uname">{{fname}} {{" "}} {{lname}}</h5>
+                        <h5 id="uname">{{fname|capitalize}} {{" "}} {{lname|capitalize}}</h5>
                 </div>
                 
                 <ul id="sideul">
-                  {% if studentLoggedIn %}
+                  {% if current_user.is_authenticated %}
                   <li> <a href="{{ url_for('students.profile') }}">Profile</a></li>
                   <li> <a href="{{ url_for('students.photo') }}">Photo</a></li>
                   <li> <a href="{{ url_for('students.account') }}">Account</a></li>

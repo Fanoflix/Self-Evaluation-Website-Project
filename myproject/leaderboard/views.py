@@ -16,4 +16,4 @@ def display_leaderboard():
     # leaderboard contains all the students with score > 0 in descending order
     leaderboard = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_score > 0)
 
-    return render_template('leaderboard.html', leaderboard=leaderboard, searchForm = searchForm , studentLoggedIn = g.studentLoggedIn , teacherLoggedIn = g.teacherLoggedIn)
+    return render_template('leaderboard.html', leaderboard = leaderboard, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)

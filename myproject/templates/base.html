@@ -44,12 +44,12 @@
             </div>
             <div class="navright">
                 <ul>
-                    {% if studentLoggedIn %}
+                    {% if current_user.is_authenticated %}
                         <li><a href="{{url_for('leaderboard.display_leaderboard')}}">Leaderboard</a></li>
                         <li>
                             <div class="dropdown" onclick="myFunction()">
                                 <button class="dropbtn" >
-                                  <a href="{{ url_for('students.profile') }}">Profile</a>
+                                  <a href="{{ url_for('students.profile') }}">{{current_user.student_fname|capitalize }}</a>
                                   <i class="fa fa-caret-down"></i>
                                 </button>
                                 <div class="dropdown-content" id="myDropdown">
