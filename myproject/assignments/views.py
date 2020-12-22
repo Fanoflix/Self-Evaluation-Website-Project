@@ -12,6 +12,7 @@ assignments_blueprint = Blueprint('assignments', __name__ , template_folder='tem
 
 @assignments_blueprint.route('/<category>',  methods=['GET', 'POST'])
 def categories(category):
+    courses = None
     if int(category) == 1:
         assignments = Assignments.query.filter_by(course_id = 1)
     elif int(category) == 2:
@@ -33,24 +34,20 @@ def categories(category):
     elif int(category) == 13:
         assignments = Assignments.query.filter_by(course_id = 13)
     else:
-        assignments = Assignments.query.filter(and_(
-            Assignments.course_id != 1,
-            Assignments.course_id != 2,
-            Assignments.course_id != 5,
-            Assignments.course_id != 6,
-            Assignments.course_id != 8,
-            Assignments.course_id != 9,
-            Assignments.course_id != 10,
-            Assignments.course_id != 11,
-            Assignments.course_id != 12,
-            Assignments.course_id != 13,
-        ))
+        assignments = None
+        courses = Courses.query.all()
+    #endif
+
+    if assignments == None:
+        assignments = Assignments.query.filter_by(course_id = int(category))
     
+
+
     searchForm = Searching()
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    return render_template('display_category.html', assignments = assignments, teacherLoggedIn = g.teacherLoggedIn, searchForm = searchForm )
+    return render_template('display_category.html', assignments = assignments, teacherLoggedIn = g.teacherLoggedIn, searchForm = searchForm, courses=courses )
 
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])

@@ -39,7 +39,7 @@ def signup():
        
 
         if password1 != '' and password1 == password2:
-                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 0, "", True, 1)
+                new_student = Student(fname, lname, uname, email, password1, 0, 0, 0, 0, "", True, 4)
                 db.session.add(new_student)
                 db.session.commit()
                 settings = Settings(new_student.id, True, True)

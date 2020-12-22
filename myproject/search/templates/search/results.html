@@ -17,8 +17,8 @@
                         {{assignments.teacher.teacher_fname}} {{" "}} {{assignments.teacher.teacher_lname}}
                     </div>
                     <div class="rate_review">
-                        <div class = "rating"> {{"$%.1f"|format(assignments.assignment_rating)}} </div>
-                        <div class = "reviews"> {{assignments.assignment_no_of_reviews}} </div>
+                        <div class = "rating"> {{"%.1f"|format(assignments.assignment_rating)}} </div>
+                        <div class = "reviews"> {{"("}}{{assignments.assignment_no_of_reviews}}{{")"}} </div>
                     </div>
                     <div class="price">Free</div>
                     <div class="status">New</div>
@@ -43,8 +43,8 @@
                                 {{assignment.teacher.teacher_fname}} {{" "}} {{assignment.teacher.teacher_lname}}
                             </div>
                             <div class="rate_review">
-                                <div class = "rating"> {{"$%.1f"|format(assignment.assignment_rating)}} </div>
-                                <div class = "reviews"> {{assignment.assignment_no_of_reviews}} </div>
+                                <div class = "rating"> {{"%.1f"|format(assignment.assignment_rating)}} </div>
+                                <div class = "reviews"> {{"("}}{{assignments.assignment_no_of_reviews}}{{")"}} </div>
                             </div>
                             <div class="price">Free</div>
                             <div class="status">New</div>
@@ -62,7 +62,7 @@
                         Students
                         <hr>
                     </div>
-                    <div class="applygrid">
+                    <div class="applygrid people">
                         {% for student in students %}                
                             <a class="box" href="{{url_for('students.public_profile', uname = student.student_uname)}}">
                                 <div class="pp">
@@ -94,7 +94,7 @@
                     Teachers
                     <hr>
                 </div>
-                <div class="applygrid">
+                <div class="applygrid people">
                 {% for teacher in teachers %}                
                     <a class="box" href="{{url_for('teachers.public_profile', uname = teacher.teacher_uname)}}">
                         <div class="pp">
@@ -135,8 +135,8 @@
                                 {{assignment.teacher.teacher_fname}} {{" "}} {{assignment.teacher.teacher_lname}}
                             </div>
                             <div class="rate_review">
-                                <div class = "rating">{{"$%.1f"|format(assignment.assignment_rating)}} </div>
-                                <div class = "reviews"> {{assignment.assignment_no_of_reviews}} </div>
+                                <div class = "rating">{{"%.1f"|format(assignment.assignment_rating)}} </div>
+                                <div class = "reviews"> {{"("}}{{assignments.assignment_no_of_reviews}}{{")"}} </div>
                             </div>
                             <div class="price">Free</div>
                             <div class="status">New</div>
