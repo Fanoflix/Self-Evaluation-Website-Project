@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/styles.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Monda&family=Open+Sans+Condensed:wght@300&display=swap');
+    </style>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" integrity="sha384-9/D4ECZvKMVEJ9Bhr3ZnUAF+Ahlagp1cyPC7h5yDlZdXs4DQ/vRftzfd+2uFUuqS" crossorigin="anonymous"></script>
+    <title>RatorX</title>
+    {% if request.endpoint == 'assignments.solve_assignment' or  request.endpoint == 'assignments.after_submit' %}
+        <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
+    {% endif %}
+</head>
+<body>
+    <div class="wrapper" >
+        <!-- nav barr -->
+        <div class="nav">
+            <div class="navleft">
+                <ul>
+                    <li><a class="brand" href="{{ url_for('index') }}">RatorX</a> </li>
+                    <li> 
+                        <div class="dropdown " onclick="myFunction2()">
+                            <button class="dropbtn" style="display: flex;" >
+                                <a href="#myDropdown2" class="notBrand"> Top Categories</a>
+                                <i class="fa fa-caret-down" style="color: white; margin-left:5px; margin-top:15px"></i>
+                            </button>
+                            <div class="dropdown-content dropdown-content2" id="myDropdown2">
+                                    <a href="{{url_for('assignments.categories', category = 1 )}}">Database</a>
+                                    <a href="{{url_for('assignments.categories', category = 5 )}}">Data Structures</a>
+                                    <a href="{{url_for('assignments.categories', category = 6 )}}">Object Oriented Programming</a>
+                                    <a href="{{url_for('assignments.categories', category = 2 )}}">Software Development And Analysis</a>
+                                    <a href="{{url_for('assignments.categories', category = 8 )}}">Physics</a>
+                                    <a href="{{url_for('assignments.categories', category = 9 )}}">Chemistry</a>
+                                    <a href="{{url_for('assignments.categories', category = 10)}}">Mathematics</a>
+                                    <a href="{{url_for('assignments.categories', category = 11 )}}">English</a>
+                                    <a href="{{url_for('assignments.categories', category = 12 )}}">Web Development</a>
+                                    <a href="{{url_for('assignments.categories', category = 13 )}}">Web Scrapping</a>
+                                    <a href="{{url_for('assignments.categories', category = 0)}}">All Courses</a>
+                            </div>
+                        </div> 
+                    </li>
+                    <form class="search_bar" method="POST">
+                        {{ searchForm.hidden_tag() }}
+                        <div class = "search_icon">
+                            <i class="fas fa-search"> </i>
+                            {{searchForm.submit( class =" search_btn")}}
+                        </div>
+                        <div class = "type_text">
+                            {{ searchForm.searched(class = "input" , placeholder="Search for anything") }}
+                        </div>
+                    </form>
+
+                </ul>
+            </div>
+            <div class="navright">
+                <ul>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{url_for('leaderboard.display_leaderboard')}}">Leaderboard</a></li>
+                        <li>
+                            <div class="dropdown" onclick="myFunction()">
+                                <button class="dropbtn" >
+                                  <a href="{{ url_for('students.profile') }}">{{current_user.student_fname|capitalize }}</a>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="myDropdown">
+                                  <a href="{{ url_for('students.signout') }}">SignOut</a>
+                                </div>
+                            </div> 
+                        </li>
+                    {% elif teacherLoggedIn %}
+                        <li><a href="{{ url_for('assignments.list_assignment') }}">Assignments</a></li> 
+                        <li>
+                            <div class="dropdown" onclick="myFunction()">
+                                <button class="dropbtn" >
+                                  <a  href="{{ url_for('teachers.profile') }}">Profile</a>
+                                  <i class="fa fa-caret-down"></i>
+                                </button>
+                                <div class="dropdown-content" id="myDropdown">
+                                  <a href="{{url_for('leaderboard.display_leaderboard')}}">Leaderboard</a>
+                                  <a href="{{ url_for('teachers.signout') }}">SignOut</a>
+                                </div>
+                            </div> 
+                        </li>
+                    {% else %}
+                        <li><a href="{{ url_for('students.login') }}">Log in</a></li>
+                        <li><a href="{{ url_for('students.signup') }}">Sign up</a></li>
+                    {% endif %}    
+
+                </ul>
+            </div>
+        </div>
+
+        <script>
+            /* When the user clicks on the button, 
+            toggle between hiding and showing the dropdown content */
+            function myFunction() {
+              document.getElementById("myDropdown").classList.toggle("show");
+            }
+            function myFunction2() {
+                document.getElementById("myDropdown2").classList.toggle("show");
+            }
+            
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function(e) {
+              if (!e.target.matches('.dropbtn')) {
+                var myDropdown = document.getElementById("myDropdown");
+                    if (myDropdown.classList.contains('show')) {
+                        myDropdown.classList.remove('show');
+                    }
+                var myDropdown2 = document.getElementById("myDropdown2");
+                if (myDropdown2.classList.contains('show')) {
+                    myDropdown2.classList.remove('show');
+                } 
+              }
+            }
+            window.onclick = function(e) {
+                if (!e.target.matches('.dropbtn')) {
+                var myDropdown2 = document.getElementById("myDropdown2");
+                if (myDropdown2.classList.contains('show')) {
+                    myDropdown2.classList.remove('show');
+                }
+                }
+
+            } 
+        </script>
+
+        <!-- nav barr ends -->
+        {% block content %}
+
+        {% endblock %}
+
+    </div>  
+</body>
+</html>

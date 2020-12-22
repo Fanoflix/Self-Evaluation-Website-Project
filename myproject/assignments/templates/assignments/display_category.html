@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="assignments" style="margin-top:50px;">
+    
+    {% if assignments[0] %}
+    <div class="assignments_heading">
+        <h1>{{assignments[0].course.course_name}} assignments</h1>
+        <hr id="hrbottom">
+    </div>
+    <div class="assignment_wrapper">
+        {% for assignment in assignments  %} 
+            <a href="{{url_for('assignments.solve_assignment', aid = assignment.id)}}" class= "assignment_box"> 
+                <div class="assignment_name">
+                {{assignment.assignment_name}}
+                </div>
+                <div class="teacher_description">
+                {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
+                </div>
+                <div class="rate_review"> 
+                <div class = "rating"> {{ "$%.1f"|format(assignment.assignment_rating) }}</div>
+                <div class = "reviews"> ({{assignment.assignment_no_of_reviews}}) </div>
+                </div>
+                <div class="price">Free</div>
+                <div class="status">New</div>
+            </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="display:grid; grid-template-columns: repeat(4, 1fr); width:80%; margin: 0 10%;">
+        {% for course in courses %}
+                {% if course.course_name != 'Others'%}
+                <div class="card" style="width: 18rem;height:12rem; margin:5% 0; box-shadow: 0px 0px 5px rgb(193, 193, 193)">    
+                    <div class="card-body modifier">
+                        <div>
+                            <h5 class="card-title">{{ course.course_name }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Number of Assignments: {{course.no_of_assignments}}</h6>      
+                        </div>
+                      <a href="{{url_for('assignments.categories', category = course.id)}}" style="justify-content: flex-end;color: orangered; font-weight:500;" class="card-link">Browse all assignments</a>
+                    </div>
+                  </div>
+                {%endif%}
+        {% endfor %}
+    </div>
+        
+    {% endif %}
+</section>
+
+<style>
+    .modifier{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+</style>
+    
+
+{% endblock %}
+
+

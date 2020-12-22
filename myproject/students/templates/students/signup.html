@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="lsshowcase sshowcase">
+    <div class="lscontainer grid">
+        <div class="lsshowcase-text sshowcase-text">
+            <h1>Need to test your concepts?</h1>
+            <p>Join RatorX now and get access to thousands of assignments for your practice. </p>
+        </div>
+
+        <div class="lsshowcase-form lscard sshowcase-form">
+            <h1>Student's Signup</h1>
+            {% if signupFailed1 %}
+                <h6 style="color: red; font-weight:500">This username is already taken.</h6>
+            {% elif signupFailed2 %}
+                <h6 style="color: red; font-weight:500">This email is already registered.</h6>
+            {% elif signupFailed3 %}
+                <h6 style="color: red; font-weight:500">Passwords do not match.</h6>
+            {% endif %}
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="lsform-control">
+                    {{ form.fname(class="lsform-field" , placeholder = "First Name") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.lname(class="lsform-field" , placeholder = "Last Name") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.uname(class="lsform-field" , placeholder = "Username") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.email(class="lsform-field" , placeholder = "Email") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.password1(class="lsform-field",  placeholder = "Password") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.password2(class="lsform-field",  placeholder = "Confirm Password") }} 
+                </div>
+                <div >
+                    <a href="{{ url_for('teachers.signup') }}">SignUp as Teacher</a>
+                </div>
+                {{ form.submit(class="lsbtn") }} 
+            </form>
+        </div>
+    </div>
+</section>
+
+    
+
+{% endblock %}

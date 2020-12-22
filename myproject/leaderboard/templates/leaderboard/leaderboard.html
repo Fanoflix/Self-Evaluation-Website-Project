@@ -1,0 +1,27 @@
+{% extends "baseProfile.html" %}
+{% block content %}
+
+<div class="text-center d-lg-flex justify-content-lg-center" style="border-color: var(--dark);filter: blur(0px);">
+    <div class="table-responsive" style="width: 100%;margin-top: 2%;margin-right: 20%;margin-left: 20%;box-shadow: -19px -13px 20px 0px rgb(244,244,244), 9px 17px 20px 0px rgb(186,186,186);background: #fefefe;filter: blur(0px);height: 95%;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="color:  orangered;font-size: 20px;text-align:center;width:50%;">Username</th>
+                    <th style="color: orangered;font-size: 20px;text-align:center;width:50%;">Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for entry in leaderboard %}
+                <tr>
+                    <td style="text-align:center;width:50%;">{{entry.student_uname}}</td>
+                    <td style="text-align:center;width:50%;">{{entry.student_score}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "baseProfile.html" %}
+{% block content2 %}
+    <div class="content1">
+        <h1 class="heading">
+            Public Profile <br> 
+        </h1> 
+        <p>Add information about yourself</p>
+    </div>
+    <form method="POST">
+    <div class="content2">
+        
+        <div class="inside">
+            <div class="forms">
+                <p style="font-size:x-large;margin-bottom: 0px; ">Basic Info</p>
+                {{ form.hidden_tag() }}
+                <div class = 'profile_tab_form_fields'>
+                    <p style="font-size:large; margin:0; margin-top: 10px; color: #646464; ">Change Username</p>
+                    {{ form.uname(placeholder= " " + uname , class="form_fields" ) }}
+                </div>
+
+                <div class = 'profile_tab_form_fields'> 
+                    <p style="font-size:large;margin-bottom: 0; color: #646464;">Change Name</p>
+                     {{ form.fname(placeholder= " " + fname|capitalize , class="form_fields"  ) }}
+                
+                    {{ form.lname(placeholder= " " + lname|capitalize , class="form_fields") }}
+                </div>
+                <div class = 'profile_tab_form_fields3'>
+                    {{ form.bio(placeholder= " " + bio ,class="form_fields_bio") }}
+                    <p style="font-size: small; margin:0;">Add a little description about yourself</p>
+                    
+                </div>   
+            </div>  
+        </div>
+    </div>
+    <div class="content3">
+        {{ form.submit(class = "btn") }}
+    </div>
+    </form>
+    {% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="list_assignment_wrapper" > 
+        <div class = list_top_container> 
+             <div class="main_heading">
+                <div class="heading"> Your Assignments </div>
+                <a  class="add_assignment_btn" href="{{ url_for('assignments.add_assignment')}}">Add New Assignment <small><i class="fas fa-plus"></i></small></a>
+            </div>
+            
+            <div class="stats">
+                    <div>
+                        STATS
+                    </div>
+                    <hr style="border: solid 1px orangered; margin: 0 17px; margin-bottom:10px; width:200px">
+                    <div>
+                        Active Assignments: {{total_assignments}}
+                    </div>
+                    <div>
+                        Total Reviews: {{total_reviews}}
+                    </div>
+                    <div>
+                        Average  Rating: {{"%.1f"|format(average_rating)}}
+                    </div>
+            </div>
+        </div >
+        <hr style="margin-bottom:25px;">
+        <div class="display_assignment">
+            {% for assignment in all_assignments %}
+                <a class= "assignment_box" href="{{ url_for('assignments.delete_assignment', aid = assignment.id) }}"> 
+                    <div class="assignment_name">
+                        {{assignment.assignment_name}}
+                    </div>
+                    <div class="teacher_description">
+                        {{assignment.teacher.teacher_fname}} {{ " "}} {{ assignment.teacher.teacher_lname}}
+                    </div>
+                    <div class="rate_review">
+                        <div class = "rating"> {{"$%.1f"|format(assignment.assignment_rating)}}</div>
+                        <div class = "reviews"> ({{assignment.assignment_no_of_reviews}}) </div>
+                    </div>
+                    <div class="price">Free</div>
+                    <div class="status">New</div>
+                </a>
+
+            {% endfor %}
+        </div>
+        
+ 
+    </div>   
+    
+{% endblock %}

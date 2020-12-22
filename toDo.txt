@@ -1,0 +1,52 @@
+TO DO
+
+#AMMAR (FIX THIS SHIT)
+- public profile must display 
+    - username
+    - name
+    - his overall rank and course wise rank 
+    - student no of attempted assignment 
+    - student no of solved assignment
+
+- student privacy backend with db implementation.
+
+- option to see student saved assignments on his profile. 
+
+- Instead of deleting student/teacher recored from the db on deactivation, change student/teacher account status = 0 
+  and make them disappear from everywhere.
+
+- teacher "public profile" bane gi, plus all the data to display on that page. 
+
+- need to add something in teacher privacy tab , dont wanna delete it.
+
+
+# MAHAD
+- Searching
+    - have to further optimize it
+- Implement Catergories
+
+
+# MAHAD and AMMAR(WILL START ONLY  AFTER YOU FINISH YOUR ABOVE TASK)
+- Login Required Stuff and Validation
+
+
+
+====================================================LEFT FOR LATER ===================================================
+- student photo tab page with css need to be made. 
+- student payment method wala tab banana ha. 
+
+- teacher photo wala page with css, and implementation. 
+- teacher payment details wala page (maybe ratorX charge these niggas a little bit optional shit).
+
+- student and teacher joined date.
+
+- some assignment will be free , some can be solved only after buying them.
+- In the Assignments box , below New likha ha , i want more like trending, hot etc
+
+- OAUTH
+- PAYMENT STRIPE 
+========================================================================================================================
+
+
+
+- NEED ATLEAST 2 DAYS BEFORE EVALUATION TO TEST , OPTIMIZE EVERYTHING. 

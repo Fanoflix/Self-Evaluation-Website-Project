@@ -1,0 +1,28 @@
+{% extends "baseProfile.html" %}
+{% block content2 %}
+    <div class="content1">
+        <h1 class="heading"> Privacy  </h1> 
+        <p>Modify your privacy settings here.</p>
+    </div>
+    <form method="POST">
+    <div class="content2">
+        <div class="inside">
+            <div class="forms">
+                <p style="margin-top:30px; font-size: x-large;">Manage what others see on your profile</p>
+                {{ form.hidden_tag() }}
+                <div style="display: flex;">
+                    {{ form.displayRank(checked = True, style = "margin-top:6px;") }}
+                    <p style="margin-left: 10px;">Display rank on your profile.</p>
+                </div>
+                <div style="display: flex;">
+                    {{ form.displayStats(checked = True , style = "margin-top:6px;") }}
+                    <p style="margin-left: 10px; ">Display no of Attempted Assignments and Passed Assignments on your profile.</p>
+                </div>              
+            </div>  
+        </div>
+    </div>
+    <div class="content3">
+        {{ form.submit(class = "btn") }}
+    </div>
+    </form>
+    {% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="lsshowcase">
+    <div class="lscontainer grid">
+        <div class="lsshowcase-text">
+            <h1>Easy Practice</h1>
+            <p>RatorX provides you a platform to test your concepts.We bring all the assignments you need at one place, so that you won't need at look elsewhere.</p>
+            <!-- <a href="features.html" class="lsbtn">Read More</a> -->
+        </div>
+
+        <div class="lsshowcase-form lscard">
+            <h1 >Student's Login</h1>
+            {% if loginFailed %}
+                <h6 style="color: red; font-weight:500">Invalid email or password</h6>
+            {% endif %}
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="lsform-control">
+                    {{ form.email(class="lsform-field" , placeholder = "Email") }} 
+                </div>
+                <div class="lsform-control">
+                    {{ form.password(class="lsform-field",  placeholder = "Password") }} 
+                </div>
+                <div >
+                    <a href="{{ url_for('teachers.login') }}">Login as Teacher</a>
+                </div>
+                {{ form.submit(class="lsbtn") }} 
+            </form>
+        </div>
+    </div>
+</section>
+
+    
+
+{% endblock %}

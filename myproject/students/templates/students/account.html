@@ -1,0 +1,39 @@
+{% extends "baseProfile.html" %}
+{% block content2 %}
+    <div class="content1">
+        <h1 class="heading">
+            Account
+        </h1> 
+        <p>Edit your account settings and change your password here.</p>
+    </div>
+    <form method="POST">
+    <div class="content2">
+        <div class="inside">
+            <div style="margin-left: 15%; display: flex; ">
+                <p>Your email is</p><p style="margin-left: 5px; font-weight: bolder;"> {{current_user.student_email}}</p>
+                <a style= "justify-content: flex-end; color: black;" href="#">
+                    <i class="fas fa-edit" style="margin-left: 5px; margin-top: 4px;"></i>
+                </a>
+            </div>
+            <div class="forms">
+                <p style="font-size: normal; margin-bottom: 0px; ">Password:</p>
+                {{ form.hidden_tag() }}
+                {{ form.password1(placeholder = " Enter Current Password" ,class = 'account_tab_form_fields' , style = "margin-top: 4px;" ) }}
+                {{ form.password2(placeholder = " Enter New Password",class = 'account_tab_form_fields') }}
+                {{ form.password3(placeholder = " Enter New Password Again",class = 'account_tab_form_fields') }}
+                {% if passwordChangeFailed %}
+                    <p style="color: red; font-weight: 500; margin-top: 5px;">You've entered incorrect password</p>
+                {% endif %}
+                {% if passwordMatchFailed %}
+                    <p style="color: red; font-weight: 500; margin-top: 5px;">Passwords do not match</p>
+                {% endif %}
+            </div>  
+        </div>
+    </div>
+    <div class="content3">
+            <button type="submit" class="btn">
+                SAVE
+            </button>
+    </div>
+    </form>
+    {% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="result_wrapper">
+        <div class="assignment">
+            {% if assignments != None %}
+                <div class="heading">
+                    Assignments 
+                    <hr>
+                </div>
+            
+                <a class="assignment_box" href="{{url_for('assignments.solve_assignment', aid = assignments.id )}}"> 
+                    <div class="assignment_name">
+                        {{assignments.assignment_name}}
+                    </div>
+                    <div class="teacher_description">
+                        {{assignments.teacher.teacher_fname}} {{" "}} {{assignments.teacher.teacher_lname}}
+                    </div>
+                    <div class="rate_review">
+                        <div class = "rating"> {{"$%.1f"|format(assignments.assignment_rating)}} </div>
+                        <div class = "reviews"> {{assignments.assignment_no_of_reviews}} </div>
+                    </div>
+                    <div class="price">Free</div>
+                    <div class="status">New</div>
+                </a> 
+            {% endif %}
+        </div>
+
+        <div class="ref_teachers">
+            {% if assignments != None %}
+                <div class="heading">
+                    Assignments by the same teacher
+                    <hr>
+                </div>
+                <div class="applygrid">
+                {% for assignment in ref_teachers %}
+                    {% if assignment != assignments %}
+                        <a class="sassignment_box" href="{{url_for('assignments.solve_assignment', aid = assignment.id )}}">
+                            <div class="assignment_name">
+                                {{assignment.assignment_name}}
+                            </div>
+                            <div class="teacher_description">
+                                {{assignment.teacher.teacher_fname}} {{" "}} {{assignment.teacher.teacher_lname}}
+                            </div>
+                            <div class="rate_review">
+                                <div class = "rating"> {{"$%.1f"|format(assignment.assignment_rating)}} </div>
+                                <div class = "reviews"> {{assignment.assignment_no_of_reviews}} </div>
+                            </div>
+                            <div class="price">Free</div>
+                            <div class="status">New</div>
+                        </a> 
+                    {% endif %}
+                {% endfor %}
+                </div>
+            {% endif %}
+            
+        </div>
+
+        <div class = students>
+            {% if students[0]  %}
+                    <div class="heading">
+                        Students
+                        <hr>
+                    </div>
+                    <div class="applygrid">
+                        {% for student in students %}                
+                            <a class="box" href="{{url_for('students.public_profile', uname = student.student_uname)}}">
+                                <div class="pp">
+                                    {{student.student_fname[0]}}{{student.student_lname[0] }}
+                                </div>
+                                <div class="other">
+                                    <div class="name">
+                                        {{student.student_fname}} {{ " "}} {{student.student_lname }}
+                                    </div>
+                                    <div class="rank">
+                                        Overall Rank: 2nd
+                                    </div>
+                                    <div class = " date" >
+                                        Joined On: 15-Nov-2020
+                                        
+                                    </div>
+                                </div>
+                            </a>  
+                        {% endfor %}
+
+                    </div>
+
+            {% endif %}
+        </div>
+
+        <div class = teachers>
+            {% if teachers[0]  %}
+                <div class="heading">
+                    Teachers
+                    <hr>
+                </div>
+                <div class="applygrid">
+                {% for teacher in teachers %}                
+                    <a class="box" href="{{url_for('teachers.public_profile', uname = teacher.teacher_uname)}}">
+                        <div class="pp">
+                            {{teacher.teacher_fname[0]}}{{teacher.teacher_lname[0] }}
+                        </div>
+                        <div class="other">
+                            <div class="name">
+                                {{teacher.teacher_fname}} {{ " "}} {{teacher.teacher_lname }}
+                            </div>
+                            <div class="rank">
+                                Reviews: 121550
+                            </div>
+                            <div class = " date" >
+                                Joined On: 15-Oct-2020
+                                
+                            </div>
+                        </div>
+                    </a>  
+                {% endfor %}
+                </div>
+
+            {% endif %}
+        </div>
+
+        <div class="ref_assignments">
+            {% if courses != None %}
+                <div class="heading">
+                    Assignments related to {{courses.course_name}}
+                    <hr>
+                </div>
+                <div class="applygrid">
+                {% for assignment in ref_assignments %}
+                        <a class="sassignment_box" href="{{url_for('assignments.solve_assignment', aid = assignment.id )}}">
+                            <div class="assignment_name">
+                                {{assignment.assignment_name}}
+                            </div>
+                            <div class="teacher_description">
+                                {{assignment.teacher.teacher_fname}} {{" "}} {{assignment.teacher.teacher_lname}}
+                            </div>
+                            <div class="rate_review">
+                                <div class = "rating">{{"$%.1f"|format(assignment.assignment_rating)}} </div>
+                                <div class = "reviews"> {{assignment.assignment_no_of_reviews}} </div>
+                            </div>
+                            <div class="price">Free</div>
+                            <div class="status">New</div>
+                        </a> 
+                {% endfor %}
+                </div>
+                {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+
