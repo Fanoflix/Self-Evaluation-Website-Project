@@ -20,9 +20,9 @@
 
                 <div class = 'profile_tab_form_fields'> 
                     <p style="font-size:large;margin-bottom: 0; color: #646464;">Change Name</p>
-                     {{ form.fname(placeholder= " " + fname , class="form_fields"  ) }}
+                     {{ form.fname(placeholder= " " + fname|capitalize , class="form_fields"  ) }}
                 
-                    {{ form.lname(placeholder= " " + lname , class="form_fields") }}
+                    {{ form.lname(placeholder= " " + lname|capitalize , class="form_fields") }}
                 </div>
                 <div class = 'profile_tab_form_fields3'>
                     {{ form.bio(placeholder= " " + bio ,class="form_fields_bio") }}
