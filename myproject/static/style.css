@@ -1383,6 +1383,12 @@ a{
 
 }
 
+.people{
+    grid-template-columns: repeat(3,1fr);
+  
+
+}
+
 .ref_teachers,
 .assignment{
     margin:0 20px
