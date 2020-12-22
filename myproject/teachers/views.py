@@ -5,7 +5,7 @@ from myproject import db,g
 from myproject.models import Teacher,Student
 from myproject.teachers.forms import SignUp,LogIn, ProfileTab,AccountTab, PrivacyTab, DeactivateTab
 from myproject.search.form import Searching
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 teachers_blueprint = Blueprint('teachers', __name__ , template_folder='templates/teachers')
 
@@ -96,12 +96,17 @@ def profile():
     if form.validate_on_submit():
         updated_teacher = Teacher.query.filter_by(teacher_email = g.whichTeacher.teacher_email).first()
         if form.uname.data != "":
-            CheckUser = bool(
-                (Teacher.query.filter(func.lower(Teacher.teacher_uname) == func.lower(form.uname.data)).first())
-                or
-                (Student.query.filter(func.lower(Student.student_uname) == func.lower(form.uname.data)).first())
-            )
-            
+            CheckStudent = bool(Student.query.filter(func.lower(Student.student_uname) == func.lower(form.uname.data)).first()) 
+                                
+            CheckTeacher = bool(Teacher.query.filter(
+                                and_(
+                                        (func.lower(Teacher.teacher_uname) == func.lower(form.uname.data)),
+                                        (func.lower(Teacher.teacher_uname) != func.lower(updated_teacher.teacher_uname)),
+                                    )
+                                ).first())
+
+            CheckUser = CheckTeacher or CheckStudent
+
             if not CheckUser:
                 updated_teacher.teacher_uname = form.uname.data
             else:

@@ -1,0 +1,12 @@
+- student privacy backend with db implementation, hide assignment data on Pprofile.
+
+- option to see student saved assignments on his profile.
+
+- FIX DEACTIVATE ACCOUNT
+
+EXTRA:
+
+- Teacher's public profile shows latest reviews on any of their assignments.
+
+- Classroom where students can be invited
+

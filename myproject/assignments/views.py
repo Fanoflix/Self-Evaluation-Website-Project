@@ -10,6 +10,48 @@ import time
 
 assignments_blueprint = Blueprint('assignments', __name__ , template_folder='templates/assignments')
 
+@assignments_blueprint.route('/<category>',  methods=['GET', 'POST'])
+def categories(category):
+    if int(category) == 1:
+        assignments = Assignments.query.filter_by(course_id = 1)
+    elif int(category) == 2:
+        assignments = Assignments.query.filter_by(course_id = 2)
+    elif int(category) == 5:
+        assignments = Assignments.query.filter_by(course_id = 5)
+    elif int(category) == 6:
+        assignments = Assignments.query.filter_by(course_id = 6)
+    elif int(category) == 8:
+        assignments = Assignments.query.filter_by(course_id = 8)
+    elif int(category) == 9:
+        assignments = Assignments.query.filter_by(course_id = 9)
+    elif int(category) == 10:
+        assignments = Assignments.query.filter_by(course_id = 10)
+    elif int(category) == 11:
+        assignments = Assignments.query.filter_by(course_id = 11)
+    elif int(category) == 12:
+        assignments = Assignments.query.filter_by(course_id = 12)
+    elif int(category) == 13:
+        assignments = Assignments.query.filter_by(course_id = 13)
+    else:
+        assignments = Assignments.query.filter(and_(
+            Assignments.course_id != 1,
+            Assignments.course_id != 2,
+            Assignments.course_id != 5,
+            Assignments.course_id != 6,
+            Assignments.course_id != 8,
+            Assignments.course_id != 9,
+            Assignments.course_id != 10,
+            Assignments.course_id != 11,
+            Assignments.course_id != 12,
+            Assignments.course_id != 13,
+        ))
+    
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+
+    return render_template('display_category.html', assignments = assignments, teacherLoggedIn = g.teacherLoggedIn, searchForm = searchForm )
+
 
 @assignments_blueprint.route('/description',  methods=['GET', 'POST'])
 def description():
@@ -214,7 +256,7 @@ def solve_assignment(aid):
             count = count + 1
             if getattr(form,field_list[count]).data == record.answer:
                 getattr(form,field_list[count]).data = ''
-                earned_points += points 
+                earned_points += points
 
 
         #checking if student has already solved this assignment or not.        
@@ -247,10 +289,13 @@ def solve_assignment(aid):
         else: 
             # then check whether student has passed or failed 
             if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
+                print("Expere here")
                 passed = True
             elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
+                print("Intermediate here")
                 passed = True
             elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
+                print("Beginning here")
                 passed = True
             else:
                 passed = False
@@ -270,8 +315,6 @@ def solve_assignment(aid):
         # student record is updated
         db.session.add(student)
         db.session.commit()
-
-
 
         #Updating the Leaderboard
         #========================
@@ -362,15 +405,15 @@ def solve_assignment(aid):
         
 @assignments_blueprint.route('/after_submit/<passed>/<aid>/<temp>',  methods=['GET', 'POST'])
 @login_required
-def after_submit(passed, aid):
+def after_submit(passed, aid, temp):
     
     rank_changed = False
     points_earned = 0
     old_rank = int(temp)
-    
+    # assignment = Assignments.query.filter_by()
     # checking how much points earned by student in this assignment
     solve = Solved_Assignemnts.query.filter( and_(
-                                            Solved_Assignemnts.assignment_id.like(assignment.id),
+                                            Solved_Assignemnts.assignment_id.like(int(aid)),
                                             Solved_Assignemnts.student_id.like(current_user.id),
                                         )).first()
     points_earned = solve.points

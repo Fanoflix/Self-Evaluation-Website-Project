@@ -27,8 +27,27 @@
             <div class="navleft">
                 <ul>
                     <li><a class="brand" href="{{ url_for('index') }}">RatorX</a> </li>
-                    <li> <a class="notBrand" href="#"> Categories</a></li>
-
+                    <li> 
+                        <div class="dropdown " onclick="myFunction2()">
+                            <button class="dropbtn" style="display: flex;" >
+                                <a href="#myDropdown2" class="notBrand"> Top Categories</a>
+                                <i class="fa fa-caret-down" style="color: white; margin-left:5px; margin-top:15px"></i>
+                            </button>
+                            <div class="dropdown-content dropdown-content2" id="myDropdown2">
+                                    <a href="{{url_for('assignments.categories', category = 1 )}}">Database</a>
+                                    <a href="{{url_for('assignments.categories', category = 5 )}}">Data Structures</a>
+                                    <a href="{{url_for('assignments.categories', category = 6 )}}">Object Oriented Programming</a>
+                                    <a href="{{url_for('assignments.categories', category = 2 )}}">Software Development And Analysis</a>
+                                    <a href="{{url_for('assignments.categories', category = 8 )}}">Physics</a>
+                                    <a href="{{url_for('assignments.categories', category = 9 )}}">Chemistry</a>
+                                    <a href="{{url_for('assignments.categories', category = 10)}}">Mathematics</a>
+                                    <a href="{{url_for('assignments.categories', category = 11 )}}">English</a>
+                                    <a href="{{url_for('assignments.categories', category = 12 )}}">Web Development</a>
+                                    <a href="{{url_for('assignments.categories', category = 13 )}}">Web Scrapping</a>
+                                    <a href="{{url_for('assignments.categories', category = 14)}}">Others</a>
+                            </div>
+                        </div> 
+                    </li>
                     <form class="search_bar" method="POST">
                         {{ searchForm.hidden_tag() }}
                         <div class = "search_icon">
@@ -62,7 +81,7 @@
                         <li>
                             <div class="dropdown" onclick="myFunction()">
                                 <button class="dropbtn" >
-                                  <a href="{{ url_for('teachers.profile') }}">Profile</a>
+                                  <a  href="{{ url_for('teachers.profile') }}">Profile</a>
                                   <i class="fa fa-caret-down"></i>
                                 </button>
                                 <div class="dropdown-content" id="myDropdown">
@@ -86,16 +105,32 @@
             function myFunction() {
               document.getElementById("myDropdown").classList.toggle("show");
             }
+            function myFunction2() {
+                document.getElementById("myDropdown2").classList.toggle("show");
+            }
             
             // Close the dropdown if the user clicks outside of it
             window.onclick = function(e) {
               if (!e.target.matches('.dropbtn')) {
-              var myDropdown = document.getElementById("myDropdown");
-                if (myDropdown.classList.contains('show')) {
-                  myDropdown.classList.remove('show');
-                }
+                var myDropdown = document.getElementById("myDropdown");
+                    if (myDropdown.classList.contains('show')) {
+                        myDropdown.classList.remove('show');
+                    }
+                var myDropdown2 = document.getElementById("myDropdown2");
+                if (myDropdown2.classList.contains('show')) {
+                    myDropdown2.classList.remove('show');
+                } 
               }
             }
+            window.onclick = function(e) {
+                if (!e.target.matches('.dropbtn')) {
+                var myDropdown2 = document.getElementById("myDropdown2");
+                if (myDropdown2.classList.contains('show')) {
+                    myDropdown2.classList.remove('show');
+                }
+                }
+
+            } 
         </script>
 
         <!-- nav barr ends -->

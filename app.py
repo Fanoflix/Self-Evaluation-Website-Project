@@ -20,14 +20,41 @@ def index():
     
     # Finding his preferences
     if current_user.is_authenticated:
-        preffered_courses = []
+        x = [0,-sys.maxsize]
+        y = [0, -sys.maxsize]
+        z = [0, -sys.maxsize]
 
+        # Displaying Random Assignments
+        assignments = Assignments.query.order_by(Assignments.assignment_rating.desc()).filter(
+                and_(
+                    Assignments.course_id != x[0],
+                    Assignments.course_id != y[0],
+                    Assignments.course_id != z[0],
+                )
+        )
+        
+        for assignment in assignments:
+            check = Solved_Assignemnts.query.filter(
+                                            and_(
+                                                    Solved_Assignemnts.assignment_id.like(assignment.id),
+                                                    Solved_Assignemnts.student_id.like(current_user.id),
+                                            )
+                            ).first()
+            if check == None:
+                all_assignments.append(assignment)
+                
+            if len(all_assignments) == 8:
+                break
+        #endfor
+
+        preffered_courses = []
         count_assignments = 0
         for assignment in Solved_Assignemnts.query.filter_by(student_id = current_user.id):
             preffered_courses.append(assignment.assignment.course.id)
             count_assignments += 1
         #endfor
-        
+
+
         if count_assignments > 5:
             Hash = dict() 
             for i in range(len(preffered_courses)): 
@@ -37,9 +64,6 @@ def index():
                     Hash[preffered_courses[i]] = 1
                 #endif
             #endfor
-            x = [0,-sys.maxsize]
-            y = [0, -sys.maxsize]
-            z = [0, -sys.maxsize]
 
             for cid in Hash:
                 if Hash[cid] > 1 and Hash[cid] > x[1]:
@@ -74,27 +98,6 @@ def index():
                 z = list(Hash.items())[-1]
             #endif
 
-
-            #Displaying Random Assignments
-            for assignment in Assignments.query.order_by(Assignments.assignment_rating.desc()).filter(
-                    and_(
-                        Assignments.course_id != x[0],
-                        Assignments.course_id != y[0],
-                        Assignments.course_id != z[0],
-
-                    )
-            ):
-                check = Solved_Assignemnts.query.filter(
-                                                and_(
-                                                        Solved_Assignemnts.assignment_id.like(assignment.id),
-                                                        Solved_Assignemnts.student_id.like(current_user.id),
-                                                )
-                                ).first()
-                if check == None:
-                    all_assignments.append(assignment)
-
-                if len(all_assignments) == 8:
-                    break
 
             #Student Course-wise Preferences
             for assignment in Assignments.query.order_by(Assignments.assignment_rating.desc()).filter_by(course_id = x[0]):

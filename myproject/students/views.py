@@ -4,7 +4,7 @@ from myproject import db,g
 from myproject.models import Student, Teacher, Settings
 from myproject.students.forms import SignUp,LogIn,ProfileTab,AccountTab,PrivacyTab,DeactivateTab
 from myproject.search.form import Searching
-from sqlalchemy import func, and_, or_
+from sqlalchemy import func, and_
 
 students_blueprint = Blueprint('students', __name__ , template_folder='templates/students')
 
@@ -229,4 +229,9 @@ def public_profile(uname):
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
     student = Student.query.filter_by(student_uname = uname).first()
-    return render_template('spublic_profile.html', student=student, searchForm = searchForm)
+
+    # Calculating student's accuracy
+    accuracy = 0
+    if student.student_attempted != 0:
+        accuracy = (student.student_solved/student.student_attempted)*100
+    return render_template('spublic_profile.html', student=student, searchForm = searchForm, accuracy=accuracy)
