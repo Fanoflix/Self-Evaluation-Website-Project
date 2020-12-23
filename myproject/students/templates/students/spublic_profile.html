@@ -12,7 +12,7 @@
 <div style="width: 100%; margin: 5% 0 0 0;display:flex; flex-direction:row; justify-content:center;">
 
 
-      {% if student.student_privacy_settings == 1 %}
+      {% if student.settings.display_stats == 1 and student.settings.display_rank == 1 %}
         <div class="card" style=" text-align: center; width: 18rem; margin-right: 5%;flex-basis: 40%;">
           <div class="card-body">
             <h5 class="card-title">Assignments History</h5>
@@ -28,7 +28,7 @@
             <p class="card-text"></p>
           </div>
         </div>
-        {% elif student.student_privacy_settings == 2 %}
+        {% elif student.settings.display_stats == 0 and student.settings.display_rank == 1 %}
 
           <div class="card" style=" text-align: center; width: 18rem; margin-right: 5%;flex-basis: 40%;">
             <div class="card-body">
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        {% elif student.student_privacy_settings == 3 %}
+        {% elif student.settings.display_stats == 1 and student.settings.display_rank == 0 %}
 
           <div class="card" style=" text-align: center; width: 18rem; margin-right: 5%;flex-basis: 40%;">
             <div class="card-body">

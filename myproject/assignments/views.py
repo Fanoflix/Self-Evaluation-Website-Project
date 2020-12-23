@@ -134,7 +134,7 @@ def add_assignment():
 
 
 
-@assignments_blueprint.route('/<aid>',  methods=['GET', 'POST'])
+@assignments_blueprint.route('/delete_assignment/<aid>',  methods=['GET', 'POST'])
 def delete_assignment(aid):
     searchForm = Searching()
     if searchForm.searched.data != '' and searchForm.validate_on_submit():
@@ -191,11 +191,8 @@ def list_assignment():
             total_reviews += 1
 
         total_assignments += 1
-        # total_reviews += assignment.assignment_review
-        total_assignment_rating += assignment.assignment_rating
     
-    average_rating = total_assignment_rating/total_assignments
-    return render_template('list_assignment.html',average_rating=average_rating, total_reviews=total_reviews, all_assignments=all_assignments, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm, total_assignments=total_assignments)
+    return render_template('list_assignment.html',average_rating = g.whichTeacher.teacher_rating, total_reviews=total_reviews, all_assignments=all_assignments, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm, total_assignments=total_assignments)
 
 @assignments_blueprint.route('/solve_assignment/<aid>',  methods=['GET', 'POST'])
 @login_required
@@ -244,6 +241,7 @@ def solve_assignment(aid):
 
         # When student press submit: student_attempted =  student_attempted + 1 ;
         student = Student.query.filter_by(id = current_user.id).first()
+        
         student.student_attempted += 1
         
 
@@ -319,7 +317,7 @@ def solve_assignment(aid):
 
         #student_new_position
         new_rank_points = (student.student_score * student.student_solved) /student.student_attempted 
-        
+        print(new_rank_points)
         #finding all the students who have attempted atleast one assignment, sorted by thier rank in asc order.
         all_students = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_attempted > 0)
         
@@ -340,11 +338,13 @@ def solve_assignment(aid):
         # if more than one student (here there will always  be one student with rank = 1st)
         elif no_of_students > 1: 
             for stud in all_students:
+                print(f"stud.id: {stud.id}")
                 if stud.id == student.id:
                     if stud.student_rank == 0:
                         student.student_rank = no_of_students
 
                     if old_rank_points > new_rank_points:
+                        print("continue")
                         continue
 
                     break
@@ -352,12 +352,14 @@ def solve_assignment(aid):
 
                 position  = (stud.student_score * stud.student_solved) /stud.student_attempted
                 if new_rank_points > position and old_rank_points <= new_rank_points:
+                    print("in first if")
                     temp = student.student_rank
                     new_rank = int(stud.student_rank)
                     rank_increased = True
                     break
 
-                elif old_rank_points > new_rank_points and stud.student_rank > student.student_rank:
+                elif old_rank_points > new_rank_points and position > new_rank_points:
+                    print("in second if")
                     new_rank = stud.student_rank
                     temp = student.student_rank
                     rank_decreased = True

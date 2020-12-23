@@ -186,16 +186,23 @@ def privacy():
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
+    user = Settings.query.filter_by(student_id= current_user.id).first()
+    displayRankCheck = user.display_rank
+    displayStatCheck = user.display_stats
+
     form = PrivacyTab()
     if form.validate_on_submit():
-        user = Student.query.filter_by(student_email = current_user.student_email).first()
+        
         if form.validate_on_submit():
-            print(form.displayRank.data)
-            print(form.displayStats.data)
-
-            # additional code here
+            user.display_rank = form.displayRank.data
+            user.display_stats = form.displayStats.data 
+            displayRankCheck = user.display_rank
+            displayStatCheck = user.display_stats   
+            
+            db.session.add(user)
+            db.session.commit()
            
-    return render_template('privacy.html', form = form,  fname = current_user.student_fname, lname = current_user.student_lname,  searchForm = searchForm)  
+    return render_template('privacy.html', form = form,  fname = current_user.student_fname, lname = current_user.student_lname,  searchForm = searchForm, displayRankCheck = displayRankCheck, displayStatCheck = displayStatCheck )  
 
 @students_blueprint.route('/deactivate_account' ,  methods =['GET' , 'POST'] )
 @login_required
