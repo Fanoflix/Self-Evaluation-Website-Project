@@ -35,12 +35,14 @@ from myproject.teachers.views import teachers_blueprint
 from myproject.assignments.views import assignments_blueprint
 from myproject.leaderboard.views import leaderboard_blueprint
 from myproject.search.views import search_blueprint
+from myproject.classrooms.views import classrooms_blueprint
 
 app.register_blueprint(students_blueprint,url_prefix='/students')
 app.register_blueprint(teachers_blueprint,url_prefix='/teachers')
 app.register_blueprint(assignments_blueprint,url_prefix='/assignments')
 app.register_blueprint(leaderboard_blueprint,url_prefix='/leaderboard')
 app.register_blueprint(search_blueprint,url_prefix='/search')
+app.register_blueprint(classrooms_blueprint,url_prefix='/classrooms')
 
 
 login_manager.init_app(app)

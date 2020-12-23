@@ -159,11 +159,12 @@ a{
 .dropdown-content {
     display: none;
     position: absolute;
-    left: -20px;
+    left: -40px;
     top: 35px;
     background-color: rgb(6, 6, 6);
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+    min-width: 164px;
 } 
 
 .dropdown-content2 {
@@ -175,13 +176,13 @@ a{
 .dropdown-content a {
     float: none;
     color: white;
-    max-width: 90%;
+    max-width: 100%;
     margin:5px 20px;
-    /* margin-left: 20px; */
     text-decoration: none;
     display: block;
     text-align: start;
     justify-content: center;
+    font-size: 17px;
 }
 
 .dropdown-content2 a {
@@ -872,6 +873,108 @@ a{
     grid-template-columns: repeat(4,1fr);
     gap: 20px;
 }
+/* ====================================List Classes Section ========================================== */
+.class_wrapper{
+    margin: 50px 10%;
+    width: 80%;
+}
+
+.list_top_container .main_heading .create_class_btn{
+    background-color: rgb(116, 116, 146);
+    padding: 5px 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    margin-left: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+.list_top_container .main_heading .create_class_btn:hover{
+    text-decoration: none;
+    transform: scale(0.995);
+}
+
+.class_list_container{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(400px,450px)) ;
+    grid-gap: 20px;
+}
+
+.class_list_container .class_box{
+    background-color: white;
+    min-height: 250px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 1px rgb(31, 31, 31);
+}
+
+.class_list_container .class_box .class_heading{
+    background-color: rgb(53, 131, 242);
+    min-height: 125px;
+    /* max-height: 100px; */
+    border:none; 
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.class_list_container .class_box .class_heading .class_name{
+    font-size: 35px;
+    font-weight: 400;
+    margin-left: 20px;
+    position: relative;
+    top:5px;
+    color:white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.class_list_container .class_box .class_heading .class_section{
+    margin-left: 22px;
+    font-size: 18px;
+    font-weight: 400;
+    color:white;
+}
+
+.class_list_container .class_box .class_heading .class_link:hover{
+    text-decoration-color: white;
+}
+.class_list_container .class_box .class_heading .class_teacher_name{
+    margin-left: 22px;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 400;
+    color:white;
+}
+
+.class_list_container .class_box .notify{
+    min-height: 200px;
+}
+.class_list_container .class_box .notify ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.class_list_container .class_box .notify p{
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    font-size: 17px;
+    color: grey;
+}
+
+.class_list_container .class_box .notify a{
+    color: black;
+    font-weight: 400;
+    font-size: 18px;
+}
+
 
 /* ====================================Add Assignment Section ========================================= */
 .add_assignment_wrapper{
