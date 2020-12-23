@@ -241,6 +241,10 @@ def solve_assignment(aid):
 
         # When student press submit: student_attempted =  student_attempted + 1 ;
         student = Student.query.filter_by(id = current_user.id).first()
+        if student.student_attempted == 0:
+            old_rank_points = 0   
+        else:
+            old_rank_points = (student.student_score * student.student_solved) /student.student_attempted
         
         student.student_attempted += 1
         
@@ -266,7 +270,6 @@ def solve_assignment(aid):
         # if student has already solved this assignment before
         if assignment_already_solved != None:
             passed = True
-            old_rank_points = (student.student_score * student.student_solved) /student.student_attempted
             # then Check if student newScore is greated than his previousScore in this assignment; else score unchanged.
             if earned_points > assignment_already_solved.points:
                 #if it is greater then : remove his previoseScore from his total score..
@@ -296,7 +299,6 @@ def solve_assignment(aid):
                 passed = False
             #endif
 
-            old_rank_points = (student.student_score * student.student_solved) /student.student_attempted
             # if passed
             if passed == True:
                 #then student_solved ++ and student_score = student_score + earned_points
