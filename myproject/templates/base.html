@@ -14,7 +14,7 @@
     </style>
     <script defer src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" integrity="sha384-9/D4ECZvKMVEJ9Bhr3ZnUAF+Ahlagp1cyPC7h5yDlZdXs4DQ/vRftzfd+2uFUuqS" crossorigin="anonymous"></script>
     <title>RatorX</title>
-    {% if request.endpoint == 'assignments.solve_assignment' or  request.endpoint == 'assignments.after_submit' %}
+    {% if request.endpoint == 'assignments.solve_assignment' or request.endpoint == 'assignments.delete_assignment' or  request.endpoint == 'assignments.after_submit' %}
         <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css">
     {% endif %}
 </head>
