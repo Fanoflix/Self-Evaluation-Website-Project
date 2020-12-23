@@ -47,3 +47,4 @@ app.register_blueprint(classrooms_blueprint,url_prefix='/classrooms')
 
 login_manager.init_app(app)
 login_manager.login_view = 'students.login'
+
