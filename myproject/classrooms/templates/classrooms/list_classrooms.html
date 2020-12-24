@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="class_wrapper" > 
+        <div class = list_top_container> 
+             <div class="main_heading">
+                <div class="heading"> Your Classes </div>
+                <a  class="create_class_btn" href="{{ url_for('classrooms.add_classroom')}}"> <small><i class="fas fa-plus" style="margin-right: 5px; position:relative; bottom:1px;"></i></small>Create A New Class</a>
+            </div>
+        
+        </div >
+        <hr style="margin-bottom:25px;">
+        <div class="class_list_container">
+            {% for classroom in all_classrooms %}
+            <div class="class_box">
+                <div class="class_heading">
+                    <a href="{{ url_for('classrooms.display_classroom', classroom_id = classroom.id)}}" class = "class_link">
+                        <div class="class_name">
+                            {{ classroom.classroom_name }}
+                        </div>
+                        <div class="class_section">
+                            Section H
+                        </div>
+                    </a>
+                    <div class="class_teacher_name">
+                        <a href="{{ url_for('teachers.public_profile', uname = teacher_object.teacher_uname)}}" class = "class_link" style="color: red; font:bold">
+                            {{teacher_object.teacher_fname}} {{teacher_object.teacher_lname}}
+                        </a>
+                    </div>
+                </div>
+                <!-- i have no idea wtf is going on here loop index should have been 1 -->
+                {% for assignment in total_assignments[loop.index0] %}
+                <div class="notify">
+                        <ul>
+                            <li>
+                                <div>
+                                    <p class = "due_date"> Due Sunday</p> 
+                                    
+                                    <p> <a class = "when_due" href="#">{{ assignment.assignment_name }}</a></p>
+                                </div>
+                            </li>
+                        </ul>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        
+ 
+    </div>   
+    
+{% endblock %}

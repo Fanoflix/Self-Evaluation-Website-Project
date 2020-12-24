@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>These are the assignments in the classroom</h2>
+    <h2>all students and their grades displayed here</h2>
+    {% for assignment in available_assignments %}
+        Due: {{ all_deadline_days[loop.index0] }} at {{ all_deadline_dates[loop.index0] }} <br>
+        {{ assignment.id }}: {{ assignment.assignment_name }}
+        <br>
+        Difficulty: {{ assignment.difficulty }}
+        <br>
+        <br>
+        <br>
+    {% endfor %}
+    <br>
+    <a  class="add_assignment_btn" href="{{ url_for('classrooms.add_classroom_assignments', classroom_id = classroom_id) }}">Add Assignments for this class <small><i class="fas fa-plus"></i></small></a>
+{% endblock content %}
