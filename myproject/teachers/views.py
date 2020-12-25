@@ -226,4 +226,4 @@ def public_profile(uname):
 
     teacher = Teacher.query.filter_by(teacher_uname = uname).first()
 
-    return render_template('tpublic_profile.html', teacher=teacher, searchForm = searchForm)
+    return render_template('tpublic_profile.html', teacher=teacher, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)
