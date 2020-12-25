@@ -240,3 +240,73 @@ class Solved_Assignemnts(db.Model):
         self.student_id = student_id
         self.assignment_id = assignment_id
         self.points = points
+
+class Classroom(db.Model):
+    __tablename__ = 'classroom'
+
+    id = db.Column(db.Integer, primary_key = True)
+    classroom_name = db.Column(db.Text)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
+    teacher = db.relationship('Teacher', backref='Classroom_JOIN_Teacher') # 
+    
+    def __init__(self, classroom_name, teacher_id):
+        self.classroom_name = classroom_name
+        self.teacher_id = teacher_id
+
+
+class Students_in_Classroom(db.Model):
+    __tablename__ = 'students_in_classroom'
+
+    classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    classroom = db.relationship('Classroom', backref="Students_in_Classroom_JOIN_Classroom")
+    student = db.relationship('Student', backref="Students_in_Classroom_JOIN_Student", uselist = True)
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+           classroom_id, student_id,
+        ),
+    )
+
+    def __init__(self, classroom_id, student_id):
+        self.classroom_id = classroom_id
+        self.student_id = student_id
+
+
+class Assignments_in_Classroom(db.Model):
+    __tablename__ = 'assignments_in_classroom'
+
+    classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
+    deadline = db.Column(db.DateTime)
+    classroom = db.relationship('Classroom', backref="Assignments_in_Classroom_JOIN_Classroom")
+    assignment = db.relationship('Assignments', backref="Assignments_in_Classroom_JOIN_Assignments", uselist = True)
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+           classroom_id, assignment_id,
+        ),
+    )
+
+    def __init__(self, classroom_id, assignment_id, deadline):
+        self.classroom_id = classroom_id
+        self.assignment_id = assignment_id
+        self.deadline = deadline 
+
+
+class Student_Pending(db.Model):
+    __tablename__ = 'student_pending'
+
+    classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    classroom = db.relationship('Classroom', backref="Students_Pending_JOIN_Classroom")
+    student = db.relationship('Student', backref="Students_Pending_JOIN_Student", uselist = True)
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+           classroom_id, student_id,
+        ),
+    )
+    def __init__(self, classroom_id, student_id):
+        self.classroom_id = classroom_id
+        self.student_id = student_id
