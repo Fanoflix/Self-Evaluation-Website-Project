@@ -292,3 +292,21 @@ class Assignments_in_Classroom(db.Model):
         self.classroom_id = classroom_id
         self.assignment_id = assignment_id
         self.deadline = deadline 
+
+
+class Student_Pending(db.Model):
+    __tablename__ = 'student_pending'
+
+    classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    classroom = db.relationship('Classroom', backref="Students_Pending_JOIN_Classroom")
+    student = db.relationship('Student', backref="Students_Pending_JOIN_Student", uselist = True)
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint(
+           classroom_id, student_id,
+        ),
+    )
+    def __init__(self, classroom_id, student_id):
+        self.classroom_id = classroom_id
+        self.student_id = student_id

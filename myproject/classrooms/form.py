@@ -8,3 +8,6 @@ class AddClassroom(FlaskForm):
  
 class AddClassroomAssignments(FlaskForm):
     pass
+
+class StudentJoinClassroom(FlaskForm):
+    submit = SubmitField("Join Class")

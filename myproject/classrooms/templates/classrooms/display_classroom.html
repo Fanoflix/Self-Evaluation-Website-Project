@@ -13,5 +13,11 @@
         <br>
     {% endfor %}
     <br>
-    <a  class="add_assignment_btn" href="{{ url_for('classrooms.add_classroom_assignments', classroom_id = classroom_id) }}">Add Assignments for this class <small><i class="fas fa-plus"></i></small></a>
+    {% if teacherLoggedIn %}        
+        <a  class="add_assignment_btn" href="{{ url_for('classrooms.add_classroom_assignments', classroom_id = classroom_id) }}">Add Assignments for this class <small><i class="fas fa-plus"></i></small></a>
+    {% else %}
+        <form method = "POST" class="">
+            {{ form.submit.label }}: {{ form.submit() }}
+        </form>
+    {% endif %}
 {% endblock content %}
