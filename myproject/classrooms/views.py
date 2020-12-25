@@ -51,6 +51,7 @@ def teacher_class_list():
         total_assignments.append(available_assignments)
         available_assignments = []
     
+    print(total_assignments)
     return render_template('teacher_list_classrooms.html', all_classrooms = all_classrooms, total_assignments = total_assignments, teacher_object = g.whichTeacher, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)
 
 
