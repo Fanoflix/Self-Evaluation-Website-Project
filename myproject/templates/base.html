@@ -66,11 +66,12 @@
                         <li>
                             <div class="dropdown" onclick="myFunction()">
                                 <button class="dropbtn" >
-                                  <a href="{{ url_for('students.profile') }}">{{current_user.student_fname|capitalize }}</a>
-                                  <i class="fa fa-caret-down"></i>
+                                    <a href="{{ url_for('students.profile') }}">{{current_user.student_fname|capitalize }}</a>
+                                    <i class="fa fa-caret-down"></i>
                                 </button>
                                 <div class="dropdown-content" id="myDropdown">
-                                  <a href="{{ url_for('students.signout') }}">SignOut</a>
+                                    <a href="{{ url_for('classrooms.student_class_list') }}"> Your Classrooms</a>
+                                    <a href="{{ url_for('students.signout') }}">SignOut</a>
                                 </div>
                             </div> 
                         </li>

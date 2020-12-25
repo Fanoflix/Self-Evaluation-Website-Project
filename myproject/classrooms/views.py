@@ -3,7 +3,8 @@ from flask_login import login_user,login_required,logout_user,current_user
 from myproject import db,g
 from myproject.models import Classroom, Assignments, Assignments_in_Classroom, Students_in_Classroom
 from myproject.classrooms.form import AddClassroom, AddClassroomAssignments, StudentJoinClassroom
-from wtforms import RadioField,SubmitField, StringField, SelectField, Form, validators, DateTimeField
+from wtforms import RadioField,SubmitField, StringField, SelectField, Form, validators
+from wtforms.fields.html5 import DateTimeLocalField
 from myproject.search.form import Searching
 import datetime 
 from sqlalchemy import func, and_
@@ -38,15 +39,24 @@ def teacher_class_list():
                                                                 )
                 ).first()
             if assignment_exists != None:
+                today = datetime.datetime.today()
                 #calculate duedate here
                 deadline = Assignments_in_Classroom.query.filter_by(assignment_id = assignment.id).first().deadline
-                date=str(deadline)
-                day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
-                temp.append(assignment.assignment_name)
-                temp.append(date)
-                temp.append(day_name[day])
-                available_assignments.append(temp)
-                temp = []
+                
+                check_month_year_today = today.strftime("%Y-%m")
+                check_month_year_deadline = deadline.strftime("%Y-%m")
+           
+
+                if check_month_year_today == check_month_year_deadline:
+                    if ( (int(deadline.strftime("%d")) - int(today.strftime("%d"))) <= 7) and ( (int(deadline.strftime("%d")) - int(today.strftime("%d"))) >= 0):
+                        date=str(deadline)
+                        day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
+                        # print(day)
+                        temp.append(assignment.assignment_name)
+                        temp.append(deadline.strftime("%I:%M %p"))
+                        temp.append(day_name[day])
+                        available_assignments.append(temp)
+                        temp = []
         
         total_assignments.append(available_assignments)
         available_assignments = []
@@ -252,7 +262,7 @@ def add_classroom_assignments(classroom_id):
     
     available_assignments = SelectField("Assignments", [validators.Required()], choices = [(assignment.id, assignment.assignment_name) for assignment in all_assignments])
     setattr(AddClassroomAssignments, 'available_assignments', available_assignments)
-    deadline = DateTimeField("Deadline", [validators.Required()])
+    deadline = DateTimeLocalField("Deadline", [validators.Required()], format='%Y-%m-%dT%H:%M')
     setattr(AddClassroomAssignments, 'deadline', deadline)
     setattr(AddClassroomAssignments, 'submit', SubmitField('Add Assignment to classroom') )
     
@@ -262,6 +272,7 @@ def add_classroom_assignments(classroom_id):
     if form.validate_on_submit():
         assignment_id = form.available_assignments.data
         deadline = form.deadline.data
+        new_deadline = str(deadline)
         new_assignment_in_classroom = Assignments_in_Classroom(int(classroom_id), assignment_id, deadline)
         db.session.add(new_assignment_in_classroom)
         db.session.commit()
