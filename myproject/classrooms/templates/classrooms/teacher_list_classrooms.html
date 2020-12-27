@@ -18,11 +18,11 @@
                             {{ classroom.classroom_name }}
                         </div>
                         <div class="class_section">
-                            Section H
+                            {{ classroom.classroom_section}}
                         </div>
                     </a>
                     <div class="class_teacher_name">
-                        <a href="{{ url_for('teachers.public_profile', uname = teacher_object.teacher_uname)}}" class = "class_link" style="color: red; font:bold">
+                        <a href="{{ url_for('teachers.public_profile', uname = teacher_object.teacher_uname)}}" class = "class_link" >
                             {{teacher_object.teacher_fname}} {{teacher_object.teacher_lname}}
                         </a>
                     </div>

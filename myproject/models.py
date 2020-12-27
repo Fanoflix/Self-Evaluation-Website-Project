@@ -246,11 +246,13 @@ class Classroom(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     classroom_name = db.Column(db.Text)
+    classroom_section = db.Column(db.Text)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
     teacher = db.relationship('Teacher', backref='Classroom_JOIN_Teacher') # 
     
-    def __init__(self, classroom_name, teacher_id):
+    def __init__(self, classroom_name, classroom_section, teacher_id):
         self.classroom_name = classroom_name
+        self.classroom_section = classroom_section
         self.teacher_id = teacher_id
 
 

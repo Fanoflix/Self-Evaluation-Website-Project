@@ -1,2 +1,0 @@
-- Changed Line 17 in students/templates/profile.html
-- Changes Teacher's views.py and tprofile.html
