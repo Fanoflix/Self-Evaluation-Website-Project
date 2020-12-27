@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form method = "POST" class="">
-        {{ form.hidden_tag() }}
-        <br>
-        {{ form.class_name.label }}: {{ form.class_name() }}
-        <br>
-        {{ form.submit.label }}: {{ form.submit() }}
+<div class="add_classroom_wrapper" >
+    <div class = "main_heading">
+        Create a New Class
+    </div>
+    <form method = "POST" class="add_classroom">
+        <div class="class_details">
+            {{ form.hidden_tag() }}
+            <div class="form_labels">
+                <p class = "field1"> Class Name: </p>
+                <p class = "field2"> Section: </p>
+            </div>
+            <div class="form_fields">
+                 {{ form.class_name( class = "fields", style = "width:200px;") }} 
+                 {{ form.class_section(class = "fields" , style = "width:250px;") }} 
+            </div>   
+        </div>
+        <div class="form_submit"> {{ form.submit(class="form_btn") }}</div>
     </form>
+</div>
 
 {% endblock content %}

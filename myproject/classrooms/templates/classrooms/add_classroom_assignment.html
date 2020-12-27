@@ -1,22 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <h1>Add Assignments to Classroom Here</h1>
-
-    <h2>Add Deadline here</h2>
-    <p>classroom id: {{ classroom_id }} </p>
-    <br>
-    <br>
-    <form method = "POST" class="">
-        {{ form.hidden_tag() }}
-        <br>
-        {{ form.available_assignments.label }}: {{ form.available_assignments() }}
-        <br>
-        {{ form.deadline.label }}: {{ form.deadline(placeholder = 'format=%Y-%m-%d %H:%M:%S') }}
-        <br>
-        
-        {{ form.submit.label }}: {{ form.submit() }}
-    </form>
-
+    <div class="add_classroom_wrapper">
+        <div class = "main_heading main_heading2">
+            Add Assignment to this Classroom
+        </div>
+        <form method = "POST" class="add_classroom">
+            <div class="class_details">
+                {{ form.hidden_tag() }}
+                <div class="form_labels">
+                    <p class = "field1"> Assignments: </p>
+                    <p class = "field2"> Deadline: </p>
+                </div>
+                <div class="form_fields">
+                     {{ form.available_assignments( class = "fields", style = "width:200px;") }} 
+                     {{ form.deadline(class = "fields" , style = "width:200px;") }} 
+                </div>   
+            </div>
+            <div class="form_submit"> {{ form.submit(class="form_btn form_btn2") }}</div>
+        </form>
+    </div>
 {% endblock content %}

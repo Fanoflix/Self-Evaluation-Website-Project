@@ -51,7 +51,6 @@ def teacher_class_list():
                     if ( (int(deadline.strftime("%d")) - int(today.strftime("%d"))) <= 7) and ( (int(deadline.strftime("%d")) - int(today.strftime("%d"))) >= 0):
                         date=str(deadline)
                         day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
-                        # print(day)
                         temp.append(assignment.assignment_name)
                         temp.append(deadline.strftime("%I:%M %p"))
                         temp.append(day_name[day])
@@ -164,7 +163,7 @@ def join_classroom():
                 date=str(deadline)
                 day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
                 temp.append(assignment.assignment_name)
-                temp.append(date)
+                temp.append(deadline.strftime("%I:%M %p"))
                 temp.append(day_name[day])
                 available_assignments.append(temp)
                 temp = []
@@ -205,11 +204,11 @@ def display_classroom(classroom_id):
         date=str(deadline)
         day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
         all_deadline_days.append(day_name[day])
-        all_deadline_dates.append(deadline)
+        all_deadline_dates.append(deadline.strftime("%I:%M %p"))
 
     #all the students displayed here
     if g.teacherLoggedIn:
-        return render_template('display_classroom.html', classroom_id = int(classroom_id), all_deadline_days = all_deadline_days, all_deadline_dates = all_deadline_dates, available_assignments = available_assignments, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)
+        return render_template('display_classroom.html', all_deadline_days = all_deadline_days, all_deadline_dates = all_deadline_dates, available_assignments = available_assignments, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)
 
     else:
         #check if student is already on pending
@@ -230,8 +229,7 @@ def add_classroom():
 
     form = AddClassroom()
     if form.validate_on_submit():
-        class_name = form.class_name.data
-        new_class = Classroom(class_name, g.whichTeacher.id)
+        new_class = Classroom(form.class_name.data, form.class_section.data, g.whichTeacher.id)
         db.session.add(new_class)
         db.session.commit()
         return redirect(url_for('classrooms.teacher_class_list'))

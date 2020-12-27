@@ -4,6 +4,7 @@ from wtforms import StringField, SubmitField, PasswordField, Form, validators , 
 
 class AddClassroom(FlaskForm):
     class_name = StringField('Class Name:', [ validators.Required() ])
+    class_section = StringField ('Class Section:' , [ validators.Required() ])
     submit = SubmitField("Add Class")
  
 class AddClassroomAssignments(FlaskForm):
