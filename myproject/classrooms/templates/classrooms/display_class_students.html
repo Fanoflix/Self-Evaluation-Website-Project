@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="jumbotron">
+        <ul>
+            {% for student in students %}
+                <li>
+                    <p> {{student.student.student_fname}} {{student.student.student_lname}} {{student.student.student_uname}}</p>
+                </li>
+            {% endfor %}
+            
+        </ul>
+    </div>
+    
+{% endblock %}

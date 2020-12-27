@@ -1,12 +1,74 @@
-- student privacy backend with db implementation, hide assignment data on Pprofile.
 
-- option to see student saved assignments on his profile.
+CLASSROOM
+- fix due date link 
+- delete asssignment from classroom
+- add student to classroom
+- display student points in asssignment
 
-- FIX DEACTIVATE ACCOUNT
 
-EXTRA:
+- fix deactivate account
+- delete asssignment
 
-- Teacher's public profile shows latest reviews on any of their assignments.
 
-- Classroom where students can be invited
+DONE
+- Solve_Classroom_Assignment(classroomid , asssignmentid ,studentid, points ) 
+- Student_Classroom(classroomid, studentid) 
 
+
+
+
+
+#show students classrooms that he joined
+@classrooms_blueprint.route('/join_classroom',  methods=['GET', 'POST'])
+def join_classroom():
+    searchForm = Searching()
+    if searchForm.searched.data != '' and  searchForm.validate_on_submit():
+        return redirect(url_for('search.searching', searched = searchForm.searched.data))
+        
+    all_classrooms = []
+    temp = []
+    available_assignments = []
+    total_assignments = []
+    #all classrooms displayed to student so he can join anyone except the ones he is already in
+    for classroom in Classroom.query.all():
+        student_exists = Students_in_Classroom.query.filter(
+            and_(
+                Students_in_Classroom.student_id.like(current_user.id),
+                Students_in_Classroom.classroom_id.like(classroom.id)
+            )
+        ).first()
+        #looping through all classes
+        #if student doesn't exists in that class append that class to all_classrooms[]
+        if student_exists == None:
+            temp.append(classroom.id)
+            temp.append(classroom.classroom_name)
+            temp.append(classroom.teacher.teacher_fname)
+            temp.append(classroom.teacher.teacher_lname)
+            temp.append(classroom.teacher.teacher_uname)
+            all_classrooms.append(temp)
+            temp = []
+
+    #checking all assignments in each class       
+    for classroom in Classroom.query.all():
+        for assignment in  Assignments.query.all():
+            assignment_exists = Assignments_in_Classroom.query.filter(
+                                                                and_(
+                                                                        Assignments_in_Classroom.classroom_id.like(classroom.id),
+                                                                        Assignments_in_Classroom.assignment_id.like(assignment.id),
+                                                                )
+                ).first()
+            if assignment_exists != None:
+                deadline = Assignments_in_Classroom.query.filter_by(assignment_id = assignment.id).first().deadline
+                date=str(deadline)
+                day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
+                temp.append(assignment.assignment_name)
+                temp.append(deadline.strftime("%I:%M %p"))
+                temp.append(day_name[day])
+                available_assignments.append(temp)
+                temp = []
+        
+        total_assignments.append(available_assignments)
+        available_assignments = []
+
+    # print(total_assignments)
+    return render_template('join_classroom.html', all_classrooms = all_classrooms, total_assignments = total_assignments, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)

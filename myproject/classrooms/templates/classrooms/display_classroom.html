@@ -3,22 +3,34 @@
 {% block content %}
 <div class="list_assignment_wrapper" > 
     <div class = list_top_container> 
-         <div class="main_heading">
+        <div class="main_heading">
             <div class="heading"> Your Classroom Assignments</div>
-            {% if teacherLoggedIn %}        
-            <a  class="add_assignment_btn" href="{{ url_for('classrooms.add_classroom_assignments', classroom_id = classroom_id) }}">Add Assignments for this class <small><i class="fas fa-plus"></i></small></a>
+            {% if teacherLoggedIn %}
+                <div style="display: flex;">
+                    <a class="add_assignment_btn" href="{{ url_for('classrooms.add_classroom_assignments', classroom_id = classroom_id) }}">Add Assignments for this class <small><i class="fas fa-plus"></i></small></a>
+                    <a class="add_assignment_btn" style="background-color: rgb(75, 75, 75);" href="{{ url_for('classrooms.display_class_students', classroom_id = classroom_id)}}"> Your Students</a>
+                </div>         
             {% else %}
-            <form method = "POST" class="">
-                {{ form.submit.label }}: {{ form.submit() }}
-            </form>
+                {% if inClass %}
+                    <p style="color:green; font-weight:700; font-size:22px; margin-left: 5px">Joined</p>
+                {% else %}
+                    <form method = "POST" class="">
+                        {{ form.hidden_tag()}}
+                        {{ form.submit() }}
+                    </form>
+                {% endif %}
             {% endif %}
         </div>
 
     </div >
-    <hr style="margin-bottom:25px;">
+    <hr style="margin-bottom:25px; height:2px">
     <div class="display_assignment">
         {% for assignment in available_assignments %}
-            <a class= "assignment_box" href="{{ url_for('assignments.delete_assignment', aid = assignment.id) }}"> 
+                {% if current_user.is_authenticated %}
+                    <a class= "assignment_box" href="{{ url_for('classrooms.solve_classroom_assignment', classroom_id = classroom_id,assignment_id = assignment.id) }}"> 
+                {% else %}
+                    <a class= "assignment_box" href="{{ url_for('classrooms.delete_classroom_assignments', classroom_id = classroom_id,assignment_id = assignment.id) }}"> 
+                {% endif %}
                 <div class="assignment_name">
                     {{assignment.assignment_name}}
                 </div>

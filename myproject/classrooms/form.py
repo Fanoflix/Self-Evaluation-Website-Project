@@ -6,7 +6,13 @@ class AddClassroom(FlaskForm):
     class_name = StringField('Class Name:', [ validators.Required() ])
     class_section = StringField ('Class Section:' , [ validators.Required() ])
     submit = SubmitField("Add Class")
- 
+
+class SolveClassAssignment(FlaskForm):
+    pass
+    
+class DeleteClassroomAssignment(FlaskForm):
+    submit = SubmitField("Delete Assignment") 
+
 class AddClassroomAssignments(FlaskForm):
     pass
 

@@ -262,7 +262,7 @@ class Students_in_Classroom(db.Model):
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     classroom = db.relationship('Classroom', backref="Students_in_Classroom_JOIN_Classroom")
-    student = db.relationship('Student', backref="Students_in_Classroom_JOIN_Student", uselist = True)
+    student = db.relationship('Student', backref="Students_in_Classroom_JOIN_Student")
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
@@ -282,7 +282,7 @@ class Assignments_in_Classroom(db.Model):
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     deadline = db.Column(db.DateTime)
     classroom = db.relationship('Classroom', backref="Assignments_in_Classroom_JOIN_Classroom")
-    assignment = db.relationship('Assignments', backref="Assignments_in_Classroom_JOIN_Assignments", uselist = True)
+    assignment = db.relationship('Assignments', backref="Assignments_in_Classroom_JOIN_Assignments")
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
@@ -296,19 +296,25 @@ class Assignments_in_Classroom(db.Model):
         self.deadline = deadline 
 
 
-class Student_Pending(db.Model):
-    __tablename__ = 'student_pending'
+class Solved_Classroom_Assignment(db.Model):
+    __tablename__ = 'solved_classroom_assignments'
 
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    classroom = db.relationship('Classroom', backref="Students_Pending_JOIN_Classroom")
-    student = db.relationship('Student', backref="Students_Pending_JOIN_Student", uselist = True)
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
+    points = db.Column(db.Integer)
+
+    classroom = db.relationship('Classroom', backref="Solved_Classroom_Assignment_JOIN_Classroom")
+    student = db.relationship('Student', backref="Solved_Classroom_Assignment_JOIN_Student")
+    assignment = db.relationship('Assignments' , backref = "Solved_Classroom_Assignment_JOIN_Assignments")
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
-           classroom_id, student_id,
+           classroom_id, student_id, assignment_id,
         ),
     )
-    def __init__(self, classroom_id, student_id):
+    def __init__(self, classroom_id, assignment_id, student_id, points):
         self.classroom_id = classroom_id
         self.student_id = student_id
+        self.assignment_id = assignment_id
+        self.points = points

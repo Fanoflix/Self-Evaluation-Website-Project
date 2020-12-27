@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="POST"> 
+   <div class="attempt_page_wrapper">
+
+        <div class="attempt_page_heading">
+            <h1>{{assignment_data[0].assignment.assignment_name}}</h1>
+            <div class = "delete_and_points"> 
+                <p style="font-weight: bold">Total Points: {{total_points}}</p>
+                {{ form.submit( class = "delete_assignment_btn")}} 
+            </div>
+            <hr style = "height:5px;">
+        </div>
+
+        <div class="attempt_page_solving">
+            
+                {{ form.hidden_tag() }}
+                <!-- Outer Loop -->
+                
+                {% for assignment in assignment_data %}
+                    <div class="form_fields">
+                        <div class="ap_question">
+                            <p>{{assignment.question_id}}.</p>
+                            <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{assignment.question_text}}</p>
+                            <div style=" display:flex; flex-direction:column; justify-content:center; align-items:center">
+                                <p style="
+                                width: 90px ;margin-left: auto; border: solid 1px black; border-radius:15px;
+                                display:flex; justify-content:center; position:sticky;
+                                "> 
+                                    {{points}} Points
+                                </p>
+                            </div>
+                            
+                        </div>
+                        <div class="ap_options"></p>
+                           <ul>
+                               <li>{{ assignment.choice1 }}</li>
+                               <li>{{ assignment.choice2 }}</li>
+                               <li>{{ assignment.choice3 }}</li>
+                               <li>{{ assignment.choice4 }}</li>
+                               <br>
+                               <p style="font-weight: bold; color: green">Correct Answer: {{assignment.answer}}</p>
+                           </ul> 
+                        </div>
+    
+                        
+                    </div> 
+                    
+                {% endfor %}
+
+                 
+                 
+            </form>
+        </div>
+
+        <div style="margin-top: 60px;">
+            <ul> 
+                {% for result in student_results %}
+                    <li>
+                        <p> {{ result.student.student_fname}} {{ result.student.student_lname}} {{result.points}}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+   </div>
+</form>   
+{% endblock %}
