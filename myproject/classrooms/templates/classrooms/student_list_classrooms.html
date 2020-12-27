@@ -4,7 +4,7 @@
         <div class = list_top_container> 
              <div class="main_heading">
                 <div class="heading">Classes You Have Joined </div>
-                <a  class="create_class_btn" href="{{ url_for('classrooms.join_classroom')}}"> <small><i class="fas fa-plus" style="margin-right: 5px; position:relative; bottom:1px;"></i></small>Join A New Class</a>  
+
             </div>
         
         </div >
@@ -13,7 +13,7 @@
             {% for classroom in all_classrooms %}
             <div class="class_box">
                 <div class="class_heading">
-                    <a href="{{ url_for('classrooms.display_classroom', classroom_id = classroom[4])}}" class = "class_link">
+                    <a href="{{ url_for('classrooms.display_classroom', classroom_id = classroom[0])}}" class = "class_link">
                         <div class="class_name">
                             {{ classroom[1] }}
                         </div>
@@ -22,7 +22,7 @@
                         </div>
                     </a>
                     <div class="class_teacher_name">
-                        <a href="{{ url_for('teachers.public_profile', uname = classroom[4])}}" class = "class_link" style="color: red; font:bold">
+                        <a href="{{ url_for('teachers.public_profile', uname = classroom[4])}}" class = "class_link">
                             {{classroom[2]}} {{classroom[3]}}
                         </a>
                     </div>

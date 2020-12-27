@@ -12,33 +12,20 @@
             {% for classroom in all_classrooms %}
             <div class="class_box">
                 <div class="class_heading">
-                    <a href="{{ url_for('classrooms.display_classroom', classroom_id = classroom[0])}}" class = "class_link">
+                    <a href="{{ url_for('classrooms.display_classroom', classroom_id = classroom.id)}}" class = "class_link">
                         <div class="class_name">
-                            {{ classroom[1] }}
+                            {{ classroom.classroom_name }}
                         </div>
                         <div class="class_section">
                             Section H
                         </div>
                     </a>
                     <div class="class_teacher_name">
-                        <a href="{{ url_for('teachers.public_profile', uname = classroom[4])}}" class = "class_link" style="color: red; font:bold">
-                            {{classroom[2]}} {{classroom[3]}}
+                        <a href="{{ url_for('teachers.public_profile', uname = classroom.teacher.teacher_uname)}}" class = "class_link">
+                            {{classroom.teacher.teacher_fname}} {{classroom.teacher.teacher_lname}}
                         </a>
                     </div>
                 </div>
-                {% for assignment in total_assignments[loop.index0] %}
-                <div class="notify">
-                        <ul>
-                            <li>
-                                <div>
-                                    <p class = "due_date"> Due {{ assignment[2] }} at {{ assignment[1] }} </p> 
-                                    
-                                    <p> <a class = "when_due" href="#">{{ assignment[0] }}</a></p>
-                                </div>
-                            </li>
-                        </ul>
-                </div>
-                {% endfor %}
             </div>
             {% endfor %}
         </div>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="after_submit_wrapper">           
+        {% if passed %}
+                <div class="result">
+                    <h4>You Passed!</h4>
+                    <h6>Points Earned: {{earned_points}} </h6>
+                    <h6>  Total Points: {{ total_points}} </h6>
+                </div>        
+        {% else %}
+                <div class="result fail">
+                    <h4 style="color: red;">You Failed! </h4>
+                    <h6>Points Earned: {{earned_points}} </h6>
+                    <h6>  Total Points: {{ total_points}} </h6>
+                </div>     
+        {% endif %}
+         
+    </div>
+    
+{% endblock %}

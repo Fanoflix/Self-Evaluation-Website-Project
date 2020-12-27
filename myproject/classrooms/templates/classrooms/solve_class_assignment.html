@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    
+   <div class="attempt_page_wrapper">
+
+        {% if done %}
+            <div class="attempt_page_heading">
+                <h1>{{questions[0].assignment.assignment_name}}</h1>
+                <p style="font-weight: 600; font-size: 17px">You have already solved this assignment.</p>
+                <p style="font-weight: 600; font-size: 22px">Points Earned: {{earned_points}}/{{total_points}}</p>
+                <hr>
+            </div> 
+        {% else %}
+
+            <div class="attempt_page_heading">
+                <h1>{{questions[0].assignment.assignment_name}}</h1>
+                <p>Total Points: {{ total_points}}</p>
+                <hr>
+            </div> 
+            
+            <div class="attempt_page_solving">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <!-- Outer Loop -->
+                    
+                    {% for question in questions %}
+                        <div class="form_fields">
+                            <div class="ap_question">
+                                <p>{{loop.index}}.</p>
+                                <p style="display: flex; justify-content: flex-start; align-items: center;  "> {{question.question_text}}</p>
+                                <div style=" display:flex; flex-direction:column; justify-content:center; align-items:center">
+                                    <p style="
+                                    width: 90px ;margin-left: auto; border: solid 1px black; border-radius:15px;
+                                    display:flex; justify-content:center; position:sticky;
+                                    "> 
+                                        {{points}} Points
+                                    </p>
+                                </div>
+                                
+                            </div>
+                            <div class="ap_options"></p>
+                                {{ form|attr(field_list[loop.index0])(class = 'radio_button') }} 
+                            </div>
+                            
+                        </div> 
+                        
+                    {% endfor %}
+                    
+                    {{ form.submit(class = 'ap_submit') }}
+                    
+                </form>
+            </div>
+        {% endif %}
+
+   </div>
+{% endblock %}

@@ -3,8 +3,14 @@
 <div class="jumbotron jumbotron-fluid" style="background-color: rgba(188, 151, 70, 0.105); box-shadow: 0px 0px 3px rgba(188, 151, 70, 0.475)">
     <div class="container" style="text-align:center;">
       <h1 class="display-4" style="font-size: 70px;">{{teacher.teacher_uname}} </h1> <span style="font-size: 15px;">&nbsp;{{teacher.teacher_fname}} {{teacher.teacher_lname}}</span>
-      <br><br><br><br>
+      <br><br>
       <p class="lead">{{teacher.teacher_bio}}</p>
+      <br>
+      {% if current_user.is_authenticated %}
+        <a href="{{url_for('classrooms.join_classroom', teacher_id = teacher.id)}}"> Teacher Classrooms</a>
+      {% endif %}
+      
+      
     </div>
 </div>
   
