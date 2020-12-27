@@ -33,9 +33,9 @@
                         <ul>
                             <li>
                                 <div>
-                                    <p class = "due_date"> Due {{ assignment[2] }} at {{ assignment[1] }}</p> 
+                                    <p class = "due_date"> Due {{ assignment[3] }} at {{ assignment[2] }}</p> 
                                     
-                                    <p> <a class = "when_due" href="#">{{ assignment[0] }}</a></p>
+                                    <p> <a class = "when_due" href="{{url_for('classrooms.solve_classroom_assignment' , classroom_id = classroom[0], assignment_id = assignment[0] )}}">{{ assignment[1] }}</a></p>
                                 </div>
                             </li>
                         </ul>

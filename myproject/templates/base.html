@@ -26,10 +26,10 @@
                 <ul>
                     <li><a class="brand" href="{{ url_for('index') }}">RatorX</a> </li>
                     <li> 
-                        <div class="dropdown " onclick="myFunction2()">
+                        <div class="dropdown" onclick="myFunction2()">
                             <button class="dropbtn" style="display: flex;" >
-                                <a href="#myDropdown2" class="notBrand"> Top Categories</a>
-                                <i class="fa fa-caret-down" style="color: white; margin-left:5px; margin-top:15px"></i>
+                                <div   class="notBrand dropdown"> Top Categories</div>
+                                <i  class="fa fa-caret-down dropdown" style="color: white; margin-left:5px; margin-top:15px"></i>
                             </button>
                             <div class="dropdown-content dropdown-content2" id="myDropdown2">
                                     <a href="{{url_for('assignments.categories', category = 1 )}}">Database</a>

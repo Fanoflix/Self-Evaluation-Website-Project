@@ -779,15 +779,31 @@ a{
     justify-content: space-between;
 }
 
+.attempt_page_heading .delete_and_points a{
+    position: relative;
+    top: -10px;
+    height: 30px;
+    border:none;
+    border-radius:5px;
+    background-color: rgb(73, 73, 73);
+    color:white;
+    font-size: 16px;
+    font-weight:600;
+    text-decoration: none;
+    padding: 5px 10px;
+    margin:0;
+}
+
 .delete_assignment_btn{
     position: relative;
     top: -10px;
     height: 30px;
-    margin-left:750px;
+    margin-left: 5px;
+    margin-right:10px;
     color:white;
     font-size: 16px;
     font-weight:600;
-    width:180px;
+    /* width:120px; */
     border:none;
     border-radius:5px;
     background-color: rgb(179, 23, 23);
@@ -1102,7 +1118,34 @@ a{
 .add_classroom_wrapper .add_classroom .form_btn:hover{
     transform: scale(0.99);
 }
+/* =====================================Display Class Students ======================================== */
+.display_class_student_wrapper{
+    width: 50%;
+    margin: 50px 25%;
+}
 
+.alternate{
+    width: 100%;
+    margin: 50px 0;
+    /* margin-bottom: 100px; */
+}
+
+.display_class_student_wrapper .heading{
+    font-size: 36px;
+    font-weight: 700;
+    color: rgb(53, 131, 242);
+}
+.display_class_student_wrapper .students_list ol{
+    margin:0;
+    padding: 0;
+    /* list-style: none; */
+    margin-left: 30px;
+    margin-top: 20px;
+    font-size: 27px;
+    font-weight: 400;
+    letter-spacing: 1px;
+
+}
 /* ====================================Add Assignment Section ========================================= */
 .add_assignment_wrapper{
     width: 70%;
