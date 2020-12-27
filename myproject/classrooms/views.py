@@ -56,7 +56,6 @@ def teacher_class_list():
         total_assignments.append(available_assignments)
         available_assignments = []
     
-    print(total_assignments)
     return render_template('teacher_list_classrooms.html', all_classrooms = all_classrooms, total_assignments = total_assignments, teacher_object = g.whichTeacher, searchForm = searchForm, teacherLoggedIn = g.teacherLoggedIn)
 
 @classrooms_blueprint.route('/student_classrooms',  methods=['GET', 'POST'])
@@ -85,13 +84,32 @@ def student_class_list():
 
     for classroom in classrooms:
         for assignments in Assignments_in_Classroom.query.filter_by(classroom_id = int(classroom.classroom_id)).all():
-                date=str(assignments.deadline)
-                day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
-                temp.append(assignments.assignment.assignment_name)
-                temp.append(assignments.deadline.strftime("%I:%M %p"))
-                temp.append(day_name[day])
-                available_assignments.append(temp)
-                temp = []
+
+            assignment_already_solved = Solved_Classroom_Assignment.query.filter(
+                                    and_(
+                                            Solved_Classroom_Assignment.classroom_id.like(classroom.classroom.id),
+                                            Solved_Classroom_Assignment.assignment_id.like(assignments.assignment_id),
+                                            Solved_Classroom_Assignment.student_id.like(current_user.id),
+                                    )
+                                ).first()
+                
+            today = datetime.datetime.today()
+            deadline = assignments.deadline
+            
+            check_month_year_today = today.strftime("%Y-%m")
+            check_month_year_deadline = deadline.strftime("%Y-%m")
+        
+
+            if check_month_year_today == check_month_year_deadline and assignment_already_solved == None:
+                if ( (int(deadline.strftime("%d")) - int(today.strftime("%d"))) <= 7) and ( (int(deadline.strftime("%d")) - int(today.strftime("%d"))) >= 0):
+                    date=str(assignments.deadline)
+                    day = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S').weekday()
+                    temp.append(assignments.assignment.id)
+                    temp.append(assignments.assignment.assignment_name)
+                    temp.append(deadline.strftime("%I:%M %p"))
+                    temp.append(day_name[day])
+                    available_assignments.append(temp)
+                    temp = []
         
         total_assignments.append(available_assignments)
         available_assignments = []
@@ -159,9 +177,7 @@ def display_classroom(classroom_id):
         form = StudentJoinClassroom()
         
         if already_in_class == None:
-            print("!already_in_class")
             if form.validate_on_submit():
-                print("in form")
                 student = Students_in_Classroom(int(classroom_id), current_user.id)
                 db.session.add(student)
                 db.session.commit()
@@ -337,13 +353,10 @@ def solve_classroom_assignment(assignment_id,classroom_id):
         if assignment_already_solved == None: 
             # then check whether student has passed or failed 
             if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
-                print("Expere here")
                 passed = True
             elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
-                print("Intermediate here")
                 passed = True
             elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
-                print("Beginning here")
                 passed = True
             else:
                 passed = False
