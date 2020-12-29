@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session
 from flask_login import login_required,current_user
 from myproject import db,g
-from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review, Solved_Assignemnts
+from myproject.models import Student, Teacher, Assignments, Assignment_Data, Courses, Assignment_Review, Solved_Assignemnts, Assignments_in_Classroom, Solved_Classroom_Assignment
 from myproject.assignments.forms import SolveAssignment, AddAssignment, DeleteAssignment, SubmitAssignment
 from wtforms import RadioField,SubmitField, StringField,SelectField, Form, validators
 from myproject.search.form import Searching
@@ -72,7 +72,7 @@ def add_assignment():
     questions = []
     index = []
     assignment_questions = 1
-    for x in range (3): #for no of questions
+    for x in range (1): #for no of questions
         field = StringField([ validators.Required() ])
         setattr(AddAssignment, 'Question' + str(assignment_questions), field)
         questions.append('Question' + str(assignment_questions))
@@ -145,10 +145,10 @@ def delete_assignment(aid):
     for question in assignment_data:
         no_of_question +=1
     
-    if assignment_data[0].assignment.difficulty == 'expert':
+    if assignment_data[0].assignment.difficulty == 'Expert':
         total_points = 5* (no_of_question)
         points = 5
-    elif assignment_data[0].assignment.difficulty == 'intermediate':
+    elif assignment_data[0].assignment.difficulty == 'Intermediate':
         total_points = 3* (no_of_question)
         points = 3
     else:
@@ -158,16 +158,42 @@ def delete_assignment(aid):
     form = DeleteAssignment()
     #try with multiple questions
     if form.validate_on_submit():
-        for q in Assignment_Data.query.filter_by(assignment_id = aid).all():
-            db.session.delete(q)
-            db.session.commit()
+      
 
         assignment = Assignments.query.filter_by(id = aid).first()
         updated_course = Courses.query.filter_by(id = assignment.course_id).first()
-        updated_course.no_of_assignments -= 1  #incrementing the number of assignments for a course
+        if updated_course.no_of_assignments == 0:
+            updated_course.no_of_assignments = 0
+        else:
+            updated_course.no_of_assignments -= 1  #incrementing the number of assignments for a course
         db.session.add(updated_course)
         db.session.commit()
+      
+        assignment = Assignments.query.filter_by(id = aid).first()
         db.session.delete(assignment)
+        db.session.commit()
+
+        # Now updating Teacher teacher_rating and teacher_no_Of_reviews.
+        teacher = Teacher.query.filter_by(id = g.whichTeacher.id).first()
+        teacher_assignments = Assignments.query.filter_by(teacher_id = teacher.id).all()
+
+        count = 0
+        avg_teacher_rating = 0
+        for assignment in teacher_assignments:
+            if assignment.assignment_rating > 0:
+                count += 1
+                avg_teacher_rating += assignment.assignment_rating
+            #endif
+        #endfor
+
+        if count == 0:
+            teacher.teacher_rating = 0
+            teacher.teacher_no_Of_reviews = 0
+        else:    
+            teacher.teacher_rating = avg_teacher_rating/count
+            teacher.teacher_no_Of_reviews -= assignment.assignment_no_of_reviews
+        #endif
+        db.session.add(teacher)
         db.session.commit()
 
         return redirect(url_for('assignments.list_assignment'))
@@ -181,18 +207,14 @@ def list_assignment():
     if searchForm.searched.data != '' and  searchForm.validate_on_submit():
         return redirect(url_for('search.searching', searched = searchForm.searched.data))
 
-    total_assignments = 0
-    total_reviews = 0
-    total_assignment_rating = 0
     all_assignments = Assignments.query.filter_by(teacher_id = g.whichTeacher.id)
-
+    teacher = Teacher.query.filter_by(id = g.whichTeacher.id).first()
+    
+    total_assignments = 0
     for assignment in all_assignments:
-        for review in Assignment_Review.query.filter_by(assignment_id = assignment.id):
-            total_reviews += 1
-
         total_assignments += 1
     
-    return render_template('list_assignment.html',average_rating = g.whichTeacher.teacher_rating, total_reviews=total_reviews, all_assignments=all_assignments, teacherLoggedIn = g.teacherLoggedIn,searchForm = searchForm, total_assignments=total_assignments)
+    return render_template('list_assignment.html',teacher = teacher, all_assignments=all_assignments, teacherLoggedIn = g.teacherLoggedIn, searchForm = searchForm, total_assignments=total_assignments)
 
 @assignments_blueprint.route('/solve_assignment/<aid>',  methods=['GET', 'POST'])
 @login_required
@@ -220,10 +242,10 @@ def solve_assignment(aid):
 
 
     #----- Checking Assignment Difficulty and Points ------------
-    if questions[0].assignment.difficulty == 'expert':
+    if questions[0].assignment.difficulty == 'Expert':
         total_points = 5* (no_of_question - 1)
         points = 5
-    elif questions[0].assignment.difficulty == 'intermediate':
+    elif questions[0].assignment.difficulty == 'Intermediate':
         total_points = 3* (no_of_question - 1)
         points = 3
     else:
@@ -232,7 +254,7 @@ def solve_assignment(aid):
 
 
     form = SolveAssignment()   
-    
+    print(getattr(form,field_list[0]).data)
     # The Entire SOLVE ASSIGNMENT LOGIC with maintainence of Leaderboard starts from here...
     if form.validate_on_submit():
         earned_points = 0
@@ -285,17 +307,16 @@ def solve_assignment(aid):
 
         # if this is student first attempt..
         else: 
+            
             # then check whether student has passed or failed 
-            if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
-                print("Expere here")
+            if  (questions[0].assignment.difficulty == 'Expert') and (earned_points >= (total_points*0.70) ):
                 passed = True
-            elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
-                print("Intermediate here")
+            elif (questions[0].assignment.difficulty == 'Intermediate') and (earned_points >= (total_points*0.60) ):
                 passed = True
-            elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
-                print("Beginning here")
+            elif (questions[0].assignment.difficulty == 'Beginner') and (earned_points >= (total_points*0.50) ):
                 passed = True
             else:
+    
                 passed = False
             #endif
 
@@ -319,7 +340,6 @@ def solve_assignment(aid):
 
         #student_new_position
         new_rank_points = (student.student_score * student.student_solved) /student.student_attempted 
-        print(new_rank_points)
         #finding all the students who have attempted atleast one assignment, sorted by thier rank in asc order.
         all_students = Student.query.order_by(Student.student_rank.asc()).filter(Student.student_attempted > 0)
         

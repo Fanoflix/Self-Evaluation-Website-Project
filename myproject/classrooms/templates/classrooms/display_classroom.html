@@ -16,7 +16,7 @@
                 {% else %}
                     <form method = "POST" class="">
                         {{ form.hidden_tag()}}
-                        {{ form.submit() }}
+                        {{ form.submit(class = "join_classroom_btn") }}
                     </form>
                 {% endif %}
             {% endif %}

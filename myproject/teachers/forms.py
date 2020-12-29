@@ -42,4 +42,4 @@ class PrivacyTab(FlaskForm):
 class DeactivateTab(FlaskForm):
 
     password = PasswordField([ validators.Required() ])
-    submit = SubmitField('Deactivate Account')
+    submit = SubmitField('Close Account')
