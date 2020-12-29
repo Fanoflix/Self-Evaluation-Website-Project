@@ -259,10 +259,10 @@ def delete_classroom_assignments(classroom_id,assignment_id):
     for question in assignment_data:
         no_of_question +=1
     
-    if assignment_data[0].assignment.difficulty == 'expert':
+    if assignment_data[0].assignment.difficulty == 'Expert':
         total_points = 5* (no_of_question)
         points = 5
-    elif assignment_data[0].assignment.difficulty == 'intermediate':
+    elif assignment_data[0].assignment.difficulty == 'Intermediate':
         total_points = 3* (no_of_question)
         points = 3
     else:
@@ -310,10 +310,10 @@ def solve_classroom_assignment(assignment_id,classroom_id):
 
 
     #----- Checking Assignment Difficulty and Points ------------
-    if questions[0].assignment.difficulty == 'expert':
+    if questions[0].assignment.difficulty == 'Expert':
         total_points = 5* (no_of_question - 1)
         points = 5
-    elif questions[0].assignment.difficulty == 'intermediate':
+    elif questions[0].assignment.difficulty == 'Intermediate':
         total_points = 3* (no_of_question - 1)
         points = 3
     else:
@@ -352,11 +352,11 @@ def solve_classroom_assignment(assignment_id,classroom_id):
     
         if assignment_already_solved == None: 
             # then check whether student has passed or failed 
-            if  (questions[0].assignment.difficulty == 'expert') and (earned_points >= (total_points*0.70) ):
+            if  (questions[0].assignment.difficulty == 'Expert') and (earned_points >= (total_points*0.70) ):
                 passed = True
-            elif (questions[0].assignment.difficulty == 'intermediate') and (earned_points >= (total_points*0.60) ):
+            elif (questions[0].assignment.difficulty == 'Intermediate') and (earned_points >= (total_points*0.60) ):
                 passed = True
-            elif (questions[0].assignment.difficulty == 'beginner') and (earned_points >= (total_points*0.50) ):
+            elif (questions[0].assignment.difficulty == 'Beginner') and (earned_points >= (total_points*0.50) ):
                 passed = True
             else:
                 passed = False

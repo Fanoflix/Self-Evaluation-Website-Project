@@ -112,24 +112,7 @@ class Settings(db.Model):
             return 3 # Display stats only == 3
         else:
             return 4 # Hide both == 4
-
-class Preferences(db.Model):
-    __tablename__ = 'preferences'
-
-    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
-
-    __table_args__ = (
-        db.PrimaryKeyConstraint(
-            student_id, course_id,
-        ),
-    )
-
-    def __init__(self, student_id, course_id):
-        self.student_id = student_id
-        self.course_id = course_id
-    
-
+ 
 class Courses(db.Model):
     __tablename__ = 'courses'
 
@@ -155,7 +138,7 @@ class Assignments(db.Model):
     assignment_no_of_ratings = db.Column(db.Integer)
     active_status = db.Column(db.Integer)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
-    teacher = db.relationship('Teacher', backref='Teacher_JOIN_Assignments') # Backref
+    teacher = db.relationship('Teacher', backref=backref("Teacher_JOIN_Assignments", cascade="all,delete")) # Backref
 
     def __init__(self, assignment_name, course_id, difficulty, assignment_rating, assignment_no_of_reviews, assignment_no_of_ratings, active_status, teacher_id):
         self.assignment_name = assignment_name
@@ -176,7 +159,8 @@ class Assignment_Review(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     assignment_rating = db.Column(db.Float)
     review_text = db.Column(db.Text)
-    assignment = db.relationship('Assignments', backref = 'Assignment_Review_JOIN_Assignments') #(not redundent)
+    
+    assignment = db.relationship('Assignments', backref = backref("Assignment_Review_JOIN_Assignments", cascade="all,delete")) #(not redundent)
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
@@ -198,7 +182,8 @@ class Assignment_Data(db.Model):
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     question_id = db.Column(db.Integer)
     question_text = db.Column(db.Text)
-    assignment = db.relationship('Assignments', backref = 'Assignment_Data_JOIN_Assignments') # Backref
+    
+    assignment = db.relationship('Assignments', backref = backref("Assignment_Data_JOIN_Assignments", cascade="all,delete")) # Backref
     choice1 = db.Column(db.Text)
     choice2 = db.Column(db.Text)
     choice3 = db.Column(db.Text)
@@ -228,7 +213,7 @@ class Solved_Assignemnts(db.Model):
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     points = db.Column(db.Integer)
     student = db.relationship('Student', backref="Solved_Assignemnts_JOIN_Student")
-    assignment = db.relationship('Assignments', backref="Solved_Assignemnts_JOIN_Assignments")
+    assignment = db.relationship('Assignments', backref=backref("Solved_Assignemnts_JOIN_Assignments", cascade="all,delete"))
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
@@ -248,7 +233,7 @@ class Classroom(db.Model):
     classroom_name = db.Column(db.Text)
     classroom_section = db.Column(db.Text)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teachers.id'))
-    teacher = db.relationship('Teacher', backref='Classroom_JOIN_Teacher') # 
+    teacher = db.relationship('Teacher', backref=backref("Classroom_JOIN_Teacher", cascade="all,delete")) # 
     
     def __init__(self, classroom_name, classroom_section, teacher_id):
         self.classroom_name = classroom_name
@@ -261,7 +246,7 @@ class Students_in_Classroom(db.Model):
 
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
-    classroom = db.relationship('Classroom', backref="Students_in_Classroom_JOIN_Classroom")
+    classroom = db.relationship('Classroom', backref=backref("Students_in_Classroom_JOIN_Classroom", cascade="all,delete"))
     student = db.relationship('Student', backref="Students_in_Classroom_JOIN_Student")
 
     __table_args__ = (
@@ -281,8 +266,8 @@ class Assignments_in_Classroom(db.Model):
     classroom_id = db.Column(db.Integer, db.ForeignKey('classroom.id'))
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     deadline = db.Column(db.DateTime)
-    classroom = db.relationship('Classroom', backref="Assignments_in_Classroom_JOIN_Classroom")
-    assignment = db.relationship('Assignments', backref="Assignments_in_Classroom_JOIN_Assignments")
+    classroom = db.relationship('Classroom', backref=backref("Assignments_in_Classroom_JOIN_Classroom", cascade="all,delete"))
+    assignment = db.relationship('Assignments', backref=backref("Assignments_in_Classroom_JOIN_Assignments", cascade="all,delete"))
 
     __table_args__ = (
         db.PrimaryKeyConstraint(
@@ -303,11 +288,11 @@ class Solved_Classroom_Assignment(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
     assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'))
     points = db.Column(db.Integer)
-
-    classroom = db.relationship('Classroom', backref="Solved_Classroom_Assignment_JOIN_Classroom")
+                                        
+    classroom = db.relationship('Classroom', backref=backref("Solved_Classroom_Assignment_JOIN_Classroom", cascade="all,delete"))
     student = db.relationship('Student', backref="Solved_Classroom_Assignment_JOIN_Student")
-    assignment = db.relationship('Assignments' , backref = "Solved_Classroom_Assignment_JOIN_Assignments")
-
+    assignment = db.relationship('Assignments' , backref=backref("Solved_Classroom_Assignment_JOIN_Assignments", cascade="all,delete"))
+    
     __table_args__ = (
         db.PrimaryKeyConstraint(
            classroom_id, student_id, assignment_id,

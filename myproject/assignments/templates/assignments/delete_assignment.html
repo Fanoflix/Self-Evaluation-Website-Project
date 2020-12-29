@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-    
+<form method="POST">  
    <div class="attempt_page_wrapper">
 
         <div class="attempt_page_heading">
@@ -13,7 +13,6 @@
         </div>
 
         <div class="attempt_page_solving">
-            <form method="POST">
                 {{ form.hidden_tag() }}
                 <!-- Outer Loop -->
                 
@@ -48,11 +47,8 @@
                     
                 {% endfor %}
 
-                 
-                 
-            </form>
         </div>
-
+ 
    </div>
-    
+</form>  
 {% endblock %}

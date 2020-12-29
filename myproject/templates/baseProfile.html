@@ -17,14 +17,14 @@
                   <li> <a href="{{ url_for('students.account') }}">Account</a></li>
                   <li> <a href="{{ url_for('students.payment_method') }}">Payment Method</a></li>
                   <li> <a href="{{ url_for('students.privacy') }}">Privacy</a></li>
-                  <li> <a href="{{ url_for('students.deactivate_account') }}">Deactivate Account</a></li>
+                  <li> <a href="{{ url_for('students.deactivate_account') }}">Close Account</a></li>
                   {% else %}
                   <li> <a href="{{ url_for('teachers.profile') }}">Profile</a></li>
                   <li> <a href="{{ url_for('teachers.photo') }}">Photo</a></li>
                   <li> <a href="{{ url_for('teachers.account') }}">Account</a></li>
                   <li> <a href="{{ url_for('teachers.payment_method') }}">Payment Method</a></li>
                   <li> <a href="{{ url_for('teachers.privacy') }}">Privacy</a></li>
-                  <li> <a href="{{ url_for('teachers.deactivate_account') }}">Deactivate Account</a></li>
+                  <li> <a href="{{ url_for('teachers.deactivate_account') }}">Close Account</a></li>
                   {% endif %}
                 </ul>
 

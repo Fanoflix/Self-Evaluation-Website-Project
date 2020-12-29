@@ -1,7 +1,7 @@
 from flask import Blueprint,render_template,redirect,url_for,flash,session,request
 from flask_login import login_user,login_required,logout_user,current_user
 from myproject import db,g
-from myproject.models import Student, Teacher, Settings
+from myproject.models import Student, Teacher, Settings,Students_in_Classroom,Solved_Classroom_Assignment,Solved_Assignemnts,Assignment_Review, Assignments
 from myproject.students.forms import SignUp,LogIn,ProfileTab,AccountTab,PrivacyTab,DeactivateTab
 from myproject.search.form import Searching
 from sqlalchemy import func, and_
@@ -218,9 +218,56 @@ def deactivate_account():
        
         if user.check_password(form.password.data):
             
+            for q in Students_in_Classroom.query.filter_by(student_id = current_user.id).all():
+                db.session.delete(q)
+            
+            for q in Solved_Classroom_Assignment.query.filter_by(student_id = current_user.id).all():
+                db.session.delete(q)
+            
+            for q in Solved_Assignemnts.query.filter_by(student_id = current_user.id).all():
+                db.session.delete(q)
+            
+            for q in Assignment_Review.query.filter_by(student_id = current_user.id).all():
+                # Now updating Assignment assignment_rating,assignment_no_of_reviews and assignment_no_of_ratings.
+                assignment = Assignments.query.filter_by(id = q.assignment_id).first()
+                assignment.assignment_no_of_reviews -= 1
+                if assignment.assignment_no_of_ratings == 1:
+                    assignment.assignment_rating = 0
+                else:
+                    assignment.assignment_rating = ( (assignment.assignment_rating * assignment.assignment_no_of_ratings) - float(q.assignment_rating)) / (assignment.assignment_no_of_ratings - 1)
+                #endif
+                assignment.assignment_no_of_ratings -= 1
+                db.session.add(assignment)
+                
+                # Now updating Teacher teacher_rating and teacher_no_Of_reviews.
+                teacher = Teacher.query.filter_by(id = q.assignment.teacher_id).first()
+                teacher_assignments = Assignments.query.filter_by(teacher_id = teacher.id).all()
+                db.session.delete(q)
+                db.session.commit()
+
+                count = 0
+                avg_teacher_rating = 0
+                for assignment in teacher_assignments:
+                    if assignment.assignment_rating > 0:
+                        count += 1
+                        avg_teacher_rating += assignment.assignment_rating
+                    #endif
+                #endfor
+
+                if count == 0:
+                    teacher.teacher_rating = 0
+                    teacher.teacher_no_Of_reviews = 0
+                else:    
+                    teacher.teacher_rating = avg_teacher_rating/count
+                    teacher.teacher_no_Of_reviews -= 1
+                #endif
+                db.session.add(teacher)
+                db.session.commit()
+            #endfor
+
             settings = Settings.query.filter_by(student_id = current_user.id).first()
-            db.session.delete(user)
             db.session.delete(settings)
+            db.session.delete(user)
             db.session.commit()
             return redirect( url_for('students.signout') )
         else:

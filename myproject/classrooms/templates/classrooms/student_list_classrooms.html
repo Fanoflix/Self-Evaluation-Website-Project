@@ -28,19 +28,20 @@
                     </div>
                 </div>
                 <!-- assignment below will be a list for due dates -->
-                {% for assignment in total_assignments[loop.index0] %}
                 <div class="notify">
                         <ul>
-                            <li>
+                            {% for assignment in total_assignments[loop.index0] %}
+                            <li style="margin-bottom: 10px;">
                                 <div>
                                     <p class = "due_date"> Due {{ assignment[3] }} at {{ assignment[2] }}</p> 
                                     
                                     <p> <a class = "when_due" href="{{url_for('classrooms.solve_classroom_assignment' , classroom_id = classroom[0], assignment_id = assignment[0] )}}">{{ assignment[1] }}</a></p>
                                 </div>
                             </li>
+                            {% endfor %}
                         </ul>
                 </div>
-                {% endfor %}
+               
             </div>
             {% endfor %}
         </div>
