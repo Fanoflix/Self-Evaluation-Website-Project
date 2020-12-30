@@ -9,5 +9,5 @@ Technologies Used:
 1- Flask  
 2- HTML5  
 3- CSS  
-4- MySQL DB
+4- MySQL DB  
 5- VS Code  
